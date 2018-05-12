@@ -7,8 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Fri, 30 Dec 2016 21:49:57 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 20 Apr 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title></title>
+      <link>/about/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>
+
+&lt;h1 id=&#34;about-me&#34;&gt;About me&lt;/h1&gt;
+</description>
+    </item>
     
     <item>
       <title>A Plain Markdown Post</title>
@@ -459,23 +471,6 @@ $(document).ready(function () {
 
 &lt;/body&gt;
 &lt;/html&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>About Me</title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;Job Interests&lt;/strong&gt;&lt;br /&gt;
-I am deeply interested in being part of team that uses modern statistical tools to make the world a better place. My training is primarily in frequentist statistical approaches, though I have learned that I am actually something of a closet Bayesian. More recenlty published work of my reflects this ongoing shift in analytical approaches.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;My Background&lt;/strong&gt;&lt;br /&gt;
-I am a former summer camp director who misses the simple days of fixing marine engines and teaching kids how to sail along the shores of the Chesapeake Bay. Despite currently living in Maryland while I finish my Ph.D. in Human Development and Quantitative Methodology, I do not make it to the water nearly as often as I would like.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Research Interests&lt;/strong&gt;&lt;br /&gt;
-Most of my published work to date is focused on the emergence of internalizing problems (i.e., anxiety and depression symptoms) in youth, with a specific focus on peer relations. More recently, I have trained my attention on creating better tools for processing and editing the heart rate data that we collect in our lab. The goal is to use these data, once properly cleaned and processed, to better understand how a child&amp;rsquo;s underlying physiology might predict their response to one of two different treeatments for young children at risk for the development anxiety disorders.&lt;/p&gt;
 </description>
     </item>
     
