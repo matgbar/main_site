@@ -10,31 +10,30 @@ weight = 5
 # List your academic interests.
 [interests]
   interests = [
-    "Artificial Intelligence",
-    "Computational Linguistics",
-    "Information Retrieval"
+    "Heart Rate/Heart Rate Variability",
+    "Social Development",
+    "Signal Processing", 
+    "R"
   ]
 
 # List your qualifications (such as academic degrees).
 [[education.courses]]
-  course = "PhD in Artificial Intelligence"
-  institution = "Stanford University"
-  year = 2012
+  course = "PhD in Human Development & Quantitative Methodology (ongoing)"
+  institution = "University of Maryland"
+  year = 2018
 
 [[education.courses]]
-  course = "MEng in Artificial Intelligence"
-  institution = "Massachusetts Institute of Technology"
-  year = 2009
+  course = "MSc Psychology"
+  institution = "Saint Joseph's University"
+  year = 2013
 
 [[education.courses]]
-  course = "BSc in Artificial Intelligence"
-  institution = "Massachusetts Institute of Technology"
-  year = 2008
+  course = "BSc Psychology"
+  institution = "Wilmington University"
+  year = 2011
  
 +++
 
 # Biography
 
-Lena Smith is a professor of artificial intelligence at the Stanford AI Lab. Her research interests include distributed robotics, mobile computing and programmable matter. She leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate. 
+Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. Generally speaking, his research focuses on individual and contextual factors that predict elevated anxiety and depression throughout childhood up through early adulthood. Recently, he has worked on developing a new, open-source program for processing and editing heart data. These data are used in his work as a physiological predictor of variation in adjustment/maladjustment.  
