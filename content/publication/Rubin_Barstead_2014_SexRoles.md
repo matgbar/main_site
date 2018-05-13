@@ -1,6 +1,6 @@
 +++
 title = "Gender differences in child and adolescent social withdrawal: A commentary"
-date = 2013-07-01T00:00:00
+date = 2018-07-01T00:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["KH Rubin", "MG Barstead"]
@@ -36,14 +36,9 @@ projects = ["example-external-project"]
 
 # Links (optional).
 url_pdf = "pdf/Rubin_Barstead_2014_SexRoles.pdf"
-url_preprint = "#"
-url_code = "#"
-url_dataset = "#"
-url_project = "#"
-url_slides = "#"
-url_video = "#"
-url_poster = "#"
-url_source = "#"
+
+# Is this a selected publication? (true/false)
+selected = false
 
 # Custom links (optional).
 #   Uncomment line below to enable. For multiple links, use the form `[{...}, {...}, {...}]`.

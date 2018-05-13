@@ -33,12 +33,12 @@ filter_default = 0
   tag = "*"
 
 [[filter]]
-  name = "Deep Learning"
-  tag = ".deep-learning"
+  name = "IBI VizEdit"
+  tag = ".IBI-VizEdit"
 
 [[filter]]
-  name = "Other"
-  tag = ".demo"
+  name = "Methods"
+  tag = ".Methods"
 
 +++
 

@@ -1,6 +1,6 @@
 +++
 title = "Withdrawing from the peer group"
-date = 2013-07-01T00:00:00
+date = 2018-07-01T00:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["KH Rubin", "JC Bowker", "MG Barstead", "RJ Coplan"]
@@ -28,14 +28,9 @@ image_preview = ""
 
 # Links (optional).
 url_pdf = "pdf/Rubin_Barstead_2014_SexRoles.pdf"
-url_preprint = "#"
-url_code = "#"
-url_dataset = "#"
-url_project = "#"
-url_slides = "#"
-url_video = "#"
-url_poster = "#"
-url_source = "#"
+
+# Is this a selected publication? (true/false)
+selected = true
 
 # Custom links (optional).
 #   Uncomment line below to enable. For multiple links, use the form `[{...}, {...}, {...}]`.
@@ -50,8 +45,8 @@ highlight = true
 # Featured image
 # Place your image in the `static/img/` folder and reference its filename below, e.g. `image = "example.jpg"`.
 [header]
-image = "Handbook_cover.jpg"
-caption = "​"
+image = "Handbook_cover.png"
+caption = ""
 
 +++
 

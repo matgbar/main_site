@@ -11,6 +11,24 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Gender differences in child and adolescent social withdrawal: A commentary</title>
+      <link>/publication/rubin_barstead_2014_sexroles/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/rubin_barstead_2014_sexroles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Withdrawing from the peer group</title>
+      <link>/publication/rubin_et_al_2018_handbook/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/rubin_et_al_2018_handbook/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Example Talk</title>
       <link>/talk/example-talk/</link>
       <pubDate>Sun, 01 Jan 2017 00:00:00 -0500</pubDate>
@@ -281,24 +299,6 @@ Figure 1: A fancy pie chart.
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Gender differences in child and adolescent social withdrawal: A commentary</title>
-      <link>/publication/rubin_barstead_2014_sexroles/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 -0400</pubDate>
-      
-      <guid>/publication/rubin_barstead_2014_sexroles/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Withdrawing from the peer group</title>
-      <link>/publication/rubin_et_al_2018_handbook/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 -0400</pubDate>
-      
-      <guid>/publication/rubin_et_al_2018_handbook/</guid>
-      <description></description>
     </item>
     
   </channel>
