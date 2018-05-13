@@ -1,0 +1,73 @@
++++
+# Date this page was created.
+date = 2016-04-27T00:00:00
+
+# Project title.
+title = "Gaussian Process Imputation Models"
+
+# Project summary to display on homepage.
+summary = "Identifying an optimal Gaussian Process model that can be used to impute heart rate data"
+
+# Optional image to display on homepage (relative to `static/img/` folder).
+image_preview = "GP_results.png"
+
+# Tags: can be used for filtering projects.
+# Example: `tags = ["machine-learning", "deep-learning"]`
+tags = ["Methods"]
+
+# Optional external URL for project (replaces project detail page).
+#external_link = ""
+
+# Does the project detail page use math formatting?
+math = true
+
+# Optional featured image (relative to `static/img/` folder).
+[header]
+#image = "GP_results.png"
+#caption = "Use of a Gaussian process imputation model in an early version of IBI VizEdit"
+
++++
+
+A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal's mean and/or variance changes over time). Non-stationary time series are particularly difficult to model mathematically. A common approach is to impose some form of stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.
+
+A commonly used univariate time series data set is the preloaded `AirPassengers` data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data. 
+
+```{r AirPassengers}
+data('AirPassengers')
+plot(AirPassengers)
+```
+
+An ARIMA approach with a log transformation, which helps reduce between cycle heterogeneity of variance (see below).
+```{r AirPassengers}
+data('AirPassengers')
+plot(log10(AirPassengers), lty='dashed', col='red')
+```
+
+Taken directly from the documentation for the `AirPassengers` below is one approach to forecasting these data. 
+
+```{r}
+(fit <- arima(log10(AirPassengers), c(0, 1, 1),
+              seasonal = list(order = c(0, 1, 1), period = 12)))
+update(fit, method = "CSS")
+update(fit, x = window(log10(AirPassengers), start = 1954))
+pred <- predict(fit, n.ahead = 24)
+tl <- pred$pred - 1.96 * pred$se
+tu <- pred$pred + 1.96 * pred$se
+ts.plot(AirPassengers, 10^pred$pred, 10^tl, 10^tu, log = "y", lty = c(1, 2, 2, 2), col=c('black', 'black', 'red', 'red'))
+```
+
+The red dashed lines represent the upper and lower boundaries of the 95% confidence for the forecast. Note how shape that defines each period does not change as the forecast window increases, but the uncertainty about the values does grow. 
+
+
+```{r}
+(fit <- arima(log10(AirPassengers), c(0, 1, 1),
+              seasonal = list(order = c(0, 1, 1), period = 12)))
+update(fit, method = "CSS")
+update(fit, x = window(log10(AirPassengers), start = 1954))
+pred <- predict(fit, n.ahead = 72)
+tl <- pred$pred - 1.96 * pred$se
+tu <- pred$pred + 1.96 * pred$se
+ts.plot(AirPassengers, 10^pred$pred, 10^tl, 10^tu, log = "y", lty = c(1, 2, 2, 2), col=c('black', 'black', 'red', 'red'))
+```
+
+Of course we should expect that as predictions are being made farther out, uncertainty should increase. There are a number of shortcomings to this model, particularly when variability of the relative location of the peak is the primary outcome of interest. 
