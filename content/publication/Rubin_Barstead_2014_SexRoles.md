@@ -1,6 +1,6 @@
 +++
 title = "Gender differences in child and adolescent social withdrawal: A commentary"
-date = 2018-07-01T00:00:00
+date = 2014-07-01T00:00:00
 
 # Authors. Comma separated list, e.g. `["Bob Smith", "David Jones"]`.
 authors = ["KH Rubin", "MG Barstead"]
@@ -32,7 +32,7 @@ selected = false
 # Projects (optional).
 #   Associate this publication with one or more of your projects.
 #   Simply enter the filename (excluding '.md') of your project file in `content/project/`.
-projects = ["example-external-project"]
+#   projects = ["example-external-project"]
 
 # Links (optional).
 url_pdf = "pdf/Rubin_Barstead_2014_SexRoles.pdf"
