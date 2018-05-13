@@ -1,5 +1,5 @@
 +++
-title = "Shyness, preference for solitude and adolescent interanlizing: The roles of maternal, paternal, and best-friend support"
+title = "Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support"
 date = 2017-07-01T00:00:00
 
 authors = ["MG Barstead", "KA Smith", "B Laursen", "C Booth-LaForce", "S King", "KH Rubin"]

@@ -37,4 +37,4 @@ weight = 5
 
 # Biography
 
-Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. Generally speaking, his research focuses on individual and contextual factors that predict elevated anxiety and depression throughout childhood up through early adulthood. Recently, he has worked on developing a new, open-source program for processing and editing heart data. These data are used in his work as a physiological predictor of variation in adjustment/maladjustment.
+Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. Generally speaking, his research focuses on individual and contextual factors that predict elevated child and adolescent social and emotional maladaptation. Recently, he has worked on developing a new, open-source program for processing and editing heart data. These data are used in his work as a physiological predictor of variation in adjustment/maladjustment.
