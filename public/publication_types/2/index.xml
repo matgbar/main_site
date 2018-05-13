@@ -7,18 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
-    <lastBuildDate>Tue, 01 Sep 2015 00:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2013 00:00:00 -0400</lastBuildDate>
     
 	<atom:link href="/publication_types/2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>A Person Re-Identification System For Mobile Devices</title>
-      <link>/publication/person-re-identification/</link>
-      <pubDate>Tue, 01 Sep 2015 00:00:00 -0400</pubDate>
+      <title>Gender differences in child and adolescent social withdrawal: A commentary</title>
+      <link>/publication/rubin_barstead_2014_sexroles/</link>
+      <pubDate>Mon, 01 Jul 2013 00:00:00 -0400</pubDate>
       
-      <guid>/publication/person-re-identification/</guid>
-      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
+      <guid>/publication/rubin_barstead_2014_sexroles/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Withdrawing from the peer group</title>
+      <link>/publication/rubin_et_al_2018_handbook/</link>
+      <pubDate>Mon, 01 Jul 2013 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/rubin_et_al_2018_handbook/</guid>
+      <description></description>
     </item>
     
   </channel>
