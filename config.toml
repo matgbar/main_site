@@ -3,10 +3,10 @@
 
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
-baseurl = "/"
+baseurl = "https://mgb-research.netlify.com/"
 
 # Title of your site
-title = "Academic"
+title = "Matthew Barstead's Research Page"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -55,11 +55,11 @@ enableGitInfo = false
 
   # Your details.
   name = "Matthew Barstead"
-  role = "Doctoral Candidate in Human Development & Quantitative Methodology"
+  role = "Doctoral Candidate of Human Development & Quantitative Methodology"
 
   # Organizations/Affiliations.
   #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-  organizations = [ { name = "University of Maryland", url = "https://umd.edu/" }, {name = "Department of Human Development & Quantitative Methodology"} ]
+  organizations = [ { name = "University of Maryland", url = "https://umd.edu/" } ]
 
   gravatar = false  # Get your avatar from Gravatar.com? (true/false)
   avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
@@ -173,8 +173,8 @@ enableGitInfo = false
   #   For multilingual sites, `publication_types` can be copied to each language section at the end of this file and
   #   translated.
   publication_types = [
-    'Pre-print',  # 0
-    'Conference presentation',  # 1
+    'Uncategorized',  # 0
+    'Conference paper',  # 1
     'Journal article',  # 2
     'Manuscript',  # 3
     'Report',  # 4
@@ -242,6 +242,16 @@ enableGitInfo = false
     icon = "github"
     icon_pack = "fa"
     link = "//github.com/matgbar"
+    
+  [[params.social]]
+    icon="researchgate"
+    icon_pack="ai"
+    link="https://www.researchgate.net/profile/Matthew_Barstead"
+    
+  [[params.social]]
+    icon="mendeley"
+    icon_pack="ai"
+    link="https://www.mendeley.com/profiles/matthew-barstead/"
 
 
 # Navigation Links
