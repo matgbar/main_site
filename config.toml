@@ -6,7 +6,7 @@
 baseurl = "https://mgb-research.netlify.com/"
 
 # Title of your site
-title = "Matthew Barstead's Research Page"
+title = "Matt Barstead's Research, Blog, & Repository"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -59,16 +59,12 @@ enableGitInfo = false
 
   # Organizations/Affiliations.
   #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-  organizations = [ { name = "University of Maryland", url = "https://umd.edu/" } ]
+  organizations = [ { name = "University of Maryland", url = "" } ]
 
   gravatar = false  # Get your avatar from Gravatar.com? (true/false)
   avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
   email = "barstead@umd.edu"
-  address = "3304 Benjamin Building, College Park, MD 20742"
-  #office_hours = "Monday 10:00 to 13:00 or email for appointment"
-  #phone = "888 888 88 88"
-  #skype = "echo123"
-  #telegram = ""
+  address = "3304 Benjamin Building, College Park, MD 20742, USA"
 
   # Enable Keybase in Contact widget by entering your keybase.io username.
   keybase = ""
@@ -182,11 +178,6 @@ enableGitInfo = false
     'Book section'  # 6
   ]
 
-  # Configuration of talk pages.
-  [params.talks]
-    # Show talk time?
-    time = true
-
   # Configuration of publication pages.
   [params.publications]
     # Date format (refer to Go's date format: http://fuckinggodateformat.com )
@@ -203,7 +194,7 @@ enableGitInfo = false
     #   1 = Detailed
     #   2 = APA
     #   3 = MLA
-    publication_format = 2
+    publication_format = 3
 
   # Social/Academic Networking
   #
@@ -239,19 +230,24 @@ enableGitInfo = false
     link = "https://scholar.google.com/citations?user=BPm5ErAAAAAJ&hl=en"
 
   [[params.social]]
+    icon = "researchgate"
+    icon_pack = "ai"
+    link = "https://www.researchgate.net/profile/Matthew_Barstead"
+    
+  [[params.social]]
+    icon = "mendeley"
+    icon_pack = "ai"
+    link = "https://www.mendeley.com/profiles/matthew-barstead/"
+    
+  [[params.social]]
     icon = "github"
     icon_pack = "fa"
     link = "//github.com/matgbar"
     
   [[params.social]]
-    icon="researchgate"
-    icon_pack="ai"
-    link="https://www.researchgate.net/profile/Matthew_Barstead"
-    
-  [[params.social]]
-    icon="mendeley"
-    icon_pack="ai"
-    link="https://www.mendeley.com/profiles/matthew-barstead/"
+    icon = "linkedin"
+    icon_pack = "fa"
+    link = "https://www.linkedin.com/in/mbarstead/"
 
 
 # Navigation Links
@@ -273,30 +269,14 @@ enableGitInfo = false
   weight = 2
 
 [[menu.main]]
-  name = "Posts"
-  url = "#posts"
-  weight = 3
-
-[[menu.main]]
   name = "Projects"
   url = "#projects"
   weight = 4
 
 [[menu.main]]
-  name = "Teaching"
-  url = "#teaching"
-  weight = 5
-
-[[menu.main]]
   name = "Contact"
   url = "#contact"
   weight = 6
-
-# Taxonomies.
-[taxonomies]
-  tag = "tags"
-  category = "categories"
-  publication_type = "publication_types"
 
 # Languages
 #   Create a [languages.X] block for each language you want, where X is the language ID.

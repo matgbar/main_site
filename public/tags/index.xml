@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Matthew Barstead&#39;s Research Page</title>
+    <title>Tags on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on Matthew Barstead&#39;s Research Page</description>
+    <description>Recent content in Tags on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
@@ -22,20 +22,29 @@
     </item>
     
     <item>
-      <title>Deep-learning</title>
-      <link>/tags/deep-learning/</link>
+      <title>IBI-VizEdit</title>
+      <link>/tags/ibi-vizedit/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/tags/deep-learning/</guid>
+      <guid>/tags/ibi-vizedit/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Demo</title>
-      <link>/tags/demo/</link>
+      <title>Meta-Analysis</title>
+      <link>/tags/meta-analysis/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/tags/demo/</guid>
+      <guid>/tags/meta-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Methods</title>
+      <link>/tags/methods/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/tags/methods/</guid>
       <description></description>
     </item>
     

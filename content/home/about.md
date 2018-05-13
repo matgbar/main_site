@@ -10,16 +10,17 @@ weight = 5
 # List your academic interests.
 [interests]
   interests = [
-    "Heart Rate/Heart Rate Variability",
-    "Social Development",
-    "Signal Processing", 
-    "R"
+    "Psychophysiology",
+    "Heart Rate Variability",
+    "Child and Adolescent Social Development", 
+    "R", 
+    "Signal Processing"
   ]
 
 # List your qualifications (such as academic degrees).
 [[education.courses]]
   course = "PhD in Human Development & Quantitative Methodology (ongoing)"
-  institution = "University of Maryland"
+  institution = "University of Maryland, College Park"
   year = 2018
 
 [[education.courses]]
@@ -28,7 +29,7 @@ weight = 5
   year = 2013
 
 [[education.courses]]
-  course = "BSc Psychology"
+  course = "BSc in Psychology"
   institution = "Wilmington University"
   year = 2011
  
@@ -36,4 +37,4 @@ weight = 5
 
 # Biography
 
-Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. Generally speaking, his research focuses on individual and contextual factors that predict elevated anxiety and depression throughout childhood up through early adulthood. Recently, he has worked on developing a new, open-source program for processing and editing heart data. These data are used in his work as a physiological predictor of variation in adjustment/maladjustment.  
+Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. Generally speaking, his research focuses on individual and contextual factors that predict elevated anxiety and depression throughout childhood up through early adulthood. Recently, he has worked on developing a new, open-source program for processing and editing heart data. These data are used in his work as a physiological predictor of variation in adjustment/maladjustment.

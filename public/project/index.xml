@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on Matthew Barstead&#39;s Research Page</title>
+    <title>Projects on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
     <link>/project/</link>
-    <description>Recent content in Projects on Matthew Barstead&#39;s Research Page</description>
+    <description>Recent content in Projects on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
@@ -13,21 +13,39 @@
     
     
     <item>
-      <title>Deep Learning</title>
-      <link>/project/deep-learning/</link>
+      <title>Callous Unemotional Meta-Analysis</title>
+      <link>/project/cu-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/deep-learning/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus.</description>
+      <guid>/project/cu-meta/</guid>
+      <description>[Under Construction]</description>
     </item>
     
     <item>
-      <title>External Project</title>
-      <link>/project/example-external-project/</link>
+      <title>Gaussian Process Imputation Models</title>
+      <link>/project/gp/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/example-external-project/</guid>
-      <description></description>
+      <guid>/project/gp/</guid>
+      <description>[Under Construction]</description>
+    </item>
+    
+    <item>
+      <title>IBI VizEdit</title>
+      <link>/project/ibi-vizedit/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/ibi-vizedit/</guid>
+      <description>[Under Construction]</description>
+    </item>
+    
+    <item>
+      <title>Social Withdrawal Meta-Analysis</title>
+      <link>/project/sw-meta/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/sw-meta/</guid>
+      <description>[Under Construction]</description>
     </item>
     
   </channel>

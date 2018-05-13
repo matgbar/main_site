@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Publications on Matthew Barstead&#39;s Research Page</title>
+    <title>Publications on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
     <link>/publication/</link>
-    <description>Recent content in Publications on Matthew Barstead&#39;s Research Page</description>
+    <description>Recent content in Publications on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
@@ -13,21 +13,48 @@
     
     
     <item>
-      <title>Gender differences in child and adolescent social withdrawal: A commentary</title>
-      <link>/publication/rubin_barstead_2014_sexroles/</link>
+      <title>Withdrawing from the peer group</title>
+      <link>/publication/rubin_etal_2018_handbook/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>/publication/rubin_barstead_2014_sexroles/</guid>
-      <description></description>
+      <guid>/publication/rubin_etal_2018_handbook/</guid>
+      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
     </item>
     
     <item>
-      <title>Withdrawing from the peer group</title>
-      <link>/publication/rubin_et_al_2018_handbook/</link>
-      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
+      <link>/publication/shackman_etal_2017_emotion/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/rubin_et_al_2018_handbook/</guid>
-      <description></description>
+      <guid>/publication/shackman_etal_2017_emotion/</guid>
+      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
+    </item>
+    
+    <item>
+      <title>Interpersonal predictors of stress generation: Is there a super factor?</title>
+      <link>/publication/shih_etal_2017_bjop/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/shih_etal_2017_bjop/</guid>
+      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
+    </item>
+    
+    <item>
+      <title>Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</title>
+      <link>/publication/smith_etal_2017_joya/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/smith_etal_2017_joya/</guid>
+      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
+    </item>
+    
+    <item>
+      <title>Shyness, preference for solitude and adolescent interanlizing: The roles of maternal, paternal, and best-friend support</title>
+      <link>/publication/barstead_etal_2017_jora/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/barstead_etal_2017_jora/</guid>
+      <description>More detail can easily be written here using Markdown and $\rm \LaTeX$ math code.</description>
     </item>
     
   </channel>

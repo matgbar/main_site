@@ -40,5 +40,8 @@ filter_default = 0
   name = "Methods"
   tag = ".Methods"
 
+[[filter]]
+  name = "Meta-Analysis"
+  tag = ".Meta-Analysis"
 +++
 

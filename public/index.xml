@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Matthew Barstead&#39;s Research Page on Matthew Barstead&#39;s Research Page</title>
+    <title>Matt Barstead&#39;s Research, Blog, &amp; Repository on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
     <link>/</link>
-    <description>Recent content in Matthew Barstead&#39;s Research Page on Matthew Barstead&#39;s Research Page</description>
+    <description>Recent content in Matt Barstead&#39;s Research, Blog, &amp; Repository on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018</copyright>
@@ -11,21 +11,53 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Gender differences in child and adolescent social withdrawal: A commentary</title>
-      <link>/publication/rubin_barstead_2014_sexroles/</link>
+      <title>Withdrawing from the peer group</title>
+      <link>/publication/rubin_etal_2018_handbook/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>/publication/rubin_barstead_2014_sexroles/</guid>
-      <description></description>
+      <guid>/publication/rubin_etal_2018_handbook/</guid>
+      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
     </item>
     
     <item>
-      <title>Withdrawing from the peer group</title>
-      <link>/publication/rubin_et_al_2018_handbook/</link>
-      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
+      <link>/publication/shackman_etal_2017_emotion/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/rubin_et_al_2018_handbook/</guid>
-      <description></description>
+      <guid>/publication/shackman_etal_2017_emotion/</guid>
+      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Interpersonal predictors of stress generation: Is there a super factor?</title>
+      <link>/publication/shih_etal_2017_bjop/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/shih_etal_2017_bjop/</guid>
+      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</title>
+      <link>/publication/smith_etal_2017_joya/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/smith_etal_2017_joya/</guid>
+      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Shyness, preference for solitude and adolescent interanlizing: The roles of maternal, paternal, and best-friend support</title>
+      <link>/publication/barstead_etal_2017_jora/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/barstead_etal_2017_jora/</guid>
+      <description>&lt;p&gt;More detail can easily be written here using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -39,30 +71,43 @@
     </item>
     
     <item>
-      <title>Deep Learning</title>
-      <link>/project/deep-learning/</link>
+      <title>Callous Unemotional Meta-Analysis</title>
+      <link>/project/cu-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/deep-learning/</guid>
-      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
-
-&lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
-
-&lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
-
-&lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
-
-&lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+      <guid>/project/cu-meta/</guid>
+      <description>&lt;p&gt;[Under Construction]&lt;/p&gt;
 </description>
     </item>
     
     <item>
-      <title>External Project</title>
-      <link>/project/example-external-project/</link>
+      <title>Gaussian Process Imputation Models</title>
+      <link>/project/gp/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/example-external-project/</guid>
-      <description></description>
+      <guid>/project/gp/</guid>
+      <description>&lt;p&gt;[Under Construction]&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>IBI VizEdit</title>
+      <link>/project/ibi-vizedit/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/ibi-vizedit/</guid>
+      <description>&lt;p&gt;[Under Construction]&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Social Withdrawal Meta-Analysis</title>
+      <link>/project/sw-meta/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/sw-meta/</guid>
+      <description>&lt;p&gt;[Under Construction]&lt;/p&gt;
+</description>
     </item>
     
     <item>

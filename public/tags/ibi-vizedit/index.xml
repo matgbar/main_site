@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IBI-VizEdit on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
+    <link>/tags/ibi-vizedit/</link>
+    <description>Recent content in IBI-VizEdit on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018</copyright>
+    <lastBuildDate>Wed, 27 Apr 2016 00:00:00 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/ibi-vizedit/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IBI VizEdit</title>
+      <link>/project/ibi-vizedit/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/ibi-vizedit/</guid>
+      <description>[Under Construction]</description>
+    </item>
+    
+  </channel>
+</rss>
