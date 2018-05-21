@@ -29,6 +29,406 @@
     </item>
     
     <item>
+      <title>Gaussian Process Imputation/Forecast Models</title>
+      <link>/post/gaussian-process-imputation-models/</link>
+      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gaussian-process-imputation-models/</guid>
+      <description>&lt;p&gt;A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.&lt;/p&gt;
+&lt;p&gt;The models below will make use of the preloaded &lt;code&gt;AirPassengers&lt;/code&gt; data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;#39;AirPassengers&amp;#39;)
+plot(AirPassengers)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data.&lt;/p&gt;
+&lt;p&gt;A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;Python&lt;/code&gt; packages that allow researchers to use this modeling approach. I have become something of a &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; convert recently, but it is not the only option out there.&lt;/p&gt;
+&lt;p&gt;The authoritative text on Gaussian process models was arguably published by &lt;a href=&#34;http://www.gaussianprocess.org/gpml/chapters/RW.pdf&#34;&gt;Rasumssen &amp;amp; Williams in 2006&lt;/a&gt;, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp;amp; Williams (2006) text as a starting point.&lt;/p&gt;
+&lt;p&gt;It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following &lt;a href=&#34;https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations&#34;&gt;page on the Stan GitHub repo&lt;/a&gt; provides a brief, but reasonable overview as a starting point.&lt;/p&gt;
+&lt;p&gt;First the data need a bit of prepping to be fed into a stan program.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Obtaining a numeric vector for time. Maintaining the units of measure at 1
+Year&amp;lt;-seq(1949, 1960+11/12, by=1/12)
+
+#converting time-series to a vector
+Pass&amp;lt;-as.vector(AirPassengers)
+
+#identifiying number of data points for the &amp;quot;training&amp;quot; data
+N1&amp;lt;-length(Year)
+
+#specifying 2-year prediction window. 
+year.fore2&amp;lt;-seq(1961, 1962+11/12, by=1/12)
+N2&amp;lt;-length(year.fore2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With the data prepped I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[k(t,t&amp;#39;) = \sigma^2 exp\Big(-\frac{(t-t&amp;#39;)^2}{2l_1^2}\Big)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2\)&lt;/span&gt; is the estimated variance accounted for by the function &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt; is a length scale parameter that governs the decay rate. Smaller estimated values for &lt;span class=&#34;math inline&#34;&gt;\(l\)&lt;/span&gt; indiciate a faster decay rate in the ability of the function account for the covariance between two time points as a function of time.&lt;/p&gt;
+&lt;p&gt;This model, along with its forecasting function are defined in Stan code below:&lt;/p&gt;
+&lt;pre class=&#34;stan&#34;&gt;&lt;code&gt;functions{
+    //covariance function for main portion of the model
+    matrix main_GP(
+        int Nx,
+        vector x,
+        int Ny,
+        vector y, 
+        real alpha1,
+        real rho1){
+                    matrix[Nx, Ny] Sigma;
+    
+                    //specifying random Gaussian process that governs covariance matrix
+                    for(i in 1:Nx){
+                        for (j in 1:Ny){
+                            Sigma[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+                        }
+                    }
+                    
+                    return Sigma;
+                }
+    //function for posterior calculations
+    vector post_pred_rng(
+        real a1,
+        real r1, 
+        real sn,
+        int No,
+        vector xo,
+        int Np, 
+        vector xp,
+        vector yobs){
+                matrix[No,No] Ko;
+                matrix[Np,Np] Kp;
+                matrix[No,Np] Kop;
+                matrix[Np,No] Ko_inv_t;
+                vector[Np] mu_p;
+                matrix[Np,Np] Tau;
+                matrix[Np,Np] L2;
+                vector[Np] yp;
+    
+    //--------------------------------------------------------------------
+    //Kernel Multiple GPs for observed data
+    Ko = main_GP(No, xo, No, xo, a1, r1);
+    for(n in 1:No) Ko[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for predicted data
+    Kp = main_GP(Np, xp, Np, xp,  a1, r1);
+    for(n in 1:Np) Kp[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for observed and predicted cross 
+    Kop = main_GP(No, xo, Np, xp,  a1, r1);
+    
+    //--------------------------------------------------------------------
+    //Algorithm 2.1 of Rassmussen and Williams... 
+    Ko_inv_t = Kop&amp;#39;/Ko;
+    mu_p = Ko_inv_t*yobs;
+    Tau=Kp-Ko_inv_t*Kop;
+    L2 = cholesky_decompose(Tau);
+    yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+    return yp;
+    }
+}
+
+data { 
+    int&amp;lt;lower=1&amp;gt; N1;
+    int&amp;lt;lower=1&amp;gt; N2;
+    vector[N1] X; 
+    vector[N1] Y;
+    vector[N2] Xp;
+}
+
+transformed data { 
+    vector[N1] mu;
+    for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+    real&amp;lt;lower=0&amp;gt; a1;
+    real&amp;lt;lower=0&amp;gt; r1;
+    real&amp;lt;lower=0&amp;gt; sigma_sq;
+}
+
+model{ 
+    matrix[N1,N1] Sigma;
+    matrix[N1,N1] L_S;
+    
+    //using GP function from above 
+    Sigma = main_GP(N1, X, N1, X,  a1, r1);
+    for(n in 1:N1) Sigma[n,n] += sigma_sq;
+    
+    L_S = cholesky_decompose(Sigma);
+    Y ~ multi_normal_cholesky(mu, L_S);
+    
+    //priors for parameters
+    a1 ~ student_t(3,0,1);
+    //incorporate minimum and maximum distances - use invgamma
+    r1 ~ student_t(3,0,1);
+    sigma_sq ~ student_t(3,0,1);
+}
+
+generated quantities {
+    vector[N2] Ypred = post_pred_rng(a1, r1, sigma_sq, N1, X, N2, Xp, Y);
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model takes just over a minute to run. For those of you who are computational gearheads, here is the hardware I am working with (with a total of 64GB of RAM):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;benchmarkme::get_cpu()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $vendor_id
+## [1] &amp;quot;GenuineIntel&amp;quot;
+## 
+## $model_name
+## [1] &amp;quot;Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz&amp;quot;
+## 
+## $no_of_cores
+## [1] 12&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A quick view of summary stats good convergence of estimates across the 6 chains.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pars.to.monitor&amp;lt;-c(&amp;#39;a1&amp;#39;,&amp;#39;r1&amp;#39;,&amp;#39;sigma_sq&amp;#39;, &amp;#39;Ypred&amp;#39;)
+summary(fit.stan1, pars=pars.to.monitor[-4])$summary&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                  mean      se_mean           sd        2.5%          25%
+## a1        2.064974195 2.117451e-02 1.2312158202 0.739681295  1.272435874
+## r1       22.681133287 1.252456e-01 9.0005034579 9.102436133 16.045254783
+## sigma_sq  0.003559372 5.819530e-06 0.0004251947 0.002818252  0.003254155
+##                   50%          75%        97.5%    n_eff      Rhat
+## a1        1.759559393  2.505894675  5.176821352 3380.974 1.0010353
+## r1       21.367822936 28.012894270 42.692355288 5164.270 0.9996089
+## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;… and traceplots demonstrate good mixing.&lt;/p&gt;
+&lt;p&gt;So the real question is how did the model do?&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan1, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
+
+Ypred.DF&amp;lt;-extract(fit.stan1, pars=&amp;#39;Ypred&amp;#39;)$Ypred
+UB&amp;lt;-vector()
+LB&amp;lt;-vector()
+
+for(i in 1:N2){
+  UB[i]&amp;lt;-10^quantile(Ypred.DF[,i], .975)
+  LB[i]&amp;lt;-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig&amp;lt;-data.frame(Year=Year, Passengers=Pass)
+DF.fore2&amp;lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1&amp;lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.&lt;/p&gt;
+&lt;p&gt;The new periodic covariance function is:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[k(t,t&amp;#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&amp;#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&amp;#39;)^2}{2l_3^2}\Big)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the Stan code.&lt;/p&gt;
+&lt;pre class=&#34;stan&#34;&gt;&lt;code&gt;functions{
+    //covariance function for main portion of the model
+    matrix main_GP(
+        int Nx,
+        vector x,
+        int Ny,
+        vector y, 
+        real alpha1,
+        real alpha2,
+        real rho1,
+        real rho2,
+        real rho3){
+                    matrix[Nx, Ny] K1;
+                    matrix[Nx, Ny] K2;
+                    matrix[Nx, Ny] Sigma;
+    
+                    //specifying random Gaussian process that governs covariance matrix
+                    for(i in 1:Nx){
+                        for (j in 1:Ny){
+                            K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+                        }
+                    }
+                    
+                    //specifying random Gaussian process incorporates heart rate
+                    for(i in 1:Nx){
+                        for(j in 1:Ny){
+                            K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*1))/square(rho2))*
+                            exp(-square(x[i]-y[j])/2/square(rho3));
+                        }
+                    }
+                        
+                    Sigma = K1+K2;
+                    return Sigma;
+                }
+    //function for posterior calculations
+    vector post_pred_rng(
+        real a1,
+        real a2,
+        real r1, 
+        real r2,
+        real r3,
+        real sn,
+        int No,
+        vector xo,
+        int Np, 
+        vector xp,
+        vector yobs){
+                matrix[No,No] Ko;
+                matrix[Np,Np] Kp;
+                matrix[No,Np] Kop;
+                matrix[Np,No] Ko_inv_t;
+                vector[Np] mu_p;
+                matrix[Np,Np] Tau;
+                matrix[Np,Np] L2;
+                vector[Np] yp;
+    
+    //--------------------------------------------------------------------
+    //Kernel Multiple GPs for observed data
+    Ko = main_GP(No, xo, No, xo, a1, a2, r1, r2, r3);
+    for(n in 1:No) Ko[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for predicted data
+    Kp = main_GP(Np, xp, Np, xp,  a1, a2, r1, r2,  r3);
+    for(n in 1:Np) Kp[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for observed and predicted cross 
+    Kop = main_GP(No, xo, Np, xp,  a1, a2, r1, r2, r3);
+    
+    //--------------------------------------------------------------------
+    //Algorithm 2.1 of Rassmussen and Williams... 
+    Ko_inv_t = Kop&amp;#39;/Ko;
+    mu_p = Ko_inv_t*yobs;
+    Tau=Kp-Ko_inv_t*Kop;
+    L2 = cholesky_decompose(Tau);
+    yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+    return yp;
+    }
+}
+
+data { 
+    int&amp;lt;lower=1&amp;gt; N1;
+    int&amp;lt;lower=1&amp;gt; N2;
+    vector[N1] X; 
+    vector[N1] Y;
+    vector[N2] Xp;
+}
+
+transformed data { 
+    vector[N1] mu;
+    for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+    real&amp;lt;lower=0&amp;gt; a1;
+    real&amp;lt;lower=0&amp;gt; a2;
+    real&amp;lt;lower=15&amp;gt; r1;      //Set after some preliminary modeling
+    real&amp;lt;lower=0&amp;gt; r2;
+    real&amp;lt;lower=0&amp;gt; r3;
+    real&amp;lt;lower=0&amp;gt; sigma_sq;
+}
+
+model{ 
+    matrix[N1,N1] Sigma;
+    matrix[N1,N1] L_S;
+    
+    //using GP function from above 
+    Sigma = main_GP(N1, X, N1, X, a1, a2, r1, r2, r3);
+    for(n in 1:N1) Sigma[n,n] += sigma_sq;
+    
+    L_S = cholesky_decompose(Sigma);
+    Y ~ multi_normal_cholesky(mu, L_S);
+    
+    //priors for parameters
+    a1 ~ normal(2.06,1.23);     //Taken from the first model
+    a2 ~ student_t(3,0,1);
+    //incorporate minimum and maximum distances - use invgamma
+    r1 ~ normal(22.68,9.005);   //Taken from the first model
+    r2 ~ student_t(3,0,1);
+    r3 ~ student_t(3,0,1);  
+    sigma_sq ~ normal(0,1);
+}
+
+generated quantities {
+    vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This model took about 6 minutes to run.&lt;/p&gt;
+&lt;p&gt;Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until &lt;code&gt;Stan&lt;/code&gt; and &lt;code&gt;rstan&lt;/code&gt; can run using graphics chips’ architecture (which has been buzzed about around the &lt;a href=&#34;http://discourse.mc-stan.org/t/stan-on-the-gpu/326&#34;&gt;Stan ether&lt;/a&gt;), model run time is going to be the biggest downside. Still, 23 minutes is not that long to wait if accuracy matters.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pars.to.monitor&amp;lt;-c(paste0(&amp;#39;a&amp;#39;, 1:2), paste0(&amp;#39;r&amp;#39;, 1:3), &amp;#39;Ypred&amp;#39;)
+summary(fit.stan2, pars=pars.to.monitor[-6])$summary&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           mean      se_mean          sd        2.5%          25%
+## a1  2.54983942 0.0134372272  0.92993236  1.03551274  1.842231419
+## a2  0.01028192 0.0007652084  0.02499935  0.00195483  0.003809465
+## r1 29.72788580 0.0860626598  5.77288905 19.05829543 25.751944510
+## r2  0.71435573 0.0024883370  0.12979765  0.49982165  0.627554970
+## r3 21.16693790 0.7029880494 10.71983939  2.13531511 14.836950073
+##             50%        75%       97.5%     n_eff     Rhat
+## a1  2.464693706  3.1470023  4.60109271 4789.4253 1.001067
+## a2  0.005887629  0.0100722  0.04229047 1067.3281 1.004514
+## r1 29.510979184 33.4589313 41.57756671 4499.4237 1.000575
+## r2  0.700328139  0.7850996  1.00378065 2720.9169 1.000556
+## r3 19.220095144 25.4484115 45.91201691  232.5309 1.026833&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;traceplot(fit.stan2, pars=pars.to.monitor[-6])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
+
+Ypred.DF&amp;lt;-extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred
+UB&amp;lt;-vector()
+LB&amp;lt;-vector()
+
+for(i in 1:N2){
+  UB[i]&amp;lt;-10^quantile(Ypred.DF[,i], .975)
+  LB[i]&amp;lt;-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig&amp;lt;-data.frame(Year=Year, Passengers=Pass)
+DF.fore2&amp;lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1&amp;lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;(fit &amp;lt;- arima(log10(AirPassengers), c(0, 1, 1),
+              seasonal = list(order = c(0, 1, 1), period = 12)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+##     1, 1), period = 12))
+## 
+## Coefficients:
+##           ma1     sma1
+##       -0.4018  -0.5569
+## s.e.   0.0896   0.0731
+## 
+## sigma^2 estimated as 0.0002543:  log likelihood = 353.96,  aic = -701.92&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;update(fit, method = &amp;quot;CSS&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Call:
+## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+##     1, 1), period = 12), method = &amp;quot;CSS&amp;quot;)
+## 
+## Coefficients:
+##           ma1     sma1
+##       -0.3772  -0.5724
+## s.e.   0.0883   0.0704
+## 
+## sigma^2 estimated as 0.0002619:  part log likelihood = 354.32&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred &amp;lt;- predict(fit, n.ahead = 24)
+tl &amp;lt;- pred$pred - 1.96 * pred$se
+tu &amp;lt;- pred$pred + 1.96 * pred$se
+
+ARIMA.for&amp;lt;-data.frame(Year=year.fore2, Passengers=10^pred$pred, UB=10^as.numeric(tu), LB=10^as.numeric(tl))
+
+g1&amp;lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&amp;#39;blue&amp;#39;)+
+  geom_ribbon(data=ARIMA.for, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&amp;#39;red&amp;#39;)+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers, color=&amp;#39;blue&amp;#39;), lwd=1.25)+
+  geom_line(data=ARIMA.for, aes(x=Year, y=Passengers, color=&amp;#39;red&amp;#39;), lwd=1.25)+
+  coord_cartesian(xlim=c(1960, 1963.25), ylim= c(275,1000))+
+  scale_color_manual(name=&amp;#39;Forecast Model&amp;#39;,
+                     values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
+                     labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962 the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
+&lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
       <link>/publication/shackman_etal_2017_emotion/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
@@ -62,6 +462,58 @@
       
       <guid>/publication/barstead_etal_2017_jora/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>Callous Unemotional Meta-Analysis</title>
+      <link>/project/cu-meta/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/cu-meta/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Abstract:&lt;/strong&gt; Callous-unemotional (CU) traits are central to our understanding of antisocial behavior, which is harmful, financially costly to society, and hard to treat. Theoretical and diagnostic models define CU traits based on a lack of empathy, guilt, and prosociality. However, there has been no comprehensive quantitative synthesis of results to support this claim, nor any examination of whether associations differ by age, gender, sample type, or informant. Given its centrality to our understanding and treatment of antisocial behavior, the time is ripe for a critical examination of the meaning of the CU traits construct, including associations with its purported underlying features of low empathy, guilt, and prosociality, and potential demographic and methodological moderators of these associations. To address this gap in the literature, we conducted a systematic search of the literature on CU traits and identified 82 effect sizes from 51 studies (&lt;em&gt;N&lt;/em&gt; = 30,475) that quantified the magnitude of the association between CU traits and either empathy, prosociality, or guilt. The results revealed statistically significant, modest-to-moderate negative correlations between CU traits and empathy (&lt;em&gt;k&lt;/em&gt; = 25, $\rho$  = -.21), CU traits and guilt (&lt;em&gt;k&lt;/em&gt; = 3, $\rho$ = -.18), and CU traits and prosociality (&lt;em&gt;k&lt;/em&gt; = 16, $\rho$ = -.28). The magnitude of the negative association between CU traits and prosociality was stronger among younger children. In addition, the negative correlations between CU traits and both prosociality and cognitive empathy were stronger when the informant was a parent or teacher. We discuss how these findings can inform theory, conceptualization, and measurement of CU traits across the lifespan, as well as implications for models of antisocial behavior and moral development.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Gaussian Process Imputation Models</title>
+      <link>/project/gp/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/gp/</guid>
+      <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my blog post on the topic for more information and a toy forecasting problem.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>IBI VizEdit</title>
+      <link>/project/ibi-vizedit/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/ibi-vizedit/</guid>
+      <description>&lt;p&gt;IBI VizEdit is a program built using RShiny. It is designed to assist in the manual editing of inter-beat interval files that are derived from photoplethysmogram (PPG) recordings. Unlike the electrocardiogram signal (EKG or ECG), PPG signals are characterized by a slow-moving waveform, which presents a different set of challenges when the true signal becomes corrupted by motion artefacts and other sources of noise.&lt;/p&gt;
+
+&lt;p&gt;Though increasingly popular due to their ease of use, most heart rate editing software that exists to date was designed and optimized for the detection and editing of inter-beat interval files derived from ECG signals. IBI VizEdit provides a new suite of tools for researchers who find themselves working with messy PPG files.&lt;/p&gt;
+
+&lt;p&gt;Please note that IBI VizEdit is beta software. It has not been fully tested, and there are likely numerous bugs and opportunities to optimize code and performance. Any and all feedback is welcome.&lt;/p&gt;
+
+&lt;p&gt;As of right now, IBI VizEdit is only supported for use on Windows 7/8/10 and Linux (Ubuntu 16.04 in particular).&lt;/p&gt;
+
+&lt;p&gt;Please cite as:&lt;/p&gt;
+
+&lt;p&gt;Barstead, M. G. (2018). IBI VizEdit v.1.2-beta: An RShiny Application [Computer software]. University of Maryland. doi: 10.5281/zenodo.1209474&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Social Withdrawal Meta-Analysis</title>
+      <link>/project/sw-meta/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/sw-meta/</guid>
+      <description>&lt;p&gt;Are the terms anxious withdrawal, anxious solitude, behavioral inhibition, shyness-sensitivity, interchangeable? Are peer, parent, teacher, and self-perceptions of social withdrawal measuring the same thing? To date, researchers have relied on narrative arguments to build a case for or againts correspondence among the terms and measurement approaches used by developmental scientists interested in these and related constructs. I want to let the data speak for itself, and I am conducting a meta-analysis to do just that.&lt;/p&gt;
+
+&lt;p&gt;I conducted a preliminary analysis using data from 101 studies. I have since gone back and completed a more comprehensive record search and am in the process of updating my models. For a early preview of the results, check out the pre-print here on my &lt;a href=&#34;https://www.researchgate.net/publication/324746193_Psychosocial_Correlates_of_Social_Withdrawal_and_Its_Many_Variants_A_Quantitative_Synthesis_of_Research_Spanning_Four_Decades&#34; target=&#34;_blank&#34;&gt;ResearchGate page&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

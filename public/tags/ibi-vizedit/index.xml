@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IBI-VizEdit on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
+    <link>/tags/ibi-vizedit/</link>
+    <description>Recent content in IBI-VizEdit on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
+    <lastBuildDate>Wed, 27 Apr 2016 00:00:00 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/ibi-vizedit/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Gaussian Process Imputation Models</title>
+      <link>/project/gp/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/gp/</guid>
+      <description>I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my blog post on the topic for more information and a toy forecasting problem.</description>
+    </item>
+    
+    <item>
+      <title>IBI VizEdit</title>
+      <link>/project/ibi-vizedit/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/ibi-vizedit/</guid>
+      <description>IBI VizEdit is a program built using RShiny. It is designed to assist in the manual editing of inter-beat interval files that are derived from photoplethysmogram (PPG) recordings. Unlike the electrocardiogram signal (EKG or ECG), PPG signals are characterized by a slow-moving waveform, which presents a different set of challenges when the true signal becomes corrupted by motion artefacts and other sources of noise.
+Though increasingly popular due to their ease of use, most heart rate editing software that exists to date was designed and optimized for the detection and editing of inter-beat interval files derived from ECG signals.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -23,6 +23,15 @@
     
     <url>
     
+      <loc>/post/gaussian-process-imputation-models/</loc>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/publication/shackman_etal_2017_emotion/</loc>
       <lastmod>2017-07-01T00:00:00-04:00</lastmod>
     </url>
@@ -86,6 +95,15 @@
     
     <url>
     
+      <loc>/project/gp/</loc>
+      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/project/ibi-vizedit/</loc>
       <lastmod>2016-04-27T00:00:00-04:00</lastmod>
     </url>
@@ -104,7 +122,8 @@
     
     <url>
     
-      <loc>/categories/</loc>
+      <loc>/tags/bayesian/</loc>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -113,7 +132,8 @@
     
     <url>
     
-      <loc>/project/gp/</loc>
+      <loc>/categories/</loc>
+      <priority>0</priority>
     </url>
     
   
@@ -161,6 +181,16 @@
     
     <url>
     
+      <loc>/categories/modeling/</loc>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/project/</loc>
       <lastmod>2016-04-27T00:00:00-04:00</lastmod>
       <priority>0</priority>
@@ -171,8 +201,28 @@
     
     <url>
     
+      <loc>/tags/r/</loc>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/tags/stan/</loc>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/tags/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
+      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
