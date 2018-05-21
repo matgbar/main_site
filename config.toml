@@ -276,12 +276,12 @@ enableGitInfo = false
 [[menu.main]]
   name = "CV"
   url = "/pdf/Barstead_CV.pdf"
-  weight = 5
+  weight = 4
 
 [[menu.main]]
   name = "Contact"
   url = "#contact"
-  weight = 6
+  weight = 5
   
 # Languages
 #   Create a [languages.X] block for each language you want, where X is the language ID.
