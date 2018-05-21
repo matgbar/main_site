@@ -264,24 +264,24 @@ enableGitInfo = false
   weight = 1
 
 [[menu.main]]
-  name = "Publications"
-  url = "#publications_selected"
-  weight = 3
-
-[[menu.main]]
   name = "Projects"
   url = "#projects"
   weight = 2
 
 [[menu.main]]
-  name = "Contact"
-  url = "#contact"
-  weight = 6
+  name = "Publications"
+  url = "#publications_selected"
+  weight = 3
 
 [[menu.main]]
   name = "CV"
   url = "/pdf/Barstead_CV.pdf"
   weight = 5
+
+[[menu.main]]
+  name = "Contact"
+  url = "#contact"
+  weight = 6
   
 # Languages
 #   Create a [languages.X] block for each language you want, where X is the language ID.
