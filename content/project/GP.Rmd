@@ -4,7 +4,7 @@ author: "Matthew Barstead, M.S."
 date: "May 17, 2018"
 ---
 
-```{r, echo=F}
+```{r, echo=F, message=F}
 load('~/GitHub/main_site/data/GP_data.RData')
 library(rstan)
 library(bayesplot)
