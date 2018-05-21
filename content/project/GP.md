@@ -28,4 +28,6 @@ math = false
 
 +++
 
-I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my blog post on the topic for more information and a toy forecasting problem. 
+I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my [blog post](https://mgb-research.netlify.com/post/gaussian-process-imputation-models/) on the topic for more information and a toy forecasting problem. 
+
+I am currently working on a study examining the effectiveness of these models in imputing heart rate data that has been severely corrupted by artifact - to the point that there is not "enough" true signal remaining to do much of anything with. 

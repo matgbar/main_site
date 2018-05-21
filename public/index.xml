@@ -480,7 +480,9 @@ The two models make fairly similar predictions for 1961 (shaded regions represen
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
       <guid>/project/gp/</guid>
-      <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my blog post on the topic for more information and a toy forecasting problem.&lt;/p&gt;
+      <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34; target=&#34;_blank&#34;&gt;blog post&lt;/a&gt; on the topic for more information and a toy forecasting problem.&lt;/p&gt;
+
+&lt;p&gt;I am currently working on a study examining the effectiveness of these models in imputing heart rate data that has been severely corrupted by artifact - to the point that there is not &amp;ldquo;enough&amp;rdquo; true signal remaining to do much of anything with.&lt;/p&gt;
 </description>
     </item>
     
