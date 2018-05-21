@@ -25,7 +25,7 @@ abstract = "We examined differential outcomes related to two distinct motivation
 #image_preview = ""
 
 # Is this a selected publication? (true/false)
-selected = true
+selected = false
 
 # Projects (optional).
 #   Associate this publication with one or more of your projects.
@@ -60,5 +60,3 @@ highlight = true
 #caption = "My caption :smile:"
 
 +++
-
-More detail can easily be written here using *Markdown* and $\rm \LaTeX$ math code.

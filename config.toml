@@ -10,7 +10,7 @@ title = "Matt Barstead's Research, Blog, & Repository"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
-copyright = "&copy; 2018"
+copyright = "&copy; 2018 Matthew Barstead"
 
 theme = "hugo-academic"
 enableEmoji = true
@@ -266,18 +266,23 @@ enableGitInfo = false
 [[menu.main]]
   name = "Publications"
   url = "#publications_selected"
-  weight = 2
+  weight = 3
 
 [[menu.main]]
   name = "Projects"
   url = "#projects"
-  weight = 4
+  weight = 2
 
 [[menu.main]]
   name = "Contact"
   url = "#contact"
   weight = 6
 
+[[menu.main]]
+  name = "CV"
+  url = "/pdf/Barstead_CV.pdf"
+  weight = 5
+  
 # Languages
 #   Create a [languages.X] block for each language you want, where X is the language ID.
 

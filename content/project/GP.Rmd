@@ -1,73 +1,450 @@
-+++
-# Date this page was created.
-date = 2016-04-27T00:00:00
+---
+title: "Gaussian Process Imputation Models"
+author: "Matthew Barstead, M.S."
+date: "May 17, 2018"
+output: html_document
+---
 
-# Project title.
-title = "Gaussian Process Imputation Models"
+```{r}
+load('~/GitHub/main_site/data/GP_data.RData')
+library(rstan)
+library(bayesplot)
+options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+```
+A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal's mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.
 
-# Project summary to display on homepage.
-summary = "Identifying an optimal Gaussian Process model that can be used to impute heart rate data"
-
-# Optional image to display on homepage (relative to `static/img/` folder).
-image_preview = "GP_results.png"
-
-# Tags: can be used for filtering projects.
-# Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["Methods"]
-
-# Optional external URL for project (replaces project detail page).
-#external_link = ""
-
-# Does the project detail page use math formatting?
-math = true
-
-# Optional featured image (relative to `static/img/` folder).
-[header]
-#image = "GP_results.png"
-#caption = "Use of a Gaussian process imputation model in an early version of IBI VizEdit"
-
-+++
-
-A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal's mean and/or variance changes over time). Non-stationary time series are particularly difficult to model mathematically. A common approach is to impose some form of stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.
-
-A commonly used univariate time series data set is the preloaded `AirPassengers` data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data. 
+The models below will make use of the preloaded `AirPassengers` data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data. 
 
 ```{r AirPassengers}
 data('AirPassengers')
 plot(AirPassengers)
 ```
 
-An ARIMA approach with a log transformation, which helps reduce between cycle heterogeneity of variance (see below).
-```{r AirPassengers}
-data('AirPassengers')
-plot(log10(AirPassengers), lty='dashed', col='red')
+As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data. 
+
+A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few `R` and `Python` packages that allow researchers to use this modeling approach. I have become something of a [Stan](http://mc-stan.org/) convert recently, but it is not the only option out there. 
+
+The authoritative text on Gaussian process models was arguably published by [Rasumssen & Williams in 2006](http://www.gaussianprocess.org/gpml/chapters/RW.pdf), but only recently have computing power and programming languages allowed for a deeper tapping of this methodology's strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen & Williams (2006) text as a starting point. 
+
+It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following [page on the Stan GitHub repo](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations) provides a brief, but reasonable overview as a starting point.  
+
+First the data need a bit of prepping to be fed into a stan program. 
+
+```{r}
+#Obtaining a numeric vector for time. Maintaining the units of measure at 1
+Year<-seq(1949, 1960+11/12, by=1/12)
+
+#converting time-series to a vector
+Pass<-as.vector(AirPassengers)
+
+#identifiying number of data points for the "training" data
+N1<-length(Year)
+
+#specifying 2-year prediction window. 
+year.fore2<-seq(1961, 1962+11/12, by=1/12)
+N2<-length(year.fore2)
 ```
 
-Taken directly from the documentation for the `AirPassengers` below is one approach to forecasting these data. 
+With the data prepped I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form: 
+
+$$k(t,t') = \sigma^2 exp\Big(-\frac{(t-t')^2}{2l_1^2}\Big)$$
+
+where $\sigma^2$ is the estimated variance accounted for by the function $k$ and $l$ is a length scale parameter that governs the decay rate. Smaller estimated values for $l$ indiciate a faster decay rate in the ability of the function account for the covariance between two time points as a function of time. 
+
+This model, along with its forecasting function are defined in Stan code below: 
+```{stan, eval=F, output.var='none.txt'}
+functions{
+	//covariance function for main portion of the model
+	matrix main_GP(
+		int Nx,
+		vector x,
+		int Ny,
+		vector y, 
+		real alpha1,
+		real rho1){
+					matrix[Nx, Ny] Sigma;
+	
+					//specifying random Gaussian process that governs covariance matrix
+					for(i in 1:Nx){
+						for (j in 1:Ny){
+							Sigma[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+						}
+					}
+					
+					return Sigma;
+				}
+	//function for posterior calculations
+	vector post_pred_rng(
+		real a1,
+		real r1, 
+		real sn,
+		int No,
+		vector xo,
+		int Np, 
+		vector xp,
+		vector yobs){
+				matrix[No,No] Ko;
+				matrix[Np,Np] Kp;
+				matrix[No,Np] Kop;
+				matrix[Np,No] Ko_inv_t;
+				vector[Np] mu_p;
+				matrix[Np,Np] Tau;
+				matrix[Np,Np] L2;
+				vector[Np] yp;
+	
+	//--------------------------------------------------------------------
+	//Kernel Multiple GPs for observed data
+	Ko = main_GP(No, xo, No, xo, a1, r1);
+	for(n in 1:No) Ko[n,n] += sn;
+		
+	//--------------------------------------------------------------------
+	//kernel for predicted data
+	Kp = main_GP(Np, xp, Np, xp,  a1, r1);
+	for(n in 1:Np) Kp[n,n] += sn;
+		
+	//--------------------------------------------------------------------
+	//kernel for observed and predicted cross 
+	Kop = main_GP(No, xo, Np, xp,  a1, r1);
+	
+	//--------------------------------------------------------------------
+	//Algorithm 2.1 of Rassmussen and Williams... 
+	Ko_inv_t = Kop'/Ko;
+	mu_p = Ko_inv_t*yobs;
+	Tau=Kp-Ko_inv_t*Kop;
+	L2 = cholesky_decompose(Tau);
+	yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+	return yp;
+	}
+}
+
+data { 
+	int<lower=1> N1;
+	int<lower=1> N2;
+	vector[N1] X; 
+	vector[N1] Y;
+	vector[N2] Xp;
+}
+
+transformed data { 
+	vector[N1] mu;
+	for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+	real<lower=0> a1;
+	real<lower=0> r1;
+	real<lower=0> sigma_sq;
+}
+
+model{ 
+	matrix[N1,N1] Sigma;
+	matrix[N1,N1] L_S;
+	
+	//using GP function from above 
+	Sigma = main_GP(N1, X, N1, X,  a1, r1);
+	for(n in 1:N1) Sigma[n,n] += sigma_sq;
+	
+	L_S = cholesky_decompose(Sigma);
+	Y ~ multi_normal_cholesky(mu, L_S);
+	
+	//priors for parameters
+	a1 ~ student_t(3,0,1);
+	//incorporate minimum and maximum distances - use invgamma
+	r1 ~ student_t(3,0,1);
+	sigma_sq ~ student_t(3,0,1);
+}
+
+generated quantities {
+	vector[N2] Ypred = post_pred_rng(a1, r1, sigma_sq, N1, X, N2, Xp, Y);
+}
+```
+
+```{r, echo=F, eval=F}
+dat<-list(N1=N1, 
+          N2=N2, 
+          X=Year, 
+          Y=log10(Pass), 
+          Xp=year.fore2)
+
+pars.to.monitor<-c('a1','r1','sigma_sq', 'Ypred')
+
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+fit.stan1<-stan(file='~/GitHub/main_site/Code_base/GP_simple2.stan',
+                     data = dat, 
+                     warmup = 1000,
+                     iter = 2000,
+                     refresh=1000,
+                     chains = 6,
+                     pars = pars.to.monitor,
+                     control = list(adapt_delta = .95, 
+                                    max_treedepth = 10)
+                     )
+```
+
+The model takes just over a minute to run. For those of you who are computational gearheads, here is the hardware I am working with (with a total of 64GB of RAM): 
+
+```{r}
+benchmarkme::get_cpu()
+```
+
+A quick view of summary stats good convergence of estimates across the 6 chains. 
+
+```{r}
+pars.to.monitor<-c('a1','r1','sigma_sq', 'Ypred')
+summary(fit.stan1, pars=pars.to.monitor[-4])$summary
+```
+
+... and traceplots demonstrate good mixing. 
+```{r, include=F}
+traceplot(fit.stan1, pars=c('a1', 'r1', 'sigma_sq'))
+```
+
+So the real question is how did the model do? 
+```{r}
+Ypred<-10^colMeans(extract(fit.stan1, pars='Ypred')$Ypred)
+
+Ypred.DF<-extract(fit.stan1, pars='Ypred')$Ypred
+UB<-vector()
+LB<-vector()
+
+for(i in 1:N2){
+  UB[i]<-10^quantile(Ypred.DF[,i], .975)
+  LB[i]<-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig<-data.frame(Year=Year, Passengers=Pass)
+DF.fore2<-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1<-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1
+```
+
+Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.
+
+The new periodic covariance function is:
+
+$$k(t,t')=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t')*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t')^2}{2l_3^2}\Big)$$
+
+The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the Stan code.
+
+```{stan, eval=F, output.var='nope.txt'}
+functions{
+	//covariance function for main portion of the model
+	matrix main_GP(
+		int Nx,
+		vector x,
+		int Ny,
+		vector y, 
+		real alpha1,
+		real alpha2,
+		real rho1,
+		real rho2,
+		real rho3){
+					matrix[Nx, Ny] K1;
+					matrix[Nx, Ny] K2;
+					matrix[Nx, Ny] Sigma;
+	
+					//specifying random Gaussian process that governs covariance matrix
+					for(i in 1:Nx){
+						for (j in 1:Ny){
+							K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+						}
+					}
+					
+					//specifying random Gaussian process incorporates heart rate
+					for(i in 1:Nx){
+						for(j in 1:Ny){
+							K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*1))/square(rho2))*
+							exp(-square(x[i]-y[j])/2/square(rho3));
+						}
+					}
+						
+					Sigma = K1+K2;
+					return Sigma;
+				}
+	//function for posterior calculations
+	vector post_pred_rng(
+		real a1,
+		real a2,
+		real r1, 
+		real r2,
+		real r3,
+		real sn,
+		int No,
+		vector xo,
+		int Np, 
+		vector xp,
+		vector yobs){
+				matrix[No,No] Ko;
+				matrix[Np,Np] Kp;
+				matrix[No,Np] Kop;
+				matrix[Np,No] Ko_inv_t;
+				vector[Np] mu_p;
+				matrix[Np,Np] Tau;
+				matrix[Np,Np] L2;
+				vector[Np] yp;
+	
+	//--------------------------------------------------------------------
+	//Kernel Multiple GPs for observed data
+	Ko = main_GP(No, xo, No, xo, a1, a2, r1, r2, r3);
+	for(n in 1:No) Ko[n,n] += sn;
+		
+	//--------------------------------------------------------------------
+	//kernel for predicted data
+	Kp = main_GP(Np, xp, Np, xp,  a1, a2, r1, r2,  r3);
+	for(n in 1:Np) Kp[n,n] += sn;
+		
+	//--------------------------------------------------------------------
+	//kernel for observed and predicted cross 
+	Kop = main_GP(No, xo, Np, xp,  a1, a2, r1, r2, r3);
+	
+	//--------------------------------------------------------------------
+	//Algorithm 2.1 of Rassmussen and Williams... 
+	Ko_inv_t = Kop'/Ko;
+	mu_p = Ko_inv_t*yobs;
+	Tau=Kp-Ko_inv_t*Kop;
+	L2 = cholesky_decompose(Tau);
+	yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+	return yp;
+	}
+}
+
+data { 
+	int<lower=1> N1;
+	int<lower=1> N2;
+	vector[N1] X; 
+	vector[N1] Y;
+	vector[N2] Xp;
+}
+
+transformed data { 
+	vector[N1] mu;
+	for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+	real<lower=0> a1;
+	real<lower=0> a2;
+	real<lower=15> r1;		//Set after some preliminary modeling
+	real<lower=0> r2;
+	real<lower=0> r3;
+	real<lower=0> sigma_sq;
+}
+
+model{ 
+	matrix[N1,N1] Sigma;
+	matrix[N1,N1] L_S;
+	
+	//using GP function from above 
+	Sigma = main_GP(N1, X, N1, X, a1, a2, r1, r2, r3);
+	for(n in 1:N1) Sigma[n,n] += sigma_sq;
+	
+	L_S = cholesky_decompose(Sigma);
+	Y ~ multi_normal_cholesky(mu, L_S);
+	
+	//priors for parameters
+	a1 ~ normal(2.06,1.23);		//Taken from the first model
+	a2 ~ student_t(3,0,1);
+	//incorporate minimum and maximum distances - use invgamma
+	r1 ~ normal(22.68,9.005);	//Taken from the first model
+	r2 ~ student_t(3,0,1);
+	r3 ~ student_t(3,0,1);	
+	sigma_sq ~ normal(0,1);
+}
+
+generated quantities {
+	vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
+}
+
+```
+
+
+```{r, echo=F, eval=F}
+dat<-list(N1=N1, 
+          N2=N2, 
+          X=Year, 
+          Y=log10(Pass), 
+          Xp=year.fore2)
+
+pars.to.monitor<-c(paste0('a', 1:2), paste0('r', 1:3), 'Ypred')
+
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+fit.stan2<-stan(file='~/GitHub/main_site/Code_base/GP_complex2.stan',
+                data = dat,
+                warmup = 1000,
+                iter = 2000,
+                refresh=1000,
+                chains = 6,
+                pars = pars.to.monitor,
+                control = list(adapt_delta = .90,
+                               max_treedepth = 10)
+                )
+
+```
+
+This model took about 6 minutes to run. 
+
+Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until `Stan` and `rstan` can run using graphics chips' architecture (which has been buzzed about around the [Stan ether](http://discourse.mc-stan.org/t/stan-on-the-gpu/326)), model run time is going to be the biggest downside. Still, 23 minutes is not that long to wait if accuracy matters. 
+
+
+```{r}
+pars.to.monitor<-c(paste0('a', 1:2), paste0('r', 1:3), 'Ypred')
+summary(fit.stan2, pars=pars.to.monitor[-6])$summary
+traceplot(fit.stan2, pars=pars.to.monitor[-6])
+```
+
+```{r}
+Ypred<-10^colMeans(extract(fit.stan2, pars='Ypred')$Ypred)
+
+Ypred.DF<-extract(fit.stan2, pars='Ypred')$Ypred
+UB<-vector()
+LB<-vector()
+
+for(i in 1:N2){
+  UB[i]<-10^quantile(Ypred.DF[,i], .975)
+  LB[i]<-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig<-data.frame(Year=Year, Passengers=Pass)
+DF.fore2<-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1<-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1
+```
+
+The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).
 
 ```{r}
 (fit <- arima(log10(AirPassengers), c(0, 1, 1),
               seasonal = list(order = c(0, 1, 1), period = 12)))
 update(fit, method = "CSS")
-update(fit, x = window(log10(AirPassengers), start = 1954))
 pred <- predict(fit, n.ahead = 24)
 tl <- pred$pred - 1.96 * pred$se
 tu <- pred$pred + 1.96 * pred$se
-ts.plot(AirPassengers, 10^pred$pred, 10^tl, 10^tu, log = "y", lty = c(1, 2, 2, 2), col=c('black', 'black', 'red', 'red'))
+
+ARIMA.for<-data.frame(Year=year.fore2, Passengers=10^pred$pred, UB=10^as.numeric(tu), LB=10^as.numeric(tl))
+
+g1<-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill='blue')+
+  geom_ribbon(data=ARIMA.for, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill='red')+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers, color='blue'), lwd=1.25)+
+  geom_line(data=ARIMA.for, aes(x=Year, y=Passengers, color='red'), lwd=1.25)+
+  coord_cartesian(xlim=c(1960, 1963.25), ylim= c(275,1000))+
+  scale_color_manual(name='Forecast Model',
+                     values = c('blue', 'red'), 
+                     labels = c('Gaussian Process', 'ARIMA'))
+g1
 ```
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962 the ARIMA model is a little more bullish than the Gaussian process model on airline passengers. 
 
-The red dashed lines represent the upper and lower boundaries of the 95% confidence for the forecast. Note how shape that defines each period does not change as the forecast window increases, but the uncertainty about the values does grow. 
-
-
-```{r}
-(fit <- arima(log10(AirPassengers), c(0, 1, 1),
-              seasonal = list(order = c(0, 1, 1), period = 12)))
-update(fit, method = "CSS")
-update(fit, x = window(log10(AirPassengers), start = 1954))
-pred <- predict(fit, n.ahead = 72)
-tl <- pred$pred - 1.96 * pred$se
-tu <- pred$pred + 1.96 * pred$se
-ts.plot(AirPassengers, 10^pred$pred, 10^tl, 10^tu, log = "y", lty = c(1, 2, 2, 2), col=c('black', 'black', 'red', 'red'))
-```
-
-Of course we should expect that as predictions are being made farther out, uncertainty should increase. There are a number of shortcomings to this model, particularly when variability of the relative location of the peak is the primary outcome of interest. 
+Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work. 

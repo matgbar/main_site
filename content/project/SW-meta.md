@@ -28,4 +28,6 @@ caption = "Simulated Effect Sizes Plotted in Bivariate Space"
 
 +++
 
-[Under Construction]
+Are the terms anxious withdrawal, anxious solitude, behavioral inhibition, shyness-sensitivity, interchangeable? Are peer, parent, teacher, and self-perceptions of social withdrawal measuring the same thing? To date, researchers have relied on narrative arguments to build a case for or againts correspondence among the terms and measurement approaches used by developmental scientists interested in these and related constructs. I want to let the data speak for itself, and I am conducting a meta-analysis to do just that. 
+
+I conducted a preliminary analysis using data from 101 studies. I have since gone back and completed a more comprehensive record search and am in the process of updating my models. For a early preview of the results, check out the pre-print here on my [ResearchGate page](https://www.researchgate.net/publication/324746193_Psychosocial_Correlates_of_Social_Withdrawal_and_Its_Many_Variants_A_Quantitative_Synthesis_of_Research_Spanning_Four_Decades). 
