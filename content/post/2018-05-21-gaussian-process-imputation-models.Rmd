@@ -9,6 +9,9 @@ tags:
   - Bayesian
   - Stan
   - R
+  - Gaussian Process
+  - Forecasting
+  - Predictive Modeling
 header:
   caption: ''
   image: ''
@@ -39,10 +42,10 @@ The authoritative text on Gaussian process models was arguably published by [Ras
 
 It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following [page on the Stan GitHub repo](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations) provides a brief, but reasonable overview as a starting point.  
 
-First the data need a bit of prepping to be fed into a stan program. 
+First, the data need a bit of prepping to be fed into a Stan program. 
 
 ```{r}
-#Obtaining a numeric vector for time. Maintaining the units of measure at 1
+#Obtaining a numeric vector for time. Maintaining the units of measure at 1 = 1 year
 Year<-seq(1949, 1960+11/12, by=1/12)
 
 #converting time-series to a vector
@@ -56,13 +59,13 @@ year.fore2<-seq(1961, 1962+11/12, by=1/12)
 N2<-length(year.fore2)
 ```
 
-With the data prepped I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form: 
+With the data prepped, I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form: 
 
 $$k(t,t') = \sigma^2 exp\Big(-\frac{(t-t')^2}{2l_1^2}\Big)$$
 
-where $\sigma^2$ is the estimated variance accounted for by the function $k$ and $l$ is a length scale parameter that governs the decay rate. Smaller estimated values for $l$ indiciate a faster decay rate in the ability of the function account for the covariance between two time points as a function of time. 
+where $\sigma^2$ is the estimated variance accounted for by the function $k$ and $l$ is a length scale parameter that governs the decay rate. Smaller estimated values for $l$ indicate a faster decay rate in the covariance between two points as a function of time. 
 
-This model, along with its forecasting function are defined in Stan code below: 
+This model, along with its forecasting function are defined in `Stan` code below: 
 ```{stan, eval=F, output.var='none.txt'}
 functions{
 	//covariance function for main portion of the model
@@ -206,7 +209,7 @@ summary(fit.stan1, pars=pars.to.monitor[-4])$summary
 ```
 
 ... and traceplots demonstrate good mixing. 
-```{r, include=F}
+```{r}
 traceplot(fit.stan1, pars=c('a1', 'r1', 'sigma_sq'))
 ```
 
@@ -240,7 +243,7 @@ The new periodic covariance function is:
 
 $$k(t,t')=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t')*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t')^2}{2l_3^2}\Big)$$
 
-The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the Stan code.
+The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the `Stan` code.
 
 ```{stan, eval=F, output.var='nope.txt'}
 functions{
@@ -399,7 +402,7 @@ fit.stan2<-stan(file='~/GitHub/main_site/Code_base/GP_complex2.stan',
 
 This model took about 6 minutes to run. 
 
-Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until `Stan` and `rstan` can run using graphics chips' architecture (which has been buzzed about around the [Stan ether](http://discourse.mc-stan.org/t/stan-on-the-gpu/326)), model run time is going to be the biggest downside. Still, 23 minutes is not that long to wait if accuracy matters. 
+Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until `Stan` and `rstan` can run using graphics chips' architecture (which has been buzzed about around the [Stan ether](http://discourse.mc-stan.org/t/stan-on-the-gpu/326)), model run time is going to be the biggest downside. Still, 6 minutes is not that long to wait if the model performs well. 
 
 
 ```{r}
@@ -455,6 +458,6 @@ g1<-ggplot()+
                      labels = c('Gaussian Process', 'ARIMA'))
 g1
 ```
-The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962 the ARIMA model is a little more bullish than the Gaussian process model on airline passengers. 
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers. 
 
-Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work. 
+Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly "it depends." For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work. 

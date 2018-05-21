@@ -346,8 +346,8 @@ plot(AirPassengers)</code></pre>
 <p>A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few <code>R</code> and <code>Python</code> packages that allow researchers to use this modeling approach. I have become something of a <a href="http://mc-stan.org/">Stan</a> convert recently, but it is not the only option out there.</p>
 <p>The authoritative text on Gaussian process models was arguably published by <a href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Rasumssen &amp; Williams in 2006</a>, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp; Williams (2006) text as a starting point.</p>
 <p>It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">page on the Stan GitHub repo</a> provides a brief, but reasonable overview as a starting point.</p>
-<p>First the data need a bit of prepping to be fed into a stan program.</p>
-<pre class="r"><code>#Obtaining a numeric vector for time. Maintaining the units of measure at 1
+<p>First, the data need a bit of prepping to be fed into a Stan program.</p>
+<pre class="r"><code>#Obtaining a numeric vector for time. Maintaining the units of measure at 1 = 1 year
 Year&lt;-seq(1949, 1960+11/12, by=1/12)
 
 #converting time-series to a vector
@@ -359,10 +359,10 @@ N1&lt;-length(Year)
 #specifying 2-year prediction window. 
 year.fore2&lt;-seq(1961, 1962+11/12, by=1/12)
 N2&lt;-length(year.fore2)</code></pre>
-<p>With the data prepped I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:</p>
+<p>With the data prepped, I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:</p>
 <p><span class="math display">\[k(t,t&#39;) = \sigma^2 exp\Big(-\frac{(t-t&#39;)^2}{2l_1^2}\Big)\]</span></p>
-<p>where <span class="math inline">\(\sigma^2\)</span> is the estimated variance accounted for by the function <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is a length scale parameter that governs the decay rate. Smaller estimated values for <span class="math inline">\(l\)</span> indiciate a faster decay rate in the ability of the function account for the covariance between two time points as a function of time.</p>
-<p>This model, along with its forecasting function are defined in Stan code below:</p>
+<p>where <span class="math inline">\(\sigma^2\)</span> is the estimated variance accounted for by the function <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is a length scale parameter that governs the decay rate. Smaller estimated values for <span class="math inline">\(l\)</span> indicate a faster decay rate in the covariance between two points as a function of time.</p>
+<p>This model, along with its forecasting function are defined in <code>Stan</code> code below:</p>
 <pre class="stan"><code>functions{
     //covariance function for main portion of the model
     matrix main_GP(
@@ -489,6 +489,8 @@ summary(fit.stan1, pars=pars.to.monitor[-4])$summary</code></pre>
 ## r1       21.367822936 28.012894270 42.692355288 5164.270 0.9996089
 ## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208</code></pre>
 <p>… and traceplots demonstrate good mixing.</p>
+<pre class="r"><code>traceplot(fit.stan1, pars=c(&#39;a1&#39;, &#39;r1&#39;, &#39;sigma_sq&#39;))</code></pre>
+<p><img src="/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>So the real question is how did the model do?</p>
 <pre class="r"><code>Ypred&lt;-10^colMeans(extract(fit.stan1, pars=&#39;Ypred&#39;)$Ypred)
 
@@ -514,7 +516,7 @@ g1</code></pre>
 <p>Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.</p>
 <p>The new periodic covariance function is:</p>
 <p><span class="math display">\[k(t,t&#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&#39;)^2}{2l_3^2}\Big)\]</span></p>
-<p>The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the Stan code.</p>
+<p>The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the <code>Stan</code> code.</p>
 <pre class="stan"><code>functions{
     //covariance function for main portion of the model
     matrix main_GP(
@@ -644,7 +646,7 @@ generated quantities {
 }
 </code></pre>
 <p>This model took about 6 minutes to run.</p>
-<p>Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until <code>Stan</code> and <code>rstan</code> can run using graphics chips’ architecture (which has been buzzed about around the <a href="http://discourse.mc-stan.org/t/stan-on-the-gpu/326">Stan ether</a>), model run time is going to be the biggest downside. Still, 23 minutes is not that long to wait if accuracy matters.</p>
+<p>Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until <code>Stan</code> and <code>rstan</code> can run using graphics chips’ architecture (which has been buzzed about around the <a href="http://discourse.mc-stan.org/t/stan-on-the-gpu/326">Stan ether</a>), model run time is going to be the biggest downside. Still, 6 minutes is not that long to wait if the model performs well.</p>
 <pre class="r"><code>pars.to.monitor&lt;-c(paste0(&#39;a&#39;, 1:2), paste0(&#39;r&#39;, 1:3), &#39;Ypred&#39;)
 summary(fit.stan2, pars=pars.to.monitor[-6])$summary</code></pre>
 <pre><code>##           mean      se_mean          sd        2.5%          25%
@@ -726,8 +728,8 @@ g1&lt;-ggplot()+
                      labels = c(&#39;Gaussian Process&#39;, &#39;ARIMA&#39;))
 g1</code></pre>
 <p><img src="/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" />
-The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962 the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
-<p>Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.</p>
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
+<p>Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.</p>
 
     </div>
 
@@ -741,6 +743,12 @@ The two models make fairly similar predictions for 1961 (shaded regions represen
   <a class="btn btn-primary btn-outline" href="/tags/stan/">Stan</a>
   
   <a class="btn btn-primary btn-outline" href="/tags/r/">R</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/gaussian-process/">Gaussian Process</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/forecasting/">Forecasting</a>
+  
+  <a class="btn btn-primary btn-outline" href="/tags/predictive-modeling/">Predictive Modeling</a>
   
 </div>
 
