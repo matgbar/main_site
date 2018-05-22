@@ -13,7 +13,7 @@ image_preview = "SW_meta-thumb.jpg"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["Meta-Analysis"]
+tags = ["Meta-Analysis", "Individual-Risk"]
 
 # Optional external URL for project (replaces project detail page).
 #external_link = ""

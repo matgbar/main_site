@@ -13,7 +13,7 @@ image_preview = "Prosoc_Moderated_by_Age.jpeg"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["Meta-Analysis"]
+tags = ["Meta-Analysis", "Individual-Risk"]
 
 # Optional external URL for project (replaces project detail page).
 #external_link = ""
@@ -24,7 +24,7 @@ math = true
 # Optional featured image (relative to `static/img/` folder).
 [header]
 image = "Affective vs. Cognitive Empathy.jpeg"
-caption = "Summary of Effects incl"
+caption = "Summary of Effects Included in Meta-Analysis"
 
 +++
 

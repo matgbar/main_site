@@ -33,8 +33,8 @@ filter_default = 0
   tag = "*"
 
 [[filter]]
-  name = "IBI VizEdit"
-  tag = ".IBI-VizEdit"
+  name = "Individual Risk"
+  tag = ".Individual-Risk"
 
 [[filter]]
   name = "Methods"
