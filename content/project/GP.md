@@ -6,7 +6,7 @@ date = 2016-04-27T00:00:00
 title = "Gaussian Process Imputation Models"
 
 # Project summary to display on homepage.
-summary = "A brand-new, open-source, RShiny application for processing and editing heart rate data"
+summary = "Understanding New Approaches to Old Imputations Problems"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
 image_preview = "GP_results.png"
