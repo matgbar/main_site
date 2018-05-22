@@ -424,8 +424,7 @@ g1&amp;lt;-ggplot()+
                      values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
                      labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
-The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt; The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
 &lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
 </description>
     </item>
@@ -505,6 +504,22 @@ The two models make fairly similar predictions for 1961 (shaded regions represen
 &lt;p&gt;Please cite as:&lt;/p&gt;
 
 &lt;p&gt;Barstead, M. G. (2018). IBI VizEdit v.1.2-beta: An RShiny Application [Computer software]. University of Maryland. doi: 10.5281/zenodo.1209474&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Individual Risk for Anxiety and Depression</title>
+      <link>/project/dn_research/</link>
+      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
+      
+      <guid>/project/dn_research/</guid>
+      <description>&lt;p&gt;Cell phones are ubiquitous on college campuses, annoying many an instructor who looks back at a classroom filled with young adults enamored with their black mirrors (and yes I am still very impressed with the underlying meaning of the hit Netflix series&amp;rsquo; title). As others have in the past &lt;a href=&#34;https://psyc.umd.edu/facultyprofile/Shackman/Alexander&#34; target=&#34;_blank&#34;&gt;Dr. Alex Shackman&lt;/a&gt;, sought to use the constant presence of cell phones to better understand the daily lives of individuals.&lt;/p&gt;
+
+&lt;p&gt;Using college students as subjects is often decried as laziness and viewed somewhat skeptically as investigators reaching out to a subject pool that is readily available to them. There is definitely some merit to these concerns; however, in the present line of work, university students are an ideal group to study. For one, the transition to college can be stressful, particularly for individuals at risk for mental health disorders such as anxiety and depression. Furthermore, understanding the risks in this population is timely as we continue to see &lt;a href=&#34;https://adaa.org/living-with-anxiety/college-students#&#34; target=&#34;_blank&#34;&gt;increases in mental health problems&lt;/a&gt; among this group. Finally, young adulthood is a period when many will experience their first major bouts of anxiety and depression (though of course many will struggle with symptoms earlier in adolescence as well) and may therefore represent an important period to intervene, preventing subsequent maladaptive cascades related to mood disorders.&lt;/p&gt;
+
+&lt;p&gt;Successfully negotiating the college transition has important consequences for future outcomes including gaining full-time employment, marriage, and individuals&amp;rsquo; long-term mental and physical health. As part of a broader program of research evaluating the neurobiological factors that predict social, emotional, and academic success during this period Dr. Shackman designed a series of studies using ecological momentary assessments. The jargony term boils down to participants receiving multiple daily surveys (delivered via cell phone) querying about their recent activities, their social surroundings, and their current mood.&lt;/p&gt;
+
+&lt;p&gt;The central premise motivating this work is that if we can better understand the daily lives of individuals at risk for the development of psychopathology, we can gain some insight about how to prevent it. We have published some &lt;a href=&#34;https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/&#34; target=&#34;_blank&#34;&gt;initial work&lt;/a&gt; with these data demonstrating that interacting with close others may be especially beneficial for college students at increased risk for internalizing disorders. We are currently in the process of replicating and extending this work, examining more nuanced features of momentary affective responses to daily events.&lt;/p&gt;
 </description>
     </item>
     

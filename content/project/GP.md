@@ -6,7 +6,7 @@ date = 2016-04-27T00:00:00
 title = "Gaussian Process Imputation Models"
 
 # Project summary to display on homepage.
-summary = "Understanding New Approaches to Old Imputations Problems"
+summary = "Understanding new approaches to old imputations problems"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
 image_preview = "GP_results.png"
@@ -23,8 +23,8 @@ math = false
 
 # Optional featured image (relative to `static/img/` folder).
 [header]
-#image = "IBI-Screen.PNG"
-#caption = "IBI VizEdit's Primary Editing Interface"
+#image = ""
+#caption = ""
 
 +++
 
