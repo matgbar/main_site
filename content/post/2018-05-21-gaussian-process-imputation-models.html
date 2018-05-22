@@ -44,7 +44,7 @@ N2&lt;-length(year.fore2)</code></pre>
 <p>With the data prepped, I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:</p>
 <p><span class="math display">\[k(t,t&#39;) = \sigma^2 exp\Big(-\frac{(t-t&#39;)^2}{2l_1^2}\Big)\]</span></p>
 <p>where <span class="math inline">\(\sigma^2\)</span> is the estimated variance accounted for by the function <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is a length scale parameter that governs the decay rate. Smaller estimated values for <span class="math inline">\(l\)</span> indicate a faster decay rate in the covariance between two points as a function of time.</p>
-<p>This model, along with its forecasting function are defined in <code>Stan</code> code below:</p>
+<p>This model, along with its forecasting function are defined in <code>Stan</code> code below (Adapted from <a href="http://natelemoine.com/fast-gaussian-process-models-in-stan/">Nate Lemoine’s code</a>):</p>
 <pre class="stan"><code>functions{
     //covariance function for main portion of the model
     matrix main_GP(
