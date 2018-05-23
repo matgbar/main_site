@@ -4,7 +4,7 @@
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
 baseurl = "https://mgb-research.netlify.com/"
-relativeurls = false
+#relativeurls = false
 
 # Title of your site
 title = "Matt Barstead's Research, Blog, & Repository"

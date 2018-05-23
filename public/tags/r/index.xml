@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/tags/r/</link>
+    <link>https://mgb-research.netlify.com/tags/r/</link>
     <description>Recent content in R on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/post/gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gaussian-process-imputation-models/</guid>
+      <guid>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</guid>
       <description>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</description>
     </item>
     
