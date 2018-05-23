@@ -2,6 +2,7 @@
 title: Gaussian Process Imputation/Forecast Models
 author: Matthew Barstead
 date: '2018-05-21'
+baseurl: "https://mgb-research.netlify.com/"
 slug: gaussian-process-imputation-models
 categories:
   - Modeling
