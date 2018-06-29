@@ -76,7 +76,7 @@ b_10<--0.5
   }
 
 
-DF.temp<-data.frame(Y, ID, Time.vals)
+DF.temp<-data.frame(pred.y, ID, Time.vals)
 DF.temp$ID<-as.factor(DF.temp$ID) #a little easier to work with a grouping factor here. 
 g1<-ggplot(data=DF.temp)+
   geom_line(aes(x=Time.vals, y=pred.y, group = ID, color=ID), alpha=.25)+
@@ -92,7 +92,7 @@ Once I have sufficiently tuned up my population model, the next trick is to simu
 
 My goal with the analysis presented below is to assess the power of the model to detect significant negative linear change under the conditions I expect to find if I had the ability to resample the population a near-infinite number of times. 
 
-```{r pwr_sim, eval=F}
+```{r pwr_sim, eval=FALSE}
 #The libraries used
 library(lme4)
 library(merTools)
@@ -184,7 +184,7 @@ for(s in 1:n.sims){
 ```
 
 Next I combine and plot the results to get a sense of what sort of power I am going to have at my fixed sample size of 120. 
-```{r pow_sum, eval=F}
+```{r pow_sum, eval=FALSE}
 dat_small<-data.frame(Effect=rep('Small', n.sims), 
                          b00_Est=b00_Est, 
                          b00_se=b00_boot_se,

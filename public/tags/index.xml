@@ -2,94 +2,121 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/tags/</link>
+    <link>https://mgb-research.netlify.com/tags/</link>
     <description>Recent content in Tags on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bayesian</title>
-      <link>/tags/bayesian/</link>
+      <link>https://mgb-research.netlify.com/tags/bayesian/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/bayesian/</guid>
+      <guid>https://mgb-research.netlify.com/tags/bayesian/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Forecasting</title>
-      <link>/tags/forecasting/</link>
+      <link>https://mgb-research.netlify.com/tags/forecasting/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/forecasting/</guid>
+      <guid>https://mgb-research.netlify.com/tags/forecasting/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Gaussian Process</title>
-      <link>/tags/gaussian-process/</link>
+      <link>https://mgb-research.netlify.com/tags/gaussian-process/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/gaussian-process/</guid>
+      <guid>https://mgb-research.netlify.com/tags/gaussian-process/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Individual-Risk</title>
-      <link>/tags/individual-risk/</link>
+      <link>https://mgb-research.netlify.com/tags/individual-risk/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/tags/individual-risk/</guid>
+      <guid>https://mgb-research.netlify.com/tags/individual-risk/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Meta-Analysis</title>
-      <link>/tags/meta-analysis/</link>
+      <link>https://mgb-research.netlify.com/tags/meta-analysis/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/tags/meta-analysis/</guid>
+      <guid>https://mgb-research.netlify.com/tags/meta-analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Methods</title>
-      <link>/tags/methods/</link>
+      <link>https://mgb-research.netlify.com/tags/methods/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/tags/methods/</guid>
+      <guid>https://mgb-research.netlify.com/tags/methods/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mixed-Effects</title>
+      <link>https://mgb-research.netlify.com/tags/mixed-effects/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgb-research.netlify.com/tags/mixed-effects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Power</title>
+      <link>https://mgb-research.netlify.com/tags/power/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgb-research.netlify.com/tags/power/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Predictive Modeling</title>
-      <link>/tags/predictive-modeling/</link>
+      <link>https://mgb-research.netlify.com/tags/predictive-modeling/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/predictive-modeling/</guid>
+      <guid>https://mgb-research.netlify.com/tags/predictive-modeling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
-      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      <link>https://mgb-research.netlify.com/tags/r/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r/</guid>
+      <guid>https://mgb-research.netlify.com/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Simulation</title>
+      <link>https://mgb-research.netlify.com/tags/simulation/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgb-research.netlify.com/tags/simulation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Stan</title>
-      <link>/tags/stan/</link>
+      <link>https://mgb-research.netlify.com/tags/stan/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/tags/stan/</guid>
+      <guid>https://mgb-research.netlify.com/tags/stan/</guid>
       <description></description>
     </item>
     
