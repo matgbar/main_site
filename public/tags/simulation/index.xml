@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Simulation on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/tags/simulation/</link>
+    <link>https://mgb-research.netlify.com/tags/simulation/</link>
     <description>Recent content in Simulation on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/simulation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/simulation/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
-      <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. The power analysis was for a grant application. Having already collected data on the sample, the goal was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that which was not part of the original proposal (we added collection of a set of variables part way through the data collection period).</description>
+      <guid>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</description>
     </item>
     
   </channel>
