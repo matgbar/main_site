@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Power on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/tags/power/</link>
+    <link>/tags/power/</link>
     <description>Recent content in Power on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/tags/power/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/power/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
-      <description>Recently I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. The power analysis was needed as part of a grant application. Having already collected data on the sample, the goal was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question - which was not part of the original proposal (we added collection of a set of variables part way through the data collection period).</description>
+      <guid>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. The power analysis was for a grant application. Having already collected data on the sample, the goal was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that which was not part of the original proposal (we added collection of a set of variables part way through the data collection period).</description>
     </item>
     
   </channel>

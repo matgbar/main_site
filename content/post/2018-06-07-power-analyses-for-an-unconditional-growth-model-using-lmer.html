@@ -19,19 +19,62 @@ header:
 
 
 
-<p>Recently I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. The power analysis was needed as part of a grant application. Having already collected data on the sample, the goal was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (<span class="math inline">\(\alpha = .05\)</span>) for a secondary research question - which was not part of the original proposal (we added collection of a set of variables part way through the data collection period).</p>
-<p>We collected measures of these variables at three time points approximately evenly spaced apart, and for the purposes of these analyses, I decided to treat the data as if it were collected at precisely the same equally spaced interval for all participants. Though this is not technically true of the data, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual distance in time between assessments is entirely possible and potentially important depending on your measures and design.</p>
-<p><strong>The Problem:</strong> In short, I need a reasonable population model for my data. To create a reasonable population model, I need to think through what I know about the treatment effects and the population targeted for recruitment. For instance, we know that data were obatined from a selected sample of children, who were eligible to participate if their scores on a <a href="https://onlinelibrary.wiley.com/doi/full/10.1046/j.1467-8624.2003.00645.x">measure of early childhood anxiety risk</a> exceeded the 85th percentile.
-This provides useful information when considering prior information about the sample. I should expect members of the population to be drawn from a population elevated in anxiety and other, related, symptoms of emotional and/or behavioral maladaptation. For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-<em>T</em>-score (i.e., <span class="math inline">\(\mu \approx 50, \sigma \approx 10\)</span>), that is approximately normally distributed in the population. In a Bayesian sense, I am setting a prior; namely that I believe the obtained sample was randomly drawn from a population of children with elevated scores on a measure of maladaptation.</p>
+<p>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. The power analysis was for a grant application. Having already collected data on the sample, the goal was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (<span class="math inline">\(\alpha = .05\)</span>) for a secondary research question that which was not part of the original proposal (we added collection of a set of variables part way through the data collection period).</p>
+<p>We collected measures of these variables at three time points approximately evenly spaced apart, and for the purposes of these analyses, I decided to treat the data as if it were collected at precisely the same equally spaced interval for all participants. Though this is not technically true of the data, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important depending on your measures and design.</p>
+<p><strong>The Problem:</strong> In short, I need a reasonable population model for my data. To create a reasonable population model, I need to think through what I know about the treatment effects and the population targeted for recruitment. For instance, we know that data were obatined from a selected sample of children, who were eligible to participate if their scores on a <a href="https://onlinelibrary.wiley.com/doi/full/10.1046/j.1467-8624.2003.00645.x">measure of early childhood anxiety risk</a> exceeded the 85th percentile.</p>
+<p>This knowledge provides useful information when considering population priors. For instance, I should expect the obtained sample to be drawn from a population elevated in anxiety and other, related, symptoms of emotional and/or behavioral maladaptation. For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-<em>T</em>-score (i.e., <span class="math inline">\(\mu \approx 50, \sigma \approx 10\)</span>), that is approximately normally distributed in the population (note that I am referring to a clinical <em>T</em>-score not a <em>t</em> distribution). In a Bayesian sense, I am setting a prior; namely that I believe the obtained sample was randomly drawn from a population of children with elevated scores on a measure of maladaptation.</p>
 <p>So far I have only settled on a starting point (i.e., the intercept), but I have a number of parameters I need to consider specfying, and most importantly a number of parameters about which I am somewhat uncertain. To see what other parameters I need to consider, it is perhaps useful to review the simple linear growth model (specified below using <a href="https://books.google.com/books/about/Hierarchical_Linear_Models.html?id=uyCV0CNGDLQC&amp;printsec=frontcover&amp;source=kp_read_button#v=onepage&amp;q&amp;f=false">Raudenbush &amp; Bryk’s</a> notation).</p>
-<p><strong>Level 1 Equation:</strong></p>
-<p><span class="math display">\[
+<p><strong>Level 1 Equation:</strong><br />
+<span class="math display">\[
 Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 \]</span></p>
-<p>The level 1 equation includes the coefficient <span class="math inline">\(\pi_{0i}\)</span> which represents the average predicted value for <span class="math inline">\(Y\)</span> when <span class="math inline">\(Time=0\)</span>. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses Time will coded such that <span class="math inline">\(T_1 = 0, T_2 = 1,\)</span> and <span class="math inline">\(T_3 = 2\)</span>. With this specification, the intercept (<span class="math inline">\(\pi_{0i}\)</span>}) represents the predicted value for a generic outcome (<span class="math inline">\(Y\)</span>) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below).</p>
-<p>Average change over time is represented in the model by <span class="math inline">\(\pi_{1i}\)</span>. Any one case, however, likely deviates to some degree from the average model of change. These deviations are sometimes referred to as random effects. In the context of a growth model, they represent the degree to an individual case’s slope (or intercept) deviates from the estimated average.</p>
-<p>As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 subjects measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that a small group will experience positive change - I want to make sure that my priors allow for this possibility in practice.</p>
-<p>Plotting an initial sample is an important step in this process as it allows me to make sure that the simulated cases reasonably reflect plausible values of change. Are starting values reasonable and appropriate? What about individual variability around each fitted model of change? Are any changes too drastic to be reasonable? Do any values wander out of the boundaries of allowable scores? I can go back and adjust the amount of error variance or the fixed parameters to bring the resulting data more in line with my expectations as needed.</p>
+<p>The level 1 equation includes the coefficient <span class="math inline">\(\pi_{0i}\)</span> which represents the average predicted value for <span class="math inline">\(Y\)</span> when <span class="math inline">\(Time=0\)</span>. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses <span class="math inline">\(Time\)</span> will coded such that <span class="math inline">\(T_1 = 0, T_2 = 1,\)</span> and <span class="math inline">\(T_3 = 2\)</span>. With this specification, the intercept (<span class="math inline">\(\pi_{0i}\)</span>}) represents the predicted value for an outcome (<span class="math inline">\(Y\)</span>) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below).</p>
+<p>Average change over time is represented in the model by <span class="math inline">\(\pi_{1i}\)</span>. Any one case, however, likely deviates to some degree from the average model of change. These deviations are sometimes referred to as random effects. In the context of a growth model, they represent the degree to an individual case’s slope (or intercept) deviates from the estimated average. Using Raudenbush &amp; Bryk’s (2002) notation, these random effects are sometimes defined below where the <span class="math inline">\(\beta\)</span>’s represent the fixed effects and the <span class="math inline">\(r\)</span>’s represent individual deviations from the estimated fixed effects.</p>
+<p><strong>Level 2 Equations:</strong><br />
+<span class="math display">\[
+\pi_{0i} = \beta_{00} + r_{0i}
+\]</span> <span class="math display">\[
+\pi_{1i} = \beta_{10} + r_{1i}
+\]</span></p>
+<p>As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.</p>
+<pre class="r"><code>set.seed(5499)
+
+N&lt;-10
+Time.vals&lt;-rep(0:4, times=N)  #5 time points
+ID&lt;-rep(1:N, each=5)
+pred.y&lt;-vector()
+Time&lt;-0:4
+
+#Hyperparamters - fixed effects for slope and intercept
+b_00&lt;-50
+b_10&lt;--0.5
+  for(n in 1:N){
+    #Level 1 error
+    e_ti&lt;-rnorm(5, 0, 3)
+    
+    #Level 2 sources of error
+    r_0i&lt;-rnorm(1, 0, 5)
+    r_1i&lt;-rnorm(1, 0, 1.5)
+    
+    #Level 1 coefficients 
+    pi_0i&lt;-b_00+r_0i
+    pi_1i&lt;-b_10+r_1i
+    
+    #Outcome incoporating level 1 error
+    pred.y&lt;-c(pred.y, pi_0i+pi_1i*Time+e_ti)
+  }
+
+
+DF.temp&lt;-data.frame(pred.y, ID, Time.vals)
+DF.temp$ID&lt;-as.factor(DF.temp$ID) #a little easier to work with a grouping factor here. 
+g1&lt;-ggplot(data=DF.temp)+
+  geom_line(aes(x=Time.vals, y=pred.y, group = ID, color=ID), lty=&#39;dashed&#39;, alpha=.75)+
+  geom_smooth(aes(x=Time.vals, y=pred.y, group=ID, color=ID), method = &#39;lm&#39;, se=F)
+g1</code></pre>
+<p><img src="/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png" width="672" /></p>
+<p>Looking at the plot above, let’s see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both. Though true, this guidance encourages thinking at the level of the overall effect, and as a result loses sight of sources of individual variability. Graphing your data forces you to think about the multilevel nature of the data, and ensures you are setting up a model that reasonably accounts for expected average change as well as individual variation around the change.</p>
+<p>We always stress plotting your real data, well same goes for the made-up stuff too.</p>
+<p>I</p>
 <p>Once I have sufficiently tuned up my population model, the next trick is to simulate a sufficiently large number of data sets to estimate power for my proposed model of change. Briefly, I will note that I am not really addressing the possibility that there is a meaningful correlation between individual random effects. I’ll save that for a future post.</p>
 <p><strong>The Solution:</strong> Now that I have something of a framework created I can apply it to my problem in a more direct fashion. I should state at the outset that this simulation is going to take some time. That is because I have chosen to evaluate significance using coverage of <code>0</code> by a 95% boostrapped confidence interval. I tend to prefer this over say a p-value generated by the <code>lmer()</code> function using the {lmerTest} library. This may be overkill, but it is the way I would typically assess whether coefficients in the model meaningfully differ from 0, so it is the approach I will be using to assess power as well.</p>
 <p>My goal with the analysis presented below is to assess the power of the model to detect significant negative linear change under the conditions I expect to find if I had the ability to resample the population a near-infinite number of times.</p>
@@ -69,7 +112,7 @@ sd.y&lt;-vector()
 CohensD&lt;-vector()
 #------------------------------------------------------------------------------------
 #Select number of simulations &amp; Sample size
-n.sims&lt;-10000   #number of total simulations to run - recommend &gt; 5,000
+n.sims&lt;-2500  #number of total simulations to run - recommend &gt; 5,000
 N&lt;-120          #Sample size 
 
 for(s in 1:n.sims){
@@ -123,29 +166,39 @@ for(s in 1:n.sims){
   b10_var&lt;-c(b10_var, as.numeric(VarCorr(fit.ucgm)$ID[2,2]))
   print(paste(s, &#39;out of&#39;, n.sims, &#39;simulations&#39;))
 }</code></pre>
-<p>Next I combine and plot the results to get a sense of what sort of power I am going to have at my fixed sample size of 120.</p>
-<pre class="r"><code>dat_small&lt;-data.frame(Effect=rep(&#39;Small&#39;, n.sims), 
-                         b00_Est=b00_Est, 
-                         b00_se=b00_boot_se,
-                         b10_Est=b10_Est, 
-                         b10_se=b10_boot_se, 
-                         b00_var=b00_var, 
-                         b10_var=b10_var, 
-                         b00_sig=b00_sig, 
-                         b10_sig=b10_sig, 
-                         sd.y=sd.y, 
-                         CohensD=CohensD,
-                         ICC=ICC.vals)
+<p>Next, I combine the output and plot the results to get a sense the distributions of the different parameter estimates returned by the simulation.</p>
+<pre class="r"><code>dat_small&lt;-data.frame(b00_Est=b00_Est[1:2500], 
+                      b00_se=b00_boot_se[1:2500],
+                      b00_var=b00_var[1:2500], 
+                      b00_boot_LB = b10_boot_LB[1:2500],
+                      b00_boot_UB = b10_boot_UB[1:2500],
+                      b10_Est=b10_Est[1:2500], 
+                      b10_se=b10_boot_se[1:2500], 
+                      b10_var=b10_var[1:2500],
+                      b10_boot_LB = b10_boot_LB[1:2500], 
+                      b10_boot_UB = b10_boot_UB[1:2500],
+                      sd.y=sd.y[1:2500], 
+                      CohensD=CohensD[1:2500],
+                      ICC=ICC.vals[1:2500])
 
-mean(dat_small$sd.y)
-mean(dat_small$CohensD)
-mean(dat_small$ICC.vals)
-dat_small$b10_pow.sig&lt;-pt(abs(dat_small$b10_Est/dat_small$b10_se), lower.tail = F, df=N-1)*2
-length(dat_small$b10_pow.sig[dat_small$b10_pow.sig&lt;.05])/n.sims
-
-g1&lt;-ggplot(data=DF, aes(x=Time, y=Y, group=ID))+
-  geom_line(alpha=.5)
-g1
-
-bayesplot::mcmc_areas(dat_small[,6:7], prob=.95)+
-  ggtitle(&#39;Variances for Fixed Effects Estimates - Small Effect Model&#39;)</code></pre>
+bayesplot::mcmc_dens(dat_small[,c(1:2,6:7)])+
+  ggtitle(&#39;Variances of Slope Estimates - Small Effect Model&#39;)</code></pre>
+<p><img src="/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/pow_sum-1.png" width="672" /></p>
+<p>What about some of the basic properties of the data? Was the average linear effect relatively small (which was the goal of this analysis after all)? What about the intra-class correlations returned by each data set; were they reasonable given the design and expectations based on similar data sets?</p>
+<pre class="r"><code>bayesplot::mcmc_dens(dat_small[,12:13])+
+  ggtitle(&#39;Model Diagnostics - Small Effect Model&#39;)</code></pre>
+<p><img src="/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/plot_diag-1.png" width="672" /></p>
+<p>I would say yes to both. The maximum a posteriori estimate (MAPE) for standardized average change is:</p>
+<pre class="r"><code>median(dat_small$CohensD)</code></pre>
+<pre><code>## [1] -0.3826507</code></pre>
+<pre class="r"><code>quantile(dat_small$CohensD, c(.025, .975))</code></pre>
+<pre><code>##       2.5%      97.5% 
+## -0.5780296 -0.1765590</code></pre>
+<p>which to me seems entirely reasonable to classify as a “small” effect power analysis, with the added bonus that you can clearly see this approach reflects uncertainty about the magnitude of change observed in any one sample.</p>
+<p>Getting down to it though the question is how to assess power. Assuming I was interested in determining my statistical power, using bootstrapped 95%-CIs generated for each data set analyzed, to detect significant, negative linear change I can find the answer as follows:</p>
+<pre class="r"><code>sig&lt;-ifelse(dat_small$b10_boot_UB&lt;0, 1, 0)
+mean(sig)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>max(dat_small$b10_boot_UB)</code></pre>
+<pre><code>## [1] -0.6303266</code></pre>
+<p>Note that the maximum upper boundary for a 95%-bootstrapped CI was negative - which is why I get a probability of 1 using the <code>mean(sig)</code> call. If interested I could use this information to start working my way down iteratively to a minimum effect size detectable at a rate of 80%. Or… Instead of doing all of that work, I could create a program to do it, one that writes its code more efficiently, and one that does a little more parallelizing. All for a future post.</p>

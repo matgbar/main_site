@@ -156,10 +156,10 @@ generated quantities {
 ## [1] &quot;GenuineIntel&quot;
 ## 
 ## $model_name
-## [1] &quot;Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz&quot;
+## [1] &quot;Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz&quot;
 ## 
 ## $no_of_cores
-## [1] 12</code></pre>
+## [1] 4</code></pre>
 <p>A quick view of summary stats good convergence of estimates across the 6 chains.</p>
 <pre class="r"><code>pars.to.monitor&lt;-c(&#39;a1&#39;,&#39;r1&#39;,&#39;sigma_sq&#39;, &#39;Ypred&#39;)
 summary(fit.stan1, pars=pars.to.monitor[-4])$summary</code></pre>
@@ -410,6 +410,5 @@ g1&lt;-ggplot()+
                      values = c(&#39;blue&#39;, &#39;red&#39;), 
                      labels = c(&#39;Gaussian Process&#39;, &#39;ARIMA&#39;))
 g1</code></pre>
-<p><img src="/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" />
-The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
+<p><img src="/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" /> The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
 <p>Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.</p>

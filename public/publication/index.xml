@@ -2,49 +2,67 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Publications on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/publication/</link>
+    <link>/publication/</link>
     <description>Recent content in Publications on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Sun, 01 Jan 2017 00:00:00 -0500</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/publication/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/publication/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Generalization of an early intervention for inhibited preschoolers to the classroom setting</title>
+      <link>/publication/barstead_etal_2018_jcfs/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/barstead_etal_2018_jcfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Withdrawing from the peer group</title>
+      <link>/publication/rubin_etal_2018_handbook/</link>
+      <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
+      
+      <guid>/publication/rubin_etal_2018_handbook/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
-      <link>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</link>
+      <link>/publication/shackman_etal_2017_emotion/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</guid>
+      <guid>/publication/shackman_etal_2017_emotion/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Interpersonal predictors of stress generation: Is there a super factor?</title>
-      <link>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</link>
+      <link>/publication/shih_etal_2017_bjop/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</guid>
+      <guid>/publication/shih_etal_2017_bjop/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</title>
-      <link>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</link>
+      <link>/publication/smith_etal_2017_joya/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</guid>
+      <guid>/publication/smith_etal_2017_joya/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support</title>
-      <link>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</link>
+      <link>/publication/barstead_etal_2017_jora/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</guid>
+      <guid>/publication/barstead_etal_2017_jora/</guid>
       <description></description>
     </item>
     
