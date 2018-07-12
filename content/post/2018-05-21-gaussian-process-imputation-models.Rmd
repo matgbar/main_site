@@ -19,7 +19,7 @@ header:
 ---
 
 ```{r, echo=F, message=F}
-load('~/GitHub/main_site/data/GP_data.RData')
+load('~/GitHub/main_site/DFs/GP_data.RData')
 library(rstan)
 library(bayesplot)
 options(mc.cores = parallel::detectCores())

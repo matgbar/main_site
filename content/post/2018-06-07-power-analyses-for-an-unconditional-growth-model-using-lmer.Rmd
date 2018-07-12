@@ -18,7 +18,7 @@ header:
 ---
 
 ```{r setup, echo=F, message=F}
-load('~/GitHub/main_site/data/Power_data.RData')
+load('~/GitHub/main_site/DFs/Power_data.RData')
 knitr::opts_chunk$set(warning = F, message = F)
 library(lme4)
 library(merTools)

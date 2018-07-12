@@ -12,11 +12,12 @@ tags:
 - Plotting
 - Structural Equation Modeling
 - lavaan
-categories: Data Vizualization
+categories:
+- Data Vizualization
 ---
 
 ```{r setup, include=FALSE}
-load('~/GitHub/main_site/data/Interaction_plot_data.RData')
+load('~/GitHub/main_site/DFs/Interaction_plot_data.RData')
 ```
 
 Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents' appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships. 
@@ -109,17 +110,19 @@ b1
 UB<-b1+se*qnorm(.975)
 LB<-b1+se*qnorm(.025)
 
+DF.temp<-data.frame(b1, sd1, UB, LB)
+
+library(ggplot2)
+g1<-ggplot(DF.temp)+
+  geom_ribbon(aes(ymin=LB, ymax=UB, x=sd1), alpha=.7)+
+  geom_line(aes(y=b1, x=sd1))+
+  geom_hline(aes(yintercept=0), lty='dashed')+
+  xlab('Standardized Maternal Support Scores')+
+  ylab('Simple Slope for Shyness-DN Association')+
+  ggtitle("Shyness Predicting Dispositional Negativity as a Function of Maternal Support")
+
 #jpeg("SHYxMS predicting DN.jpeg", res=300, width = 9, height=6, units = "in")
-plot(b1~sd1, type="n", ylim=c(-2, 2), xlim=c(-2, 2), 
-     xlab="Standardized Maternal Support", ylab="Shyness Slope", 
-     main="Relation betweeen Shyness and Dispositional Negativity 
-     as a Function of Maternal Support", 
-     cex.lab=1.5, cex.main=1.9)
-polygon(c(rev(sd1), sd1), c(rev(UB), LB), col="grey80", border=NA)
-lines(b1~sd1, type="l", lwd=4)
-lines(UB~sd1, lty="dashed", col="red", lwd=2)
-lines(LB~sd1, lty="dashed", col="red", lwd=2)
-abline(a=0, b=0, lty="dotted", col="black", lwd=3)
+g1
 #dev.off()
 ```
 

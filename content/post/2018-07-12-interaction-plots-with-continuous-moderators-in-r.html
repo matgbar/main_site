@@ -12,7 +12,8 @@ tags:
 - Plotting
 - Structural Equation Modeling
 - lavaan
-categories: Data Vizualization
+categories:
+- Data Vizualization
 ---
 
 
@@ -257,17 +258,19 @@ b1</code></pre>
 <pre class="r"><code>UB&lt;-b1+se*qnorm(.975)
 LB&lt;-b1+se*qnorm(.025)
 
+DF.temp&lt;-data.frame(b1, sd1, UB, LB)
+
+library(ggplot2)
+g1&lt;-ggplot(DF.temp)+
+  geom_ribbon(aes(ymin=LB, ymax=UB, x=sd1), alpha=.7)+
+  geom_line(aes(y=b1, x=sd1))+
+  geom_hline(aes(yintercept=0), lty=&#39;dashed&#39;)+
+  xlab(&#39;Standardized Maternal Support Scores&#39;)+
+  ylab(&#39;Simple Slope for Shyness-DN Association&#39;)+
+  ggtitle(&quot;Shyness Predicting Dispositional Negativity as a Function of Maternal Support&quot;)
+
 #jpeg(&quot;SHYxMS predicting DN.jpeg&quot;, res=300, width = 9, height=6, units = &quot;in&quot;)
-plot(b1~sd1, type=&quot;n&quot;, ylim=c(-2, 2), xlim=c(-2, 2), 
-     xlab=&quot;Standardized Maternal Support&quot;, ylab=&quot;Shyness Slope&quot;, 
-     main=&quot;Relation betweeen Shyness and Dispositional Negativity 
-     as a Function of Maternal Support&quot;, 
-     cex.lab=1.5, cex.main=1.9)
-polygon(c(rev(sd1), sd1), c(rev(UB), LB), col=&quot;grey80&quot;, border=NA)
-lines(b1~sd1, type=&quot;l&quot;, lwd=4)
-lines(UB~sd1, lty=&quot;dashed&quot;, col=&quot;red&quot;, lwd=2)
-lines(LB~sd1, lty=&quot;dashed&quot;, col=&quot;red&quot;, lwd=2)
-abline(a=0, b=0, lty=&quot;dotted&quot;, col=&quot;black&quot;, lwd=3)</code></pre>
+g1</code></pre>
 <p><img src="/post/2018-07-12-interaction-plots-with-continuous-moderators-in-r_files/figure-html/graph2-1.png" width="672" /></p>
 <pre class="r"><code>#dev.off()</code></pre>
 <p>And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.</p>

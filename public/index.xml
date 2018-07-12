@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Matt Barstead&#39;s Research, Blog, &amp; Repository on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/</link>
+    <link>/</link>
     <description>Recent content in Matt Barstead&#39;s Research, Blog, &amp; Repository on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,20 +12,21 @@
     
     <item>
       <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</link>
+      <link>/post/interaction-plots-with-continuous-moderators-in-r/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</guid>
+      <guid>/post/interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>&lt;p&gt;Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.&lt;/p&gt;
 &lt;p&gt;It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper &lt;a href=&#34;https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/&#34;&gt;here&lt;/a&gt;. These data come from the &lt;em&gt;Friendship Project&lt;/em&gt; and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose.&lt;/p&gt;
-&lt;p&gt;To understand the data and models here is some additional information:&lt;/p&gt;
+&lt;p&gt;To understand the data and models, here is some additional information:&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;&lt;p&gt;I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;I had grade 9 measures of anxiety and depression&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The analyses were based on a saturated path model in &lt;code&gt;lavaan&lt;/code&gt; - an R package for creating and testing structural equation models.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Using &lt;code&gt;lavaan&lt;/code&gt; (&lt;strong&gt;la&lt;/strong&gt;tent &lt;strong&gt;va&lt;/strong&gt;riable &lt;strong&gt;an&lt;/strong&gt;alysis), I created three latent variables that represented outcomes of interest in grade 9: anxiety, depression, and general negative affect (I refer to this as dispositional negativity in the manuscript). To start, here is the model:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mod8&amp;lt;-&amp;#39;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(lavaan)
+mod8&amp;lt;-&amp;#39;
 int=~cdi9ngmd+cdi9inpr+cdi9inef+cdi9anhe+cdi9ngse+masc9tr+masc9sma+masc9per+masc9ac+masc9hr+masc9pf
 dep=~cdi9ngmd+cdi9inpr+cdi9inef+cdi9anhe+cdi9ngse
 anx=~masc9tr+masc9sma+masc9per+masc9ac+masc9hr+masc9pf
@@ -52,83 +53,253 @@ cdi9inef ~~  masc9ac
 &amp;#39;
 
 fit8&amp;lt;-sem(mod8, data=dat, std.lv = T, estimator = &amp;#39;MLR&amp;#39;)
-summary(fit8, fit.measures=T)&lt;/code&gt;&lt;/pre&gt;
+summary(fit8, fit.measures=T, standardized=T, rsquare=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## lavaan (0.6-1) converged normally after  68 iterations
+## 
+##                                                   Used       Total
+##   Number of observations                           188         330
+## 
+##   Estimator                                         ML      Robust
+##   Model Fit Test Statistic                     226.515     221.684
+##   Degrees of freedom                               122         122
+##   P-value (Chi-square)                           0.000       0.000
+##   Scaling correction factor                                  1.022
+##     for the Yuan-Bentler correction (Mplus variant)
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic             1392.959    1307.712
+##   Degrees of freedom                               176         176
+##   P-value                                        0.000       0.000
+## 
+## User model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.914       0.912
+##   Tucker-Lewis Index (TLI)                       0.876       0.873
+## 
+##   Robust Comparative Fit Index (CFI)                            NA
+##   Robust Tucker-Lewis Index (TLI)                               NA
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -3975.960   -3975.960
+##   Loglikelihood unrestricted model (H1)      -3862.702   -3862.702
+## 
+##   Number of free parameters                         65          65
+##   Akaike (AIC)                                8081.919    8081.919
+##   Bayesian (BIC)                              8292.288    8292.288
+##   Sample-size adjusted Bayesian (BIC)         8086.402    8086.402
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.068       0.066
+##   90 Percent Confidence Interval          0.054  0.081       0.052  0.079
+##   P-value RMSEA &amp;lt;= 0.05                          0.020       0.030
+## 
+##   Robust RMSEA                                                  NA
+##   90 Percent Confidence Interval                                NA     NA
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.049       0.049
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Observed
+##   Observed information based on                Hessian
+##   Standard Errors                   Robust.huber.white
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&amp;gt;|z|)   Std.lv  Std.all
+##   int =~                                                                
+##     cdi9ngmd          0.730    0.200    3.641    0.000    0.888    0.441
+##     cdi9inpr          0.203    0.088    2.318    0.020    0.247    0.290
+##     cdi9inef          0.490    0.166    2.944    0.003    0.597    0.380
+##     cdi9anhe          1.237    0.207    5.985    0.000    1.506    0.637
+##     cdi9ngse          0.577    0.134    4.308    0.000    0.702    0.470
+##     masc9tr           1.573    0.248    6.345    0.000    1.915    0.650
+##     masc9sma          1.447    0.218    6.645    0.000    1.761    0.679
+##     masc9per         -0.733    0.299   -2.454    0.014   -0.892   -0.368
+##     masc9ac          -0.644    0.373   -1.728    0.084   -0.784   -0.237
+##     masc9hr           1.117    0.309    3.616    0.000    1.360    0.386
+##     masc9pf           0.837    0.252    3.323    0.001    1.019    0.381
+##   dep =~                                                                
+##     cdi9ngmd          1.180    0.183    6.445    0.000    1.298    0.645
+##     cdi9inpr          0.396    0.064    6.151    0.000    0.436    0.511
+##     cdi9inef          0.789    0.146    5.402    0.000    0.868    0.553
+##     cdi9anhe          1.185    0.184    6.442    0.000    1.304    0.551
+##     cdi9ngse          0.971    0.141    6.876    0.000    1.068    0.714
+##   anx =~                                                                
+##     masc9tr           0.999    0.290    3.449    0.001    1.248    0.423
+##     masc9sma          0.749    0.245    3.052    0.002    0.935    0.361
+##     masc9per          1.381    0.241    5.730    0.000    1.725    0.711
+##     masc9ac           2.168    0.276    7.861    0.000    2.708    0.817
+##     masc9hr           1.296    0.262    4.955    0.000    1.618    0.459
+##     masc9pf           1.129    0.208    5.431    0.000    1.410    0.527
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&amp;gt;|z|)   Std.lv  Std.all
+##   int ~                                                                 
+##     ysr8anxd          0.121    0.042    2.919    0.004    0.100    0.368
+##     sex1              0.071    0.254    0.280    0.779    0.058    0.029
+##     c.pfs            -0.097    0.163   -0.593    0.553   -0.080   -0.064
+##     c.shy             0.408    0.183    2.227    0.026    0.335    0.213
+##     c.mospt          -0.337    0.186   -1.814    0.070   -0.277   -0.153
+##     mopstXpfs        -0.219    0.211   -1.039    0.299   -0.180   -0.089
+##     mopstXshy        -0.437    0.279   -1.568    0.117   -0.359   -0.128
+##     c.faspt           0.041    0.165    0.251    0.802    0.034    0.023
+##     c.frspt          -0.176    0.210   -0.838    0.402   -0.145   -0.081
+##   dep ~                                                                 
+##     ysr8anxd          0.037    0.039    0.952    0.341    0.034    0.126
+##     sex1              0.085    0.221    0.386    0.700    0.077    0.039
+##     c.pfs            -0.039    0.136   -0.286    0.775   -0.035   -0.028
+##     c.shy            -0.186    0.180   -1.035    0.301   -0.169   -0.107
+##     c.mospt          -0.212    0.182   -1.168    0.243   -0.193   -0.107
+##     mopstXpfs         0.211    0.250    0.843    0.399    0.191    0.094
+##     mopstXshy        -0.178    0.255   -0.698    0.485   -0.162   -0.058
+##     c.faspt          -0.219    0.124   -1.768    0.077   -0.199   -0.137
+##     c.frspt           0.029    0.193    0.148    0.883    0.026    0.014
+##     frsptXpfs        -0.414    0.213   -1.944    0.052   -0.377   -0.257
+##     frsptXshy         0.847    0.268    3.159    0.002    0.770    0.282
+##   anx ~                                                                 
+##     ysr8anxd          0.122    0.034    3.562    0.000    0.098    0.362
+##     sex1              0.391    0.220    1.780    0.075    0.313    0.156
+##     c.pfs             0.321    0.137    2.348    0.019    0.257    0.207
+##     c.shy             0.411    0.188    2.187    0.029    0.329    0.209
+##     c.mospt           0.172    0.191    0.901    0.368    0.138    0.076
+##     mopstXpfs         0.110    0.217    0.508    0.612    0.088    0.043
+##     mopstXshy        -0.112    0.269   -0.418    0.676   -0.090   -0.032
+##     c.faspt           0.102    0.142    0.716    0.474    0.082    0.056
+##     c.frspt           0.108    0.191    0.567    0.570    0.087    0.048
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&amp;gt;|z|)   Std.lv  Std.all
+##  .int ~~                                                                
+##    .dep               0.000                               0.000    0.000
+##    .anx               0.000                               0.000    0.000
+##  .dep ~~                                                                
+##    .anx               0.000                               0.000    0.000
+##  .masc9hr ~~                                                            
+##    .masc9pf           1.917    0.512    3.746    0.000    1.917    0.392
+##  .cdi9inpr ~~                                                           
+##    .masc9per         -0.351    0.129   -2.723    0.006   -0.351   -0.305
+##  .cdi9inef ~~                                                           
+##    .masc9ac          -0.311    0.219   -1.417    0.156   -0.311   -0.135
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&amp;gt;|z|)   Std.lv  Std.all
+##    .cdi9ngmd          1.493    0.270    5.524    0.000    1.493    0.369
+##    .cdi9inpr          0.469    0.097    4.822    0.000    0.469    0.644
+##    .cdi9inef          1.320    0.187    7.075    0.000    1.320    0.535
+##    .cdi9anhe          1.483    0.265    5.592    0.000    1.483    0.265
+##    .cdi9ngse          0.547    0.123    4.450    0.000    0.547    0.245
+##    .masc9tr           2.346    0.392    5.985    0.000    2.346    0.270
+##    .masc9sma          1.977    0.373    5.293    0.000    1.977    0.294
+##    .masc9per          2.831    0.714    3.965    0.000    2.831    0.481
+##    .masc9ac           4.023    1.250    3.217    0.001    4.023    0.367
+##    .masc9hr           6.933    0.895    7.747    0.000    6.933    0.558
+##    .masc9pf           3.458    0.471    7.345    0.000    3.458    0.483
+##    .int               1.000                               0.675    0.675
+##    .dep               1.000                               0.826    0.826
+##    .anx               1.000                               0.641    0.641
+## 
+## R-Square:
+##                    Estimate
+##     cdi9ngmd          0.631
+##     cdi9inpr          0.356
+##     cdi9inef          0.465
+##     cdi9anhe          0.735
+##     cdi9ngse          0.755
+##     masc9tr           0.730
+##     masc9sma          0.706
+##     masc9per          0.519
+##     masc9ac           0.633
+##     masc9hr           0.442
+##     masc9pf           0.517
+##     int               0.325
+##     dep               0.174
+##     anx               0.359&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now there is a whole script file of assumption checking and model evaluation that goes along with this (that is how I got to model 8). I have just included the final model here for simplicity’s sake.&lt;/p&gt;
-&lt;p&gt;One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 &lt;em&gt;SD&lt;/em&gt;. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.&lt;/p&gt;
+&lt;p&gt;One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 &lt;em&gt;SD&lt;/em&gt;. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically, we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.&lt;/p&gt;
 &lt;p&gt;Here is where my gripe starts to eek in. Why are we probing simple slopes at static (often arbitrary) values? When our moderators are continuous it seems to me the better approach is to evaluate and interpret the effect of the moderator on the association between &lt;code&gt;X&lt;/code&gt; and &lt;code&gt;Y&lt;/code&gt; along the entire continuum of plausible moderator values.&lt;/p&gt;
-&lt;p&gt;To do this, I need to extract some information from my model first. I’ll need the point estimates and their variances invovled in defining the moderation:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;parm&amp;lt;-as.data.frame(parameterEstimates(fit))
+&lt;p&gt;To do this, I need to extract some information from my model first. I’ll need the point estimates and their variances invovled in defining the moderation (pro-tip, I am using the &lt;code&gt;parm[,1:3]&lt;/code&gt; line to figure out the correct numbering for the parameters in the model):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;parm&amp;lt;-as.data.frame(parameterEstimates(fit8))
 parm[,1:3]
 
-COV&amp;lt;-vcov(fit)
+COV&amp;lt;-vcov(fit8)
 COVd&amp;lt;-as.data.frame(COV)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so now that I have the information, I can grab the relevant values as follows. (You don’t need to grab things from the model using R objects - you can type in values manually here instead should you wish).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b1&amp;lt;-parm[26,4]#slope for SHY
-b3&amp;lt;-parm[28,4]#slope for SHY x Maternal Support
+b3&amp;lt;-parm[29,4]#slope for SHY x Maternal Support
 s11&amp;lt;-COV[26,26]#variance for SHY
-s13&amp;lt;-COV[26,28]#covariance for SHY and SHY x Maternal Support
-s33&amp;lt;-COV[28,28]#variance for SHY x MS Parameter&lt;/code&gt;&lt;/pre&gt;
+s13&amp;lt;-COV[26,29]#covariance for SHY and SHY x Maternal Support
+s33&amp;lt;-COV[29,29]#variance for SHY x MS Parameter&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;I then need to create a vector of values that I am going to use for plotting. Since the long-standing convention has been to use standardized values of the moderator for probing simple slopes, I keep with that tradition in the code below.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sd1&amp;lt;-c(-2, -1.75, -1.5, -1.25, -1, -.75, -.5, -.25, 0,
        .25,.5,.75,1,1.25,1.5,1.75,2)
 
-sd2&amp;lt;-sd1*sd(data$c.mospt)
+sd2&amp;lt;-sd1*sd(dat$c.mospt)
 
 #Formula for standard error of simple slopes can be found in most regression textbooks 
 se&amp;lt;-sqrt(s11+2*(sd2)*s13+(sd2)*(sd2)*s33)
-se
+se&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] 0.3605632 0.3259049 0.2928709 0.2620761 0.2344049 0.2110890 0.1937077
+##  [8] 0.1839510 0.1830423 0.1911077 0.2071014 0.2293710 0.2562856 0.2865392
+## [15] 0.3191838 0.3535578 0.3892032&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;b1&amp;lt;-b1+b3*(sd2)
 
-b1&amp;lt;-b1+b3*(sd2)
-
-b1
-UB&amp;lt;-b1+se*qnorm(.975)
+b1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1]  1.94764891  1.75514194  1.56263497  1.37012800  1.17762103
+##  [6]  0.98511406  0.79260710  0.60010013  0.40759316  0.21508619
+## [11]  0.02257922 -0.16992775 -0.36243472 -0.55494169 -0.74744865
+## [16] -0.93995562 -1.13246259&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;UB&amp;lt;-b1+se*qnorm(.975)
 LB&amp;lt;-b1+se*qnorm(.025)
 
-jpeg(&amp;quot;SHYxMS predicting DN.jpeg&amp;quot;, res=300, width = 9, height=6, units = &amp;quot;in&amp;quot;)
-plot(b1~sd1, type=&amp;quot;n&amp;quot;, ylim=c(-2, 2), xlim=c(-2, 2), 
-     xlab=&amp;quot;Standardized Maternal Support&amp;quot;, ylab=&amp;quot;Shyness Slope&amp;quot;, 
-     main=&amp;quot;Relation betweeen Shyness and Dispositional Negativity 
-     as a Function of Maternal Support&amp;quot;, 
-     cex.lab=1.5, cex.main=1.9)
-polygon(c(rev(sd1), sd1), c(rev(UB), LB), col=&amp;quot;grey80&amp;quot;, border=NA)
-lines(b1~sd1, type=&amp;quot;l&amp;quot;, lwd=4)
-lines(UB~sd1, lty=&amp;quot;dashed&amp;quot;, col=&amp;quot;red&amp;quot;, lwd=2)
-lines(LB~sd1, lty=&amp;quot;dashed&amp;quot;, col=&amp;quot;red&amp;quot;, lwd=2)
-abline(a=0, b=0, lty=&amp;quot;dotted&amp;quot;, col=&amp;quot;black&amp;quot;, lwd=3)
-dev.off()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band.&lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;img/Barstead_etal_Jora2017_fig4.jpg&#34; alt=&#34;My picture&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;My picture&lt;/p&gt;
-&lt;/div&gt;
+DF.temp&amp;lt;-data.frame(b1, sd1, UB, LB)
+
+library(ggplot2)
+g1&amp;lt;-ggplot(DF.temp)+
+  geom_ribbon(aes(ymin=LB, ymax=UB, x=sd1), alpha=.7)+
+  geom_line(aes(y=b1, x=sd1))+
+  geom_hline(aes(yintercept=0), lty=&amp;#39;dashed&amp;#39;)+
+  xlab(&amp;#39;Standardized Maternal Support Scores&amp;#39;)+
+  ylab(&amp;#39;Simple Slope for Shyness-DN Association&amp;#39;)+
+  ggtitle(&amp;quot;Shyness Predicting Dispositional Negativity as a Function of Maternal Support&amp;quot;)
+
+#jpeg(&amp;quot;SHYxMS predicting DN.jpeg&amp;quot;, res=300, width = 9, height=6, units = &amp;quot;in&amp;quot;)
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-07-12-interaction-plots-with-continuous-moderators-in-r_files/figure-html/graph2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.&lt;/p&gt;
 &lt;p&gt;Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Generalization of an early intervention for inhibited preschoolers to the classroom setting</title>
-      <link>https://mgb-research.netlify.com/publication/barstead_etal_2018_jcfs/</link>
+      <link>/publication/barstead_etal_2018_jcfs/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/barstead_etal_2018_jcfs/</guid>
+      <guid>/publication/barstead_etal_2018_jcfs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Withdrawing from the peer group</title>
-      <link>https://mgb-research.netlify.com/publication/rubin_etal_2018_handbook/</link>
+      <link>/publication/rubin_etal_2018_handbook/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/rubin_etal_2018_handbook/</guid>
+      <guid>/publication/rubin_etal_2018_handbook/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <guid>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
       <description>&lt;p&gt;Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (&lt;span class=&#34;math inline&#34;&gt;\(\alpha = .05\)&lt;/span&gt;) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).&lt;/p&gt;
 &lt;p&gt;We collected measures of these variables at three time points, approximately evenly spaced apart, and, for the purposes of these analyses, I decided to treat the data as if they were collected at precisely the same equally spaced interval for all participants. Though this is not technically true, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important depending on your measures and design.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The Problem:&lt;/strong&gt; In short, I need a reasonable population model for my data. Ideally, this model is grounded in both theory and empirical findings.&lt;/p&gt;
@@ -184,7 +355,7 @@ g1&amp;lt;-ggplot(data=DF.temp)+
   geom_line(aes(x=Time.vals, y=pred.y, group = ID, color=ID), lty=&amp;#39;dashed&amp;#39;, alpha=.75)+
   geom_smooth(aes(x=Time.vals, y=pred.y, group=ID, color=ID), method = &amp;#39;lm&amp;#39;, se=F)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the plot above, let’s see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. Of course, I would need to inspect a larger number of randomly generated datasets (according to my population model) to know for sure. I recommend plotting 10-15 randomly generated data sets and ensuring that the average change and individual heterogeneity of change approximate your expectations.&lt;/p&gt;
 &lt;p&gt;Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both.&lt;/p&gt;
 &lt;p&gt;Though true, this framework encourages thinking at the level of the overall effect. We often turn to meta-analyses or other reviews that have attempt to describe or define the population-level effect. Less often do these sorts of reviews speak to individual variability from mean estimates.&lt;/p&gt;
@@ -301,11 +472,11 @@ for(s in 1:n.sims){
 #Selecting only certain columns related to fixed effects 
 bayesplot::mcmc_dens(dat_small[,c(1:2,6:7)])+
   ggtitle(&amp;#39;Variances of Slope Estimates - Small Effect Model&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/pow_sum-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/pow_sum-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;What about some of the basic properties of the data? Was the average linear effect relatively small (which was the goal of this analysis after all)? What about the intra-class correlations returned by each data set; were they reasonable given the design and expectations based on similar data sets?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bayesplot::mcmc_dens(dat_small[,12:13])+
   ggtitle(&amp;#39;Model Diagnostics - Small Effect Model&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/plot_diag-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/plot_diag-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;I would say yes to both. The maximum a posteriori estimate (MAPE) for standardized average change is:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median(dat_small$CohensD)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.3826507&lt;/code&gt;&lt;/pre&gt;
@@ -327,15 +498,15 @@ mean(sig)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</link>
+      <link>/post/gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</guid>
+      <guid>/post/gaussian-process-imputation-models/</guid>
       <description>&lt;p&gt;A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.&lt;/p&gt;
 &lt;p&gt;The models below will make use of the preloaded &lt;code&gt;AirPassengers&lt;/code&gt; data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;#39;AirPassengers&amp;#39;)
 plot(AirPassengers)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data.&lt;/p&gt;
 &lt;p&gt;A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;Python&lt;/code&gt; packages that allow researchers to use this modeling approach. I have become something of a &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; convert recently, but it is not the only option out there.&lt;/p&gt;
 &lt;p&gt;The authoritative text on Gaussian process models was arguably published by &lt;a href=&#34;http://www.gaussianprocess.org/gpml/chapters/RW.pdf&#34;&gt;Rasumssen &amp;amp; Williams in 2006&lt;/a&gt;, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp;amp; Williams (2006) text as a starting point.&lt;/p&gt;
@@ -484,7 +655,7 @@ summary(fit.stan1, pars=pars.to.monitor[-4])$summary&lt;/code&gt;&lt;/pre&gt;
 ## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;… and traceplots demonstrate good mixing.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;traceplot(fit.stan1, pars=c(&amp;#39;a1&amp;#39;, &amp;#39;r1&amp;#39;, &amp;#39;sigma_sq&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So the real question is how did the model do?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan1, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
 
@@ -506,7 +677,7 @@ g1&amp;lt;-ggplot()+
   geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
   geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.&lt;/p&gt;
 &lt;p&gt;The new periodic covariance function is:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[k(t,t&amp;#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&amp;#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&amp;#39;)^2}{2l_3^2}\Big)\]&lt;/span&gt;&lt;/p&gt;
@@ -656,7 +827,7 @@ summary(fit.stan2, pars=pars.to.monitor[-6])$summary&lt;/code&gt;&lt;/pre&gt;
 ## r2  0.700328139  0.7850996  1.00378065 2720.9169 1.000556
 ## r3 19.220095144 25.4484115 45.91201691  232.5309 1.026833&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;traceplot(fit.stan2, pars=pars.to.monitor[-6])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
 
 Ypred.DF&amp;lt;-extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred
@@ -677,7 +848,7 @@ g1&amp;lt;-ggplot()+
   geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
   geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;(fit &amp;lt;- arima(log10(AirPassengers), c(0, 1, 1),
               seasonal = list(order = c(0, 1, 1), period = 12)))&lt;/code&gt;&lt;/pre&gt;
@@ -721,63 +892,63 @@ g1&amp;lt;-ggplot()+
                      values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
                      labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt; The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt; The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
 &lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
-      <link>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</link>
+      <link>/publication/shackman_etal_2017_emotion/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</guid>
+      <guid>/publication/shackman_etal_2017_emotion/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Interpersonal predictors of stress generation: Is there a super factor?</title>
-      <link>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</link>
+      <link>/publication/shih_etal_2017_bjop/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</guid>
+      <guid>/publication/shih_etal_2017_bjop/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</title>
-      <link>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</link>
+      <link>/publication/smith_etal_2017_joya/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</guid>
+      <guid>/publication/smith_etal_2017_joya/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support</title>
-      <link>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</link>
+      <link>/publication/barstead_etal_2017_jora/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</guid>
+      <guid>/publication/barstead_etal_2017_jora/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Callous Unemotional Meta-Analysis</title>
-      <link>https://mgb-research.netlify.com/project/cu-meta/</link>
+      <link>/project/cu-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/cu-meta/</guid>
+      <guid>/project/cu-meta/</guid>
       <description>&lt;p&gt;&lt;strong&gt;Abstract:&lt;/strong&gt; Callous-unemotional (CU) traits are central to our understanding of antisocial behavior, which is harmful, financially costly to society, and hard to treat. Theoretical and diagnostic models define CU traits based on a lack of empathy, guilt, and prosociality. However, there has been no comprehensive quantitative synthesis of results to support this claim, nor any examination of whether associations differ by age, gender, sample type, or informant. Given its centrality to our understanding and treatment of antisocial behavior, the time is ripe for a critical examination of the meaning of the CU traits construct, including associations with its purported underlying features of low empathy, guilt, and prosociality, and potential demographic and methodological moderators of these associations. To address this gap in the literature, we conducted a systematic search of the literature on CU traits and identified 82 effect sizes from 51 studies (&lt;em&gt;N&lt;/em&gt; = 30,475) that quantified the magnitude of the association between CU traits and either empathy, prosociality, or guilt. The results revealed statistically significant, modest-to-moderate negative correlations between CU traits and empathy (&lt;em&gt;k&lt;/em&gt; = 25, $\rho$  = -.21), CU traits and guilt (&lt;em&gt;k&lt;/em&gt; = 3, $\rho$ = -.18), and CU traits and prosociality (&lt;em&gt;k&lt;/em&gt; = 16, $\rho$ = -.28). The magnitude of the negative association between CU traits and prosociality was stronger among younger children. In addition, the negative correlations between CU traits and both prosociality and cognitive empathy were stronger when the informant was a parent or teacher. We discuss how these findings can inform theory, conceptualization, and measurement of CU traits across the lifespan, as well as implications for models of antisocial behavior and moral development.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation Models</title>
-      <link>https://mgb-research.netlify.com/project/gp/</link>
+      <link>/project/gp/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/gp/</guid>
+      <guid>/project/gp/</guid>
       <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34; target=&#34;_blank&#34;&gt;blog post&lt;/a&gt; on the topic for more information and a toy forecasting problem.&lt;/p&gt;
 
 &lt;p&gt;I am currently working on a study examining the effectiveness of these models in imputing heart rate data that has been severely corrupted by artifact - to the point that there is not &amp;ldquo;enough&amp;rdquo; true signal remaining to do much of anything with.&lt;/p&gt;
@@ -786,10 +957,10 @@ g1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>IBI VizEdit</title>
-      <link>https://mgb-research.netlify.com/project/ibi-vizedit/</link>
+      <link>/project/ibi-vizedit/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/ibi-vizedit/</guid>
+      <guid>/project/ibi-vizedit/</guid>
       <description>&lt;p&gt;IBI VizEdit is a program built using RShiny. It is designed to assist in the manual editing of inter-beat interval files that are derived from photoplethysmogram (PPG) recordings. Unlike the electrocardiogram signal (EKG or ECG), PPG signals are characterized by a slow-moving waveform, which presents a different set of challenges when the true signal becomes corrupted by motion artefacts and other sources of noise.&lt;/p&gt;
 
 &lt;p&gt;Though increasingly popular due to their ease of use, most heart rate editing software that exists to date was designed and optimized for the detection and editing of inter-beat interval files derived from ECG signals. IBI VizEdit provides a new suite of tools for researchers who find themselves working with messy PPG files.&lt;/p&gt;
@@ -806,10 +977,10 @@ g1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Individual Risk for Anxiety and Depression</title>
-      <link>https://mgb-research.netlify.com/project/dn_research/</link>
+      <link>/project/dn_research/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/dn_research/</guid>
+      <guid>/project/dn_research/</guid>
       <description>&lt;p&gt;Cell phones are ubiquitous on college campuses, annoying many an instructor who looks back at a classroom filled with young adults enamored with their black mirrors (and yes I am still very impressed with the underlying meaning of the hit Netflix series&amp;rsquo; title). As others have in the past &lt;a href=&#34;https://psyc.umd.edu/facultyprofile/Shackman/Alexander&#34; target=&#34;_blank&#34;&gt;Dr. Alex Shackman&lt;/a&gt;, sought to use the constant presence of cell phones to better understand the daily lives of individuals.&lt;/p&gt;
 
 &lt;p&gt;Using college students as subjects is often decried as laziness and viewed somewhat skeptically as investigators reaching out to a subject pool that is readily available to them. There is definitely some merit to these concerns; however, in the present line of work, university students are an ideal group to study. For one, the transition to college can be stressful, particularly for individuals at risk for mental health disorders such as anxiety and depression. Furthermore, understanding the risks in this population is timely as we continue to see &lt;a href=&#34;https://adaa.org/living-with-anxiety/college-students#&#34; target=&#34;_blank&#34;&gt;increases in mental health problems&lt;/a&gt; among this group. Finally, young adulthood is a period when many will experience their first major bouts of anxiety and depression (though of course many will struggle with symptoms earlier in adolescence as well) and may therefore represent an important period to intervene, preventing subsequent maladaptive cascades related to mood disorders.&lt;/p&gt;
@@ -822,10 +993,10 @@ g1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Preventing Anxiety in Early Childhood</title>
-      <link>https://mgb-research.netlify.com/project/turtlemd/</link>
+      <link>/project/turtlemd/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/turtlemd/</guid>
+      <guid>/project/turtlemd/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://education.umd.edu/directory/kenneth-rubin&#34; target=&#34;_blank&#34;&gt;Dr. Ken Rubin&lt;/a&gt; has spent the majority of his career studying the causes, correlates, and consequences of childhood anxiety and social withdrawal. As a result of an ongoing collaboration with &lt;a href=&#34;https://psyc.umd.edu/facultyprofile/Chronis-Tuscano/Andrea&#34; target=&#34;_blank&#34;&gt;Dr. Andrea Chronis-Tuscano&lt;/a&gt;, a clinical psychology professor and researcher, and in consultation with &lt;a href=&#34;https://carleton.ca/psychology/people/robert-coplan/&#34; target=&#34;_blank&#34;&gt;Dr. Rob Coplan&lt;/a&gt;, this career has recently been translated into the creation of an early intervention program. The intervention, named the &lt;em&gt;Turtle Program&lt;/em&gt;, simultaneously targets maladaptive parenting behaviors known to maintain and exacerbate childhood anxiety in addition to anxious and inhibited children&amp;rsquo;s social skills and emotion regulation deficits.&lt;/p&gt;
 
 &lt;p&gt;Pilot work comparing the treatment against a waitlist control group demonstrated promising results insofar as &lt;a href=&#34;http://doi.apa.org/getdoi.cfm?doi=10.1037/a0039043&#34; target=&#34;_blank&#34;&gt;reducing anxiety symptoms&lt;/a&gt; and &lt;a href=&#34;https://mgb-research.netlify.com/publication/barstead_etal_2018_jcfs/&#34; target=&#34;_blank&#34;&gt;improving adaptive social behaviors&lt;/a&gt;. As of June 2018, we have completed initial data collection for the follow-up investigation comparing the &lt;em&gt;Turtle Program&lt;/em&gt; against an established parent psychoeducation intervention for shy and inhibited children (known as &lt;a href=&#34;https://coollittlekids.org.au/login&#34; target=&#34;_blank&#34;&gt;Cool Little Kids&lt;/a&gt;). While we continued to gather information about children and parents a year after participating in one of the two interventions, we have just started to compile our initial findings.&lt;/p&gt;
@@ -834,10 +1005,10 @@ g1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Social Withdrawal Meta-Analysis</title>
-      <link>https://mgb-research.netlify.com/project/sw-meta/</link>
+      <link>/project/sw-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/project/sw-meta/</guid>
+      <guid>/project/sw-meta/</guid>
       <description>&lt;p&gt;Are the terms anxious withdrawal, anxious solitude, behavioral inhibition, shyness-sensitivity, interchangeable? Are peer, parent, teacher, and self-perceptions of social withdrawal measuring the same thing? To date, researchers have relied on narrative arguments to build a case for or againts correspondence among the terms and measurement approaches used by developmental scientists interested in these and related constructs. I want to let the data speak for itself, and I am conducting a meta-analysis to do just that.&lt;/p&gt;
 
 &lt;p&gt;I conducted a preliminary analysis using data from 101 studies. I have since gone back and completed a more comprehensive record search and am in the process of updating my models. For a early preview of the results, check out the pre-print here on my &lt;a href=&#34;https://www.researchgate.net/publication/324746193_Psychosocial_Correlates_of_Social_Withdrawal_and_Its_Many_Variants_A_Quantitative_Synthesis_of_Research_Spanning_Four_Decades&#34; target=&#34;_blank&#34;&gt;ResearchGate page&lt;/a&gt;.&lt;/p&gt;
