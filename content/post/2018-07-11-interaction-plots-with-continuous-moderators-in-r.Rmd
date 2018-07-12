@@ -21,8 +21,11 @@ Long ago (the first half of my grad school life), I created a model for a manusc
 It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper [here](https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/). These data come from the *Friendship Project* and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose. 
 
 To understand the data and models here is some additional information:  
-1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression
+
+1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression  
+
 2. I had grade 9 measures of anxiety and depression 
+
 3. The analyses were based on a saturated path model in `lavaan` - an R package for creating and testing structural equation models. 
 
 Using `lavaan` (**la**tent **va**riable **an**alysis), I created three latent variables that represented outcomes of interest in grade 9: anxiety, depression, and general negative affect (I refer to this as dispositional negativity in the manuscript). To start, here is the model: 

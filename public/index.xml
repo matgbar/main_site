@@ -18,8 +18,12 @@
       <guid>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>&lt;p&gt;Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.&lt;/p&gt;
 &lt;p&gt;It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper &lt;a href=&#34;https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/&#34;&gt;here&lt;/a&gt;. These data come from the &lt;em&gt;Friendship Project&lt;/em&gt; and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose.&lt;/p&gt;
-&lt;p&gt;To understand the data and models here is some additional information:&lt;br /&gt;
-1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression 2. I had grade 9 measures of anxiety and depression 3. The analyses were based on a saturated path model in &lt;code&gt;lavaan&lt;/code&gt; - an R package for creating and testing structural equation models.&lt;/p&gt;
+&lt;p&gt;To understand the data and models here is some additional information:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I had grade 9 measures of anxiety and depression&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The analyses were based on a saturated path model in &lt;code&gt;lavaan&lt;/code&gt; - an R package for creating and testing structural equation models.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;Using &lt;code&gt;lavaan&lt;/code&gt; (&lt;strong&gt;la&lt;/strong&gt;tent &lt;strong&gt;va&lt;/strong&gt;riable &lt;strong&gt;an&lt;/strong&gt;alysis), I created three latent variables that represented outcomes of interest in grade 9: anxiety, depression, and general negative affect (I refer to this as dispositional negativity in the manuscript). To start, here is the model:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mod8&amp;lt;-&amp;#39;
 int=~cdi9ngmd+cdi9inpr+cdi9inef+cdi9anhe+cdi9ngse+masc9tr+masc9sma+masc9per+masc9ac+masc9hr+masc9pf
