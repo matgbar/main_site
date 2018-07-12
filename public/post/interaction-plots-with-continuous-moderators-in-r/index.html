@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme" content="hugo-academic">
+  <meta name="generator" content="Hugo 0.40.3" />
+  <meta name="author" content="Matthew Barstead">
+
+  
+  
+  
+  
+    
+      
+    
+  
+  <meta name="description" content="Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/">
+
+  
+
+
+  
+
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+  
+  
+  
+    
+  
+  
+    
+    
+      
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+      
+    
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+  
+  
+  
+  
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
+  
+  <link rel="stylesheet" href="/styles.css">
+  
+
+  
+
+  
+  <link rel="alternate" href="https://mgb-research.netlify.com/index.xml" type="application/rss+xml" title="Matt Barstead&#39;s Research, Blog, &amp; Repository">
+  <link rel="feed" href="https://mgb-research.netlify.com/index.xml" type="application/rss+xml" title="Matt Barstead&#39;s Research, Blog, &amp; Repository">
+  
+
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/">
+
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@MGB_Research">
+  <meta property="twitter:creator" content="@MGB_Research">
+  
+  <meta property="og:site_name" content="Matt Barstead&#39;s Research, Blog, &amp; Repository">
+  <meta property="og:url" content="https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/">
+  <meta property="og:title" content="Interaction Plots with Continuous Moderators in R | Matt Barstead&#39;s Research, Blog, &amp; Repository">
+  <meta property="og:description" content="Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.">
+  <meta property="og:locale" content="en-us">
+  
+  <meta property="article:published_time" content="2018-07-11T00:00:00&#43;00:00">
+  
+  <meta property="article:modified_time" content="2018-07-11T00:00:00&#43;00:00">
+  
+
+  
+  
+
+  <title>Interaction Plots with Continuous Moderators in R | Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
+
+</head>
+<body id="top" data-spy="scroll" data-target="#toc" data-offset="71" >
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+  <div class="container">
+
+    
+    <div class="navbar-header">
+      
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target=".navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+      <a class="navbar-brand" href="/">Matt Barstead&#39;s Research, Blog, &amp; Repository</a>
+    </div>
+
+    
+    <div class="collapse navbar-collapse">
+
+      
+      
+      <ul class="nav navbar-nav navbar-right">
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/#about">
+            
+            <span>Home</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/#projects">
+            
+            <span>Projects</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/#posts">
+            
+            <span>Blog</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/#publications_selected">
+            
+            <span>Publications</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/pdf/barstead_cv.pdf">
+            
+            <span>CV</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+        
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
+          <a href="/#contact">
+            
+            <span>Contact</span>
+            
+          </a>
+        </li>
+
+        
+        
+      
+
+      
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+<article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+  <div class="article-container">
+    <h1 itemprop="name">Interaction Plots with Continuous Moderators in R</h1>
+
+    
+
+<div class="article-metadata">
+
+  <span class="article-date">
+    
+    <time datetime="2018-07-11 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
+      Jul 11, 2018
+    </time>
+  </span>
+  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Matthew Barstead">
+  </span>
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fa fa-folder"></i>
+    
+    <a href="https://mgb-research.netlify.com/categories/data-vizualization/">Data Vizualization</a
+    >
+    
+  </span>
+  
+  
+
+  
+  
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    <li>
+      <a class="twitter"
+         href="https://twitter.com/intent/tweet?text=Interaction%20Plots%20with%20Continuous%20Moderators%20in%20R&amp;url=https%3a%2f%2fmgb-research.netlify.com%2fpost%2finteraction-plots-with-continuous-moderators-in-r%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </li>
+    <li>
+      <a class="facebook"
+         href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fmgb-research.netlify.com%2fpost%2finteraction-plots-with-continuous-moderators-in-r%2f"
+         target="_blank" rel="noopener">
+        <i class="fa fa-facebook"></i>
+      </a>
+    </li>
+    <li>
+      <a class="linkedin"
+         href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fmgb-research.netlify.com%2fpost%2finteraction-plots-with-continuous-moderators-in-r%2f&amp;title=Interaction%20Plots%20with%20Continuous%20Moderators%20in%20R"
+         target="_blank" rel="noopener">
+        <i class="fa fa-linkedin"></i>
+      </a>
+    </li>
+    <li>
+      <a class="weibo"
+         href="http://service.weibo.com/share/share.php?url=https%3a%2f%2fmgb-research.netlify.com%2fpost%2finteraction-plots-with-continuous-moderators-in-r%2f&amp;title=Interaction%20Plots%20with%20Continuous%20Moderators%20in%20R"
+         target="_blank" rel="noopener">
+        <i class="fa fa-weibo"></i>
+      </a>
+    </li>
+    <li>
+      <a class="email"
+         href="mailto:?subject=Interaction%20Plots%20with%20Continuous%20Moderators%20in%20R&amp;body=https%3a%2f%2fmgb-research.netlify.com%2fpost%2finteraction-plots-with-continuous-moderators-in-r%2f">
+        <i class="fa fa-envelope"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+
+    <div class="article-style" itemprop="articleBody">
+      <p>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</p>
+<p>It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper <a href="https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/">here</a>. These data come from the <em>Friendship Project</em> and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose.</p>
+<p>To understand the data and models here is some additional information:<br />
+1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression 2. I had grade 9 measures of anxiety and depression 3. The analyses were based on a saturated path model in <code>lavaan</code> - an R package for creating and testing structural equation models.</p>
+<p>Using <code>lavaan</code> (<strong>la</strong>tent <strong>va</strong>riable <strong>an</strong>alysis), I created three latent variables that represented outcomes of interest in grade 9: anxiety, depression, and general negative affect (I refer to this as dispositional negativity in the manuscript). To start, here is the model:</p>
+<pre class="r"><code>mod8&lt;-&#39;
+int=~cdi9ngmd+cdi9inpr+cdi9inef+cdi9anhe+cdi9ngse+masc9tr+masc9sma+masc9per+masc9ac+masc9hr+masc9pf
+dep=~cdi9ngmd+cdi9inpr+cdi9inef+cdi9anhe+cdi9ngse
+anx=~masc9tr+masc9sma+masc9per+masc9ac+masc9hr+masc9pf
+int~ysr8anxd+sex1+c.pfs+c.shy+
+c.mospt+mopstXpfs+mopstXshy+
+c.faspt+
+c.frspt
+dep~ysr8anxd+sex1+c.pfs+c.shy+
+c.mospt+mopstXpfs+mopstXshy+
+c.faspt+
+c.frspt+frsptXpfs+frsptXshy
+anx~ysr8anxd+sex1+c.pfs+c.shy+
+c.mospt+mopstXpfs+mopstXshy+
+c.faspt+
+c.frspt
+#Covariances
+int~~0*dep
+int~~0*anx
+anx~~0*dep
+#Added covariances 
+masc9hr ~~ masc9pf
+cdi9inpr ~~ masc9per
+cdi9inef ~~  masc9ac 
+&#39;
+
+fit8&lt;-sem(mod8, data=dat, std.lv = T, estimator = &#39;MLR&#39;)
+summary(fit8, fit.measures=T)</code></pre>
+<p>Now there is a whole script file of assumption checking and model evaluation that goes along with this (that is how I got to model 8). I have just included the final model here for simplicity’s sake.</p>
+<p>One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 <em>SD</em>. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.</p>
+<p>Here is where my gripe starts to eek in. Why are we probing simple slopes at static (often arbitrary) values? When our moderators are continuous it seems to me the better approach is to evaluate and interpret the effect of the moderator on the association between <code>X</code> and <code>Y</code> along the entire continuum of plausible moderator values.</p>
+<p>To do this, I need to extract some information from my model first. I’ll need the point estimates and their variances invovled in defining the moderation:</p>
+<pre class="r"><code>parm&lt;-as.data.frame(parameterEstimates(fit))
+parm[,1:3]
+
+COV&lt;-vcov(fit)
+COVd&lt;-as.data.frame(COV)</code></pre>
+<p>Okay so now that I have the information, I can grab the relevant values as follows. (You don’t need to grab things from the model using R objects - you can type in values manually here instead should you wish).</p>
+<pre class="r"><code>b1&lt;-parm[26,4]#slope for SHY
+b3&lt;-parm[28,4]#slope for SHY x Maternal Support
+s11&lt;-COV[26,26]#variance for SHY
+s13&lt;-COV[26,28]#covariance for SHY and SHY x Maternal Support
+s33&lt;-COV[28,28]#variance for SHY x MS Parameter</code></pre>
+<p>I then need to create a vector of values that I am going to use for plotting. Since the long-standing convention has been to use standardized values of the moderator for probing simple slopes, I keep with that tradition in the code below.</p>
+<pre class="r"><code>sd1&lt;-c(-2, -1.75, -1.5, -1.25, -1, -.75, -.5, -.25, 0,
+       .25,.5,.75,1,1.25,1.5,1.75,2)
+
+sd2&lt;-sd1*sd(data$c.mospt)
+
+#Formula for standard error of simple slopes can be found in most regression textbooks 
+se&lt;-sqrt(s11+2*(sd2)*s13+(sd2)*(sd2)*s33)
+se
+
+b1&lt;-b1+b3*(sd2)
+
+b1
+UB&lt;-b1+se*qnorm(.975)
+LB&lt;-b1+se*qnorm(.025)
+
+jpeg(&quot;SHYxMS predicting DN.jpeg&quot;, res=300, width = 9, height=6, units = &quot;in&quot;)
+plot(b1~sd1, type=&quot;n&quot;, ylim=c(-2, 2), xlim=c(-2, 2), 
+     xlab=&quot;Standardized Maternal Support&quot;, ylab=&quot;Shyness Slope&quot;, 
+     main=&quot;Relation betweeen Shyness and Dispositional Negativity 
+     as a Function of Maternal Support&quot;, 
+     cex.lab=1.5, cex.main=1.9)
+polygon(c(rev(sd1), sd1), c(rev(UB), LB), col=&quot;grey80&quot;, border=NA)
+lines(b1~sd1, type=&quot;l&quot;, lwd=4)
+lines(UB~sd1, lty=&quot;dashed&quot;, col=&quot;red&quot;, lwd=2)
+lines(LB~sd1, lty=&quot;dashed&quot;, col=&quot;red&quot;, lwd=2)
+abline(a=0, b=0, lty=&quot;dotted&quot;, col=&quot;black&quot;, lwd=3)
+dev.off()</code></pre>
+<p>And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band.</p>
+<div class="figure">
+<img src="img/Barstead_etal_Jora2017_fig4.jpg" alt="My picture" />
+<p class="caption">My picture</p>
+</div>
+<p>Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables.</p>
+
+    </div>
+
+    
+
+
+<div class="article-tags">
+  
+  <a class="btn btn-primary btn-outline" href="https://mgb-research.netlify.com/tags/r/">R</a>
+  
+  <a class="btn btn-primary btn-outline" href="https://mgb-research.netlify.com/tags/data-vizualization/">Data Vizualization</a>
+  
+  <a class="btn btn-primary btn-outline" href="https://mgb-research.netlify.com/tags/plotting/">Plotting</a>
+  
+  <a class="btn btn-primary btn-outline" href="https://mgb-research.netlify.com/tags/structural-equation-modeling/">Structural Equation Modeling</a>
+  
+  <a class="btn btn-primary btn-outline" href="https://mgb-research.netlify.com/tags/lavaan/">lavaan</a>
+  
+</div>
+
+
+
+
+    
+    
+    <div class="article-widget">
+      <div class="hr-light"></div>
+      <h3>Related</h3>
+      <ul>
+        
+        <li><a href="/post/power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></li>
+        
+        <li><a href="/post/gaussian-process-imputation-models/">Gaussian Process Imputation/Forecast Models</a></li>
+        
+      </ul>
+    </div>
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="powered-by">
+
+      &copy; 2018 Matthew Barstead &middot; 
+
+      Powered by the
+      <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+      <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+      <span class="pull-right" aria-hidden="true">
+        <a href="#" id="back_to_top">
+          <span class="button_icon">
+            <i class="fa fa-chevron-up fa-2x"></i>
+          </span>
+        </a>
+      </span>
+
+    </p>
+  </div>
+</footer>
+
+
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close btn-large" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Cite</h4>
+      </div>
+      <div>
+        <pre><code class="modal-body tex"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary btn-outline js-copy-cite" href="#" target="_blank">
+          <i class="fa fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-primary btn-outline js-download-cite" href="#" target="_blank">
+          <i class="fa fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+    
+
+    
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+    
+    
+    <script src="/js/hugo-academic.js"></script>
+    
+
+    
+    
+      
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+      
+
+      
+
+      
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
+    
+    
+
+  </body>
+</html>
+
