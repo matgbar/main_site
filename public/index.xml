@@ -267,10 +267,9 @@ g1&amp;lt;-ggplot(DF.temp)+
   ylab(&amp;#39;Simple Slope for Shyness-DN Association&amp;#39;)+
   ggtitle(&amp;quot;Shyness Predicting Dispositional Negativity as a Function of Maternal Support&amp;quot;)
 
-#jpeg(&amp;quot;SHYxMS predicting DN.jpeg&amp;quot;, res=300, width = 9, height=6, units = &amp;quot;in&amp;quot;)
+
 g1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-07-12-interaction-plots-with-continuous-moderators-in-r_files/figure-html/graph2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#dev.off()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.&lt;/p&gt;
 &lt;p&gt;Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables.&lt;/p&gt;
 </description>

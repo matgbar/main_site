@@ -121,9 +121,8 @@ g1<-ggplot(DF.temp)+
   ylab('Simple Slope for Shyness-DN Association')+
   ggtitle("Shyness Predicting Dispositional Negativity as a Function of Maternal Support")
 
-#jpeg("SHYxMS predicting DN.jpeg", res=300, width = 9, height=6, units = "in")
+
 g1
-#dev.off()
 ```
 
 And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.   
