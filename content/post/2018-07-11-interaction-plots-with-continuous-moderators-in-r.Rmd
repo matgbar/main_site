@@ -1,26 +1,25 @@
 ---
-title: Interaction Plots with Continuous Moderators in R
-author: Matthew Barstead
+title: "Interaction Plots with Continuous Moderators in R"
+author: "Matthew Barstead"
 date: '2018-07-11'
-slug: interaction-plots-with-continuous-moderators-in-r
-categories:
-  - Data Vizualization
-tags:
-  - R
-  - Data Vizualization
-  - Plotting
-  - Structural Equation Modeling
-  - lavaan
 header:
   caption: ''
   image: ''
+slug: interaction-plots-with-continuous-moderators-in-r
+tags:
+- R
+- Data Vizualization
+- Plotting
+- Structural Equation Modeling
+- lavaan
+categories: Data Vizualization
 ---
 
 Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents' appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships. 
 
 It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper [here](https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/). These data come from the *Friendship Project* and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose. 
 
-To understand the data and models here is some additional information:  
+To understand the data and models, here is some additional information:  
 
 1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression  
 
@@ -63,7 +62,7 @@ summary(fit8, fit.measures=T)
 
 Now there is a whole script file of assumption checking and model evaluation that goes along with this (that is how I got to model 8). I have just included the final model here for simplicity's sake. 
 
-One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 *SD*. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.  
+One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 *SD*. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically, we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.  
 
 Here is where my gripe starts to eek in. Why are we probing simple slopes at static (often arbitrary) values? When our moderators are continuous it seems to me the better approach is to evaluate and interpret the effect of the moderator on the association between `X` and `Y` along the entire continuum of plausible moderator values. 
 
@@ -119,8 +118,8 @@ abline(a=0, b=0, lty="dotted", col="black", lwd=3)
 dev.off()
 ```
 
-And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band.  
+And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.   
 
-![My picture](img/Barstead_etal_Jora2017_fig4.jpg)
+![](/post/2018-07-11-interaction-plots-with-continuous-moderators-in-r_files/Barstead_etal_Jora2017_fig4.jpg)
 
 Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables. 
