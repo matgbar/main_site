@@ -2,67 +2,67 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Homes on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/home/</link>
+    <link>https://mgb-research.netlify.com/home/</link>
     <description>Recent content in Homes on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Wed, 20 Apr 2016 00:00:00 -0400</lastBuildDate>
     
-	<atom:link href="/home/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/home/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>/home/about/</link>
+      <link>https://mgb-research.netlify.com/home/about/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/about/</guid>
+      <guid>https://mgb-research.netlify.com/home/about/</guid>
       <description>Biography Matthew Barstead is a doctoral candidate in the Department of Human Development and Quantiative Methodology at the University of Maryland. To date, much of his work has focused on identifying individual and contextual factors that serve to maintain and exacerbate maladaptive social and emotional development, with a primary focus on anxiety, depression, and social withdrawal. Recently, his research has grown to include the measurement of autonomic dysregulation as a biomarker of deficient self-regulatory capacities.</description>
     </item>
     
     <item>
       <title>Projects</title>
-      <link>/home/projects/</link>
+      <link>https://mgb-research.netlify.com/home/projects/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/projects/</guid>
+      <guid>https://mgb-research.netlify.com/home/projects/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Posts</title>
-      <link>/home/posts/</link>
+      <link>https://mgb-research.netlify.com/home/posts/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/posts/</guid>
+      <guid>https://mgb-research.netlify.com/home/posts/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Selected Publications</title>
-      <link>/home/publications_selected/</link>
+      <link>https://mgb-research.netlify.com/home/publications_selected/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/publications_selected/</guid>
+      <guid>https://mgb-research.netlify.com/home/publications_selected/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Publications</title>
-      <link>/home/publications/</link>
+      <link>https://mgb-research.netlify.com/home/publications/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/publications/</guid>
+      <guid>https://mgb-research.netlify.com/home/publications/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>/home/contact/</link>
+      <link>https://mgb-research.netlify.com/home/contact/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/home/contact/</guid>
+      <guid>https://mgb-research.netlify.com/home/contact/</guid>
       <description></description>
     </item>
     

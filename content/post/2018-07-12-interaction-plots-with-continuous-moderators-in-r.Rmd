@@ -125,6 +125,6 @@ g1<-ggplot(DF.temp)+
 g1
 ```
 
-And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot below, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.   
+And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot above, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.   
 
 Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables. 
