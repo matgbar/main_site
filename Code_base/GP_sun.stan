@@ -9,42 +9,44 @@ functions{
 		real alpha2,
 		real rho1,
 		real rho2,
-		real rho3){
-					matrix[Nx, Ny] K1;
-					matrix[Nx, Ny] K2;
-					matrix[Nx, Ny] Sigma;
+		real rho3)
+	{
+			matrix[Nx, Ny] K1;
+			matrix[Nx, Ny] K2;
+			matrix[Nx, Ny] Sigma;
 	
-					//specifying random Gaussian process that governs covariance matrix
-					for(i in 1:Nx){
-						for (j in 1:Ny){
-							K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
-						}
-					}
-					
-					//specifying random Gaussian process incorporates heart rate
-					for(i in 1:Nx){
-						for(j in 1:Ny){
-							K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])))/square(rho2))*
-							exp(-square(x[i]-y[j])/2/square(rho3));
-						}
-					}
-						
-					Sigma = K1+K2;
-					return Sigma;
+			//specifying random Gaussian process that governs covariance matrix
+			for(i in 1:Nx){
+				for (j in 1:Ny){
+					K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
 				}
+			}
+				
+			//specifying random Gaussian process incorporates heart rate
+			for(i in 1:Nx){
+				for(j in 1:Ny){
+					K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*.1))/square(rho2))*exp(-square(x[i]-y[j])/2/square(rho3));
+				}
+			}
+						
+			Sigma = K1+K2;
+			return Sigma;
+	}
+
 	//function for posterior calculations
 	vector post_pred_rng(
 		real a1,
 		real a2,
 		real r1, 
 		real r2,
-		real r3, 
+		real r3,
 		real sn,
 		int No,
 		vector xo,
 		int Np, 
 		vector xp,
-		vector yobs){
+		vector yobs)
+	{
 				matrix[No,No] Ko;
 				matrix[Np,Np] Kp;
 				matrix[No,Np] Kop;
@@ -60,7 +62,7 @@ functions{
 	for(n in 1:No) Ko[n,n] += sn;
 		
 	//--------------------------------------------------------------------
-	//kernel for predicted data
+	//Kernel for predicted data
 	Kp = main_GP(Np, xp, Np, xp,  a1, a2, r1, r2,  r3);
 	for(n in 1:Np) Kp[n,n] += sn;
 		
@@ -69,7 +71,7 @@ functions{
 	Kop = main_GP(No, xo, Np, xp,  a1, a2, r1, r2, r3);
 	
 	//--------------------------------------------------------------------
-	//Algorithm 2.1 of Rassmussen and Williams (2006) 
+	//Algorithm 2.1 of Rassmussen and Williams... 
 	Ko_inv_t = Kop'/Ko;
 	mu_p = Ko_inv_t*yobs;
 	Tau=Kp-Ko_inv_t*Kop;
@@ -79,7 +81,7 @@ functions{
 	}
 }
 
-data { 
+data {
 	int<lower=1> N1;
 	int<lower=1> N2;
 	vector[N1] X; 
@@ -87,17 +89,17 @@ data {
 	vector[N2] Xp;
 }
 
-transformed data { 
+transformed data {
 	vector[N1] mu;
 	for(n in 1:N1) mu[n] = 0;
 }
 
 parameters {
 	real<lower=0> a1;
-	real<lower=0, upper=1> a2;
-	real<lower=0, upper=7> r1;
-	real<lower=0, upper=1.5> r2;
-	real<lower=0, upper=75> r3;
+	real<lower=0> a2;
+	real<lower=0> r1;		
+	real<lower=0> r2;
+	real<lower=0> r3;
 	real<lower=0> sigma_sq;
 }
 
@@ -113,16 +115,15 @@ model{
 	Y ~ multi_normal_cholesky(mu, L_S);
 	
 	//priors for parameters
-	a1 ~ student_t(3,0,1);	//Taken from the first model
-	a2 ~ student_t(3,0,1);
-	//incorporate minimum and maximum distances - use invgamma
-	r1 ~ student_t(3,0,1);	//Taken from the first model
-	r2 ~ student_t(3,0,1);
-	r3 ~ student_t(3,0,1);	
-	sigma_sq ~ student_t(3,0,1);
+	a1 ~ cauchy(0,2);		
+	a2 ~ cauchy(0,2);
+	r1 ~ cauchy(0,2);	
+	r2 ~ cauchy(0,2);
+	r3 ~ cauchy(0,2);
+	sigma_sq ~ cauchy(0,2);
 }
-
 generated quantities {
 	vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
 }
+
 

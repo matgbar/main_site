@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Visualization on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/categories/data-visualization/</link>
+    <link>/categories/data-visualization/</link>
     <description>Recent content in Data Visualization on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Wed, 11 Jul 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/categories/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/data-visualization/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</link>
+      <link>/post/interaction-plots-with-continuous-moderators-in-r/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</guid>
+      <guid>/post/interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</description>
     </item>
     

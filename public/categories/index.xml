@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     
-	<atom:link href="https://mgb-research.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Data Visualization</title>
-      <link>https://mgb-research.netlify.com/categories/data-visualization/</link>
+      <link>/categories/data-visualization/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/categories/data-visualization/</guid>
+      <guid>/categories/data-visualization/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Modeling</title>
-      <link>https://mgb-research.netlify.com/categories/modeling/</link>
-      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      <link>/categories/modeling/</link>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/categories/modeling/</guid>
+      <guid>/categories/modeling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sample Size</title>
-      <link>https://mgb-research.netlify.com/categories/sample-size/</link>
+      <link>/categories/sample-size/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/categories/sample-size/</guid>
+      <guid>/categories/sample-size/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Simulation</title>
-      <link>https://mgb-research.netlify.com/categories/simulation/</link>
+      <link>/categories/simulation/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/categories/simulation/</guid>
+      <guid>/categories/simulation/</guid>
       <description></description>
     </item>
     
