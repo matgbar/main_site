@@ -507,7 +507,8 @@ Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 &lt;p&gt;&lt;strong&gt;Level 2 Equations:&lt;/strong&gt;&lt;br /&gt;
 &lt;span class=&#34;math display&#34;&gt;\[
 \pi_{0i} = \beta_{00} + r_{0i}
-\]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[
+\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[
 \pi_{1i} = \beta_{10} + r_{1i}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.&lt;/p&gt;
@@ -828,10 +829,10 @@ generated quantities {
 ## [1] &amp;quot;GenuineIntel&amp;quot;
 ## 
 ## $model_name
-## [1] &amp;quot;Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz&amp;quot;
+## [1] &amp;quot;Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz&amp;quot;
 ## 
 ## $no_of_cores
-## [1] 4&lt;/code&gt;&lt;/pre&gt;
+## [1] 12&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A quick view of summary stats good convergence of estimates across the 6 chains.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pars.to.monitor&amp;lt;-c(&amp;#39;a1&amp;#39;,&amp;#39;r1&amp;#39;,&amp;#39;sigma_sq&amp;#39;, &amp;#39;Ypred&amp;#39;)
 summary(fit.stan1, pars=pars.to.monitor[-4])$summary&lt;/code&gt;&lt;/pre&gt;
@@ -1082,7 +1083,8 @@ g1&amp;lt;-ggplot()+
                      values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
                      labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt; The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
 &lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
 </description>
     </item>
