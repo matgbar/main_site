@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Meta-Analysis on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/tags/meta-analysis/</link>
+    <link>https://mgb-research.netlify.com/tags/meta-analysis/</link>
     <description>Recent content in Meta-Analysis on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Wed, 27 Apr 2016 00:00:00 -0400</lastBuildDate>
     
-	<atom:link href="/tags/meta-analysis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/meta-analysis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Callous Unemotional Meta-Analysis</title>
-      <link>/project/cu-meta/</link>
+      <link>https://mgb-research.netlify.com/project/cu-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/cu-meta/</guid>
+      <guid>https://mgb-research.netlify.com/project/cu-meta/</guid>
       <description>Abstract: Callous-unemotional (CU) traits are central to our understanding of antisocial behavior, which is harmful, financially costly to society, and hard to treat. Theoretical and diagnostic models define CU traits based on a lack of empathy, guilt, and prosociality. However, there has been no comprehensive quantitative synthesis of results to support this claim, nor any examination of whether associations differ by age, gender, sample type, or informant. Given its centrality to our understanding and treatment of antisocial behavior, the time is ripe for a critical examination of the meaning of the CU traits construct, including associations with its purported underlying features of low empathy, guilt, and prosociality, and potential demographic and methodological moderators of these associations.</description>
     </item>
     
     <item>
       <title>Social Withdrawal Meta-Analysis</title>
-      <link>/project/sw-meta/</link>
+      <link>https://mgb-research.netlify.com/project/sw-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/sw-meta/</guid>
+      <guid>https://mgb-research.netlify.com/project/sw-meta/</guid>
       <description>Are the terms anxious withdrawal, anxious solitude, behavioral inhibition, shyness-sensitivity, interchangeable? Are peer, parent, teacher, and self-perceptions of social withdrawal measuring the same thing? To date, researchers have relied on narrative arguments to build a case for or againts correspondence among the terms and measurement approaches used by developmental scientists interested in these and related constructs. I want to let the data speak for itself, and I am conducting a meta-analysis to do just that.</description>
     </item>
     
