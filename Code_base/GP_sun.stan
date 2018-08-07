@@ -115,12 +115,12 @@ model{
 	Y ~ multi_normal_cholesky(mu, L_S);
 	
 	//priors for parameters
-	a1 ~ cauchy(0,2);		
-	a2 ~ cauchy(0,2);
-	r1 ~ cauchy(0,2);	
-	r2 ~ cauchy(0,2);
-	r3 ~ cauchy(0,2);
-	sigma_sq ~ cauchy(0,2);
+	a1 ~ student_t(3,0,1);		
+	a2 ~ student_t(3,0,1);
+	r1 ~ student_t(3,0,1);	
+	r2 ~ student_t(3,0,1);
+	r3 ~ student_t(3,0,1);
+	sigma_sq ~ student_t(3,0,1);
 }
 generated quantities {
 	vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
