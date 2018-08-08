@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Processing on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
+    <link>/tags/data-processing/</link>
+    <description>Recent content in Data Processing on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
+    <lastBuildDate>Tue, 07 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/data-processing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RMarkdown is the Most Powerful Codebook Maker You Can Find for Your Datasets</title>
+      <link>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
+      <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
+      <description>You worked hard to collect, clean, and process your data. It is finally ready for that step where you get you need to finalize your documentation. After all, it is rarely just you, the person hunched over his/her computer for the past 2 weeks learning every nook and cranny of the data, who is going to need understand and explore its contents. You can have people ask you a million and one questions.</description>
+    </item>
+    
+  </channel>
+</rss>
