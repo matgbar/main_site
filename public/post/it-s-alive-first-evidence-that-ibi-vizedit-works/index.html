@@ -369,7 +369,7 @@ g1&lt;-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
 g1</code></pre>
 <p><img src="/post/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention taks (Kids) are higher than the median RSA values for the two distressing tasks.</p>
-<p>I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats).</p>
+<p>I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats) to show a similar pattern.</p>
 <pre class="r"><code>df.m&lt;-reshape2::melt(dat.HP[,2:7])
 
 g2&lt;-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
@@ -430,12 +430,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8424262  6.51505353
-## 2        Clown -0.5771510 -0.02678873
-## 3       Video2 -0.2327851  0.29177348
-## 4         Kids -0.3618466  0.15921288
-## 5        Intro -0.6426078 -0.11779328
-## 6       Video3 -0.3409597  0.17830067</code></pre>
+## 1 X.Intercept.  5.8433233  6.52342607
+## 2        Clown -0.5793948 -0.02207129
+## 3       Video2 -0.2360585  0.29902499
+## 4         Kids -0.3619971  0.16040022
+## 5        Intro -0.6386844 -0.12532457
+## 6       Video3 -0.3476192  0.18334240</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -477,12 +477,12 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58311787  0.629610310
-## 2        Clown -0.03842285 -0.009933150
-## 3       Video2 -0.01920136  0.009181941
-## 4         Kids -0.01520721  0.013168268
-## 5        Intro -0.04410307 -0.015672462
-## 6       Video3 -0.02333877  0.005119225</code></pre>
+## 1 X.Intercept.  0.58193604  0.630300271
+## 2        Clown -0.03816527 -0.009558809
+## 3       Video2 -0.01902410  0.009340706
+## 4         Kids -0.01511276  0.013660334
+## 5        Intro -0.04388827 -0.015008944
+## 6       Video3 -0.02286739  0.005376476</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>
 

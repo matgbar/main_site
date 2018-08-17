@@ -135,8 +135,7 @@ g1
 
 So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention taks (Kids) are higher than the median RSA values for the two distressing tasks. 
 
-I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats).
-
+I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats) to show a similar pattern.
 
 ```{r, warning=FALSE, message=FALSE}
 df.m<-reshape2::melt(dat.HP[,2:7])
