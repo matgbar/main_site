@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</loc>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</loc>
       <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     </url>
@@ -196,7 +205,7 @@
     <url>
     
       <loc>/tags/data-processing/</loc>
-      <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -206,7 +215,7 @@
     <url>
     
       <loc>/categories/data-visualization/</loc>
-      <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -216,7 +225,7 @@
     <url>
     
       <loc>/tags/data-visualization/</loc>
-      <lastmod>2018-07-11T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -237,6 +246,16 @@
     
       <loc>/tags/gaussian-process/</loc>
       <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/categories/ibi-vizedit/</loc>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -306,7 +325,7 @@
     <url>
     
       <loc>/tags/mixed-effects/</loc>
-      <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -326,7 +345,7 @@
     <url>
     
       <loc>/tags/plotting/</loc>
-      <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -366,7 +385,7 @@
     <url>
     
       <loc>/tags/r/</loc>
-      <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
