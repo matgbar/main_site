@@ -344,10 +344,10 @@ Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny appl
     <div class="article-style" itemprop="articleBody">
       <p>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.</p>
 <p>Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data. We used a photoplethysmogram to measure changes in light absorption in a local capillary bed, in this case the child’s fingertip. As blood flows through the capillary bed in sync with the beating heart, the amount of light absorbed by the underlying tissue varies, particularly within certain wavelengths. With this knowledge and a sufficiently high sampling rate (we used 2000 Hz), you can readily record heart beats using a relatively low-cost sensor.</p>
-<p>Individual heart rate data contains a surprising amount of information that can be used to predict an individual cognitive and affective states as well as predict global mental and physical health outcomes. Paired with specific tasks, we can get a sense of how effectively the autonomic nervous system links neural messages to changes in internal states designed to potentiate certain response patterns (i.e., fleeing, fighting, freezing, behaviors).</p>
-<p>Currently, there are no open-source tools available to researchers interested in measures of heart-rate variability obtained via photoplethysmography. That is why I created IBI VizEdit. It is still very much in its first lifespan and it is primarily designed to work with our lab’s files and in a way that optimizes output for what we plan to do with our data. I plan to adapt the program to be more general in its input to allow researchers to upload files of just about any basic data format (e.g., .dat, .txt, csv, etc.).</p>
-<p>For now, I am just happy to be getting off on the right foot. And here are (again to be stressed) the <em>preliminary</em> results of an analysis of 22 edit cases. Participants in the study experience three conditions. The first is a child-appropriate Sesame Street video, which the child sees three times. In addition to the videos children also experienced two stressors: the appearance of a clown and the recording of an introduction video. The sixth and final task was a social attention task in which children learned about fictitious children and their interests.</p>
-<p>Now if the program is working estimates based on its output should show that respiratory sinus arrhythmia (RSA) is lowest during the Clown and Introduction tasks and highest during the Video and social attention tasks.</p>
+<p>Individual heart rate data contains a surprising amount of information that can be used to predict an individual’s cognitive and affective states as well as predict global mental and physical health outcomes. Paired with specific tasks, we can get a sense of how effective the autonomic nervous system is at regulating internal states that are designed to potentiate certain response patterns (i.e., fleeing, fighting, freezing, behaviors).</p>
+<p>Currently, there are no open-source tools available to researchers interested in measures of heart-rate variability obtained via photoplethysmography. That is why I created IBI VizEdit. It is still very much in its first lifespan, and it is primarily designed to work with our lab’s files in ways that optimize output for what we plan to do with our data. I eventually plan to adapt the program to be more general in its input to allow researchers to upload files of just about any basic data format (e.g., .dat, .txt, csv, etc.).</p>
+<p>For now, I am just happy to be getting off on the right foot. And here are (again to be stressed) the <em>preliminary</em> results of an analysis of 22 edited cases. Participants in the study experienced three conditions during a baseline laboratory visit. The first is a child-appropriate Sesame Street video, which the child sees three times. In addition to the videos children also experienced two stressors: the appearance of a clown and the recording of an introduction video. The sixth task (fourth in its presentation) was a social attention task in which children learned about fictitious children and their interests.</p>
+<p>Now if the program is working, estimates based on its output should show that respiratory sinus arrhythmia (RSA) is lowest during the Clown and Introduction tasks and highest during the Video and social attention (Kids) tasks.</p>
 <p>So what do we find… First always graph your data. I really like the <a href="https://micahallen.org/2018/03/15/introducing-raincloud-plots/">sideways raincloud plot (or nose plot)</a> as an option for plotting. It sort of puts all of your data out there for everyone to see.</p>
 <p>First let’s look at the RSA values by task:</p>
 <pre class="r"><code>df.m&lt;-reshape2::melt(dat.RSA[,2:7])
@@ -430,12 +430,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8381357  6.51843494
-## 2        Clown -0.5799739 -0.02077276
-## 3       Video2 -0.2320105  0.29325338
-## 4         Kids -0.3697130  0.16766118
-## 5        Intro -0.6452282 -0.11861605
-## 6       Video3 -0.3456598  0.18351476</code></pre>
+## 1 X.Intercept.  5.8424262  6.51505353
+## 2        Clown -0.5771510 -0.02678873
+## 3       Video2 -0.2327851  0.29177348
+## 4         Kids -0.3618466  0.15921288
+## 5        Intro -0.6426078 -0.11779328
+## 6       Video3 -0.3409597  0.17830067</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -477,12 +477,12 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58299835  0.629525076
-## 2        Clown -0.03843183 -0.009810095
-## 3       Video2 -0.01950820  0.009492091
-## 4         Kids -0.01526672  0.013605663
-## 5        Intro -0.04415279 -0.015385231
-## 6       Video3 -0.02336528  0.005418461</code></pre>
+## 1 X.Intercept.  0.58311787  0.629610310
+## 2        Clown -0.03842285 -0.009933150
+## 3       Video2 -0.01920136  0.009181941
+## 4         Kids -0.01520721  0.013168268
+## 5        Intro -0.04410307 -0.015672462
+## 6       Video3 -0.02333877  0.005119225</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>
 

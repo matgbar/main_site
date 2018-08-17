@@ -214,7 +214,7 @@
     
     <url>
     
-      <loc>/categories/data-visualization/</loc>
+      <loc>/tags/data-visualization/</loc>
       <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -224,7 +224,7 @@
     
     <url>
     
-      <loc>/tags/data-visualization/</loc>
+      <loc>/categories/data-visualization/</loc>
       <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -404,7 +404,7 @@
     
     <url>
     
-      <loc>/categories/simulation/</loc>
+      <loc>/tags/simulation/</loc>
       <lastmod>2018-06-07T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
@@ -414,7 +414,7 @@
     
     <url>
     
-      <loc>/tags/simulation/</loc>
+      <loc>/categories/simulation/</loc>
       <lastmod>2018-06-07T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
