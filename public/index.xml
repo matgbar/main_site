@@ -11,6 +11,120 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
+      <link>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <description>&lt;div id=&#34;overview&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Overview:&lt;/h1&gt;
+&lt;p&gt;This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and &lt;a href=&#34;https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/&#34;&gt;check it out&lt;/a&gt;. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.&lt;/p&gt;
+&lt;div id=&#34;data-brief-description&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data Brief Description:&lt;/h2&gt;
+&lt;p&gt;The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (&lt;em&gt;N&lt;/em&gt;=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found &lt;a href=&#34;https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;imputation-options&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Imputation Options&lt;/h2&gt;
+&lt;p&gt;There are several imputation packages available that aid researchers imputing data in R. Perhaps the two most popular are the &lt;code&gt;mice&lt;/code&gt; package &lt;span class=&#34;citation&#34;&gt;(van Buuren and Groothuis-Oudshoorn 2011)&lt;/span&gt; and the &lt;code&gt;Amelia&lt;/code&gt; package &lt;span class=&#34;citation&#34;&gt;(Honaker, King, and Blackwell 2011)&lt;/span&gt;. When the data in question has a nested structure (e.g., students nested within classrooms, patients nested within clinics, observations nested within individuals, etc.), the &lt;code&gt;pan&lt;/code&gt; package &lt;span class=&#34;citation&#34;&gt;(Zhao and Schafer 2018)&lt;/span&gt; can be used.&lt;/p&gt;
+&lt;p&gt;In this case, I will be using the &lt;code&gt;mitml&lt;/code&gt; package &lt;span class=&#34;citation&#34;&gt;(Grund, Robitzsch, and Luedtke 2018)&lt;/span&gt;, which is a wraparound package that depends on the &lt;code&gt;pan&lt;/code&gt; package. Alternative approaches using the &lt;code&gt;pan&lt;/code&gt; algorithm via &lt;code&gt;mice&lt;/code&gt; can be found &lt;a href=&#34;http://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;imputation-model&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Imputation Model&lt;/h2&gt;
+&lt;p&gt;To setup the imputation model, I need to specify the variables that need to be imputed (in front of the &lt;code&gt;~&lt;/code&gt;) and the complete variables, along with the random effects (after the &lt;code&gt;~&lt;/code&gt;). Exploratory analyses covered in the &lt;a href=&#34;https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/&#34;&gt;first post&lt;/a&gt; indicated that BFI Openess scores and BFI Conscientiousness scores both predicted missingness. As is common practice, I will also include dispositional negativity scores, which serve as the primary individual-level predictor in my final model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fml&amp;lt;- c.Worst + c.Best + NegAff + PosAff  ~ 
+  1 + c.DN + BFI_C + BFI_O + (1|ID)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With the formula setup, I can now impute the data. There have been a number of recommendations out there regarding how many datasets you need to impute to ensure that you get stable results. I recommend reading a pair of papers out there to those who think you can always get away with around 10 datasets when imputing &lt;span class=&#34;citation&#34;&gt;(Bodner 2008; Graham, Olchowski, and Gilreath 2007)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Based on the structure of my data and the total missingness and recommendations made by &lt;span class=&#34;citation&#34;&gt;Graham, Olchowski, and Gilreath (2007)&lt;/span&gt;, I chose to impute 20 data sets. I also have a relatively lengthy burn-in period so I can ensure convergence of the posterior distributions from which values are drawn. In setting &lt;code&gt;n.iter = 50&lt;/code&gt; I have further made the choice to separate my draws from the MCMC chains to help mitigate any autocorrelation that could arise in imputed data sets.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp&amp;lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=100, 
+               n.iter = 50, 
+               m=20, 
+               seed = 0716)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;extracting-datasets&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Extracting Datasets&lt;/h2&gt;
+&lt;p&gt;The next step is to pull out the imputed data and start examining whether or not the imputed data sets make sense. First, we can examine convergence of the imputation model. If you were to run &lt;code&gt;plot(imp, print=&#39;beta&#39;)&lt;/code&gt; you would be able review convergence for all aspects of the imputation model. Doing so would also reveal that some parameters did not fully converge and the number of iterations between draws likely needs to be increased. To address these problems, I begin by re-running the imputation model with a longer burn-in phase and greater distance between draws.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;imp&amp;lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=10000, 
+               n.iter = 5000, 
+               m=20, 
+               seed = 0716)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Having satisfied myself that there are no lingering convergence issues I can create some initial plots. First, I need to re-structure the data to make it a bit easier to plot.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dat&amp;lt;-mitmlComplete(imp)
+
+dat.long&amp;lt;-data.frame()
+for(i in 1:20){
+  dat.temp&amp;lt;-dat[[i]]
+  dat.temp$IMP&amp;lt;-rep(i, length(dat.temp[,1]))
+  dat.long&amp;lt;-rbind(dat.long, dat.temp)
+}
+
+dat.study1$IMP&amp;lt;-rep(0, length(dat.study1[,1]))
+dat.long&amp;lt;-rbind(dat.study1, dat.long)
+dat.long$Orig&amp;lt;-ifelse(dat.long$IMP&amp;lt;1, &amp;#39;Original&amp;#39;, &amp;#39;Imputed&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Okay now we can plot the results.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;g1&amp;lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=NegAff, group=IMP, color=Orig), stat = &amp;#39;density&amp;#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&amp;#39;Momentary Negative Affect&amp;#39;)+
+  ylab(&amp;#39;Density&amp;#39;)+
+  xlab(&amp;#39;&amp;#39;)
+
+g2&amp;lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=PosAff, group=IMP, color=Orig), stat = &amp;#39;density&amp;#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&amp;#39;Momentary Positive Affect&amp;#39;)+
+  ylab(&amp;#39;Density&amp;#39;)+
+  xlab(&amp;#39;&amp;#39;)
+
+g3&amp;lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Worst, group=IMP, color=Orig), stat = &amp;#39;density&amp;#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&amp;#39;Worst Event&amp;#39;)+
+  ylab(&amp;#39;Density&amp;#39;)+
+  xlab(&amp;#39;&amp;#39;)
+
+g4&amp;lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Best, group=IMP, color=Orig), stat = &amp;#39;density&amp;#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&amp;#39;Best Event&amp;#39;)+
+  ylab(&amp;#39;Density&amp;#39;)+
+  xlab(&amp;#39;&amp;#39;)
+
+print(cowplot::plot_grid(g1, g2, g3, g4))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The good news is that the imputed values largely follow the same distribution as the original values. Having assessed convergence and now the actual imputation results, I feel pretty good about the results. I am now ready to move on to the actual analysis, which will be reviewed in the final post in this series.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Bodner2008&#34;&gt;
+&lt;p&gt;Bodner, Todd E. 2008. “What improves with increased missing data imputations?” &lt;em&gt;Structural Equation Modeling&lt;/em&gt; 15 (4): 651–75. doi:&lt;a href=&#34;https://doi.org/10.1080/10705510802339072&#34;&gt;10.1080/10705510802339072&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Graham2007&#34;&gt;
+&lt;p&gt;Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007. “How many imputations are really needed? Some practical clarifications of multiple imputation theory.” &lt;em&gt;Prevention Science&lt;/em&gt; 8 (3): 206–13. doi:&lt;a href=&#34;https://doi.org/10.1007/s11121-007-0070-9&#34;&gt;10.1007/s11121-007-0070-9&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-mitml_2018&#34;&gt;
+&lt;p&gt;Grund, Simon, Alexander Robitzsch, and Oliver Luedtke. 2018. &lt;em&gt;Mitml: Tools for Multiple Imputation in Multilevel Modeling&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mitml&#34; class=&#34;uri&#34;&gt;https://CRAN.R-project.org/package=mitml&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Amelia_2011&#34;&gt;
+&lt;p&gt;Honaker, James, Gary King, and Matthew Blackwell. 2011. “Amelia II: A Program for Missing Data.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (7): 1–47. &lt;a href=&#34;http://www.jstatsoft.org/v45/i07/&#34; class=&#34;uri&#34;&gt;http://www.jstatsoft.org/v45/i07/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-mice_2011&#34;&gt;
+&lt;p&gt;van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (3): 1–67. &lt;a href=&#34;https://www.jstatsoft.org/v45/i03/&#34; class=&#34;uri&#34;&gt;https://www.jstatsoft.org/v45/i03/&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-pan_2018&#34;&gt;
+&lt;p&gt;Zhao, Jing Hua, and Joseph L. Schafer. 2018. &lt;em&gt;Pan: Multiple Imputation for Multivariate Panel or Clustered Data&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
       <link>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
@@ -1307,26 +1421,6 @@ g1&lt;/code&gt;&lt;/pre&gt;
       <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34; target=&#34;_blank&#34;&gt;blog post&lt;/a&gt; on the topic for more information and a toy forecasting problem.&lt;/p&gt;
 
 &lt;p&gt;I am currently working on a study examining the effectiveness of these models in imputing heart rate data that has been severely corrupted by artifact - to the point that there is not &amp;ldquo;enough&amp;rdquo; true signal remaining to do much of anything with.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>IBI VizEdit</title>
-      <link>/project/ibi-vizedit/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
-      
-      <guid>/project/ibi-vizedit/</guid>
-      <description>&lt;p&gt;IBI VizEdit is a program built using RShiny. It is designed to assist in the manual editing of inter-beat interval files that are derived from photoplethysmogram (PPG) recordings. Unlike the electrocardiogram signal (EKG or ECG), PPG signals are characterized by a slow-moving waveform, which presents a different set of challenges when the true signal becomes corrupted by motion artefacts and other sources of noise.&lt;/p&gt;
-
-&lt;p&gt;Though increasingly popular due to their ease of use, most heart rate editing software that exists to date was designed and optimized for the detection and editing of inter-beat interval files derived from ECG signals. IBI VizEdit provides a new suite of tools for researchers who find themselves working with messy PPG files.&lt;/p&gt;
-
-&lt;p&gt;Please note that IBI VizEdit is beta software. It has not been fully tested, and there are likely numerous bugs and opportunities to optimize code and performance. Any and all feedback is welcome.&lt;/p&gt;
-
-&lt;p&gt;As of right now, IBI VizEdit is only supported for use on Windows 7/8/10 and Linux (Ubuntu 16.04 in particular).&lt;/p&gt;
-
-&lt;p&gt;Please cite as:&lt;/p&gt;
-
-&lt;p&gt;Barstead, M. G. (2018). IBI VizEdit v.1.2-beta: An RShiny Application [Computer software]. University of Maryland. doi: 10.5281/zenodo.1209474&lt;/p&gt;
 </description>
     </item>
     

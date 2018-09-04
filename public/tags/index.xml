@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
-    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Bayesian</title>
       <link>/tags/bayesian/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/bayesian/</guid>
       <description></description>
@@ -96,7 +96,7 @@
     <item>
       <title>Missing Data</title>
       <link>/tags/missing-data/</link>
-      <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/missing-data/</guid>
       <description></description>
@@ -105,7 +105,7 @@
     <item>
       <title>Mixed-Effects</title>
       <link>/tags/mixed-effects/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/mixed-effects/</guid>
       <description></description>
@@ -159,7 +159,7 @@
     <item>
       <title>Stan</title>
       <link>/tags/stan/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/stan/</guid>
       <description></description>

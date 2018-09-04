@@ -1,0 +1,125 @@
+---
+title: Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)
+author: ''
+date: '2018-09-03'
+slug: bayesian-multilevel-model-with-missing-data-complete-workflow-part-2
+categories:
+  - Modeling
+tags:
+  - Bayesian
+  - Missing Data
+  - Mixed-Effects
+  - Stan
+header:
+  caption: ''
+  image: ''
+bibliography: miss_Bayes_2.bib
+---
+
+
+
+<div id="overview" class="section level1">
+<h1>Overview:</h1>
+<p>This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and <a href="https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/">check it out</a>. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.</p>
+<div id="data-brief-description" class="section level2">
+<h2>Data Brief Description:</h2>
+<p>The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (<em>N</em>=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found <a href="https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/">here</a>.</p>
+</div>
+<div id="imputation-options" class="section level2">
+<h2>Imputation Options</h2>
+<p>There are several imputation packages available that aid researchers imputing data in R. Perhaps the two most popular are the <code>mice</code> package <span class="citation">(van Buuren and Groothuis-Oudshoorn 2011)</span> and the <code>Amelia</code> package <span class="citation">(Honaker, King, and Blackwell 2011)</span>. When the data in question has a nested structure (e.g., students nested within classrooms, patients nested within clinics, observations nested within individuals, etc.), the <code>pan</code> package <span class="citation">(Zhao and Schafer 2018)</span> can be used.</p>
+<p>In this case, I will be using the <code>mitml</code> package <span class="citation">(Grund, Robitzsch, and Luedtke 2018)</span>, which is a wraparound package that depends on the <code>pan</code> package. Alternative approaches using the <code>pan</code> algorithm via <code>mice</code> can be found <a href="http://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html">here</a>.</p>
+</div>
+<div id="imputation-model" class="section level2">
+<h2>Imputation Model</h2>
+<p>To setup the imputation model, I need to specify the variables that need to be imputed (in front of the <code>~</code>) and the complete variables, along with the random effects (after the <code>~</code>). Exploratory analyses covered in the <a href="https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/">first post</a> indicated that BFI Openess scores and BFI Conscientiousness scores both predicted missingness. As is common practice, I will also include dispositional negativity scores, which serve as the primary individual-level predictor in my final model.</p>
+<pre class="r"><code>fml&lt;- c.Worst + c.Best + NegAff + PosAff  ~ 
+  1 + c.DN + BFI_C + BFI_O + (1|ID)</code></pre>
+<p>With the formula setup, I can now impute the data. There have been a number of recommendations out there regarding how many datasets you need to impute to ensure that you get stable results. I recommend reading a pair of papers out there to those who think you can always get away with around 10 datasets when imputing <span class="citation">(Bodner 2008; Graham, Olchowski, and Gilreath 2007)</span>.</p>
+<p>Based on the structure of my data and the total missingness and recommendations made by <span class="citation">Graham, Olchowski, and Gilreath (2007)</span>, I chose to impute 20 data sets. I also have a relatively lengthy burn-in period so I can ensure convergence of the posterior distributions from which values are drawn. In setting <code>n.iter = 50</code> I have further made the choice to separate my draws from the MCMC chains to help mitigate any autocorrelation that could arise in imputed data sets.</p>
+<pre class="r"><code>imp&lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=100, 
+               n.iter = 50, 
+               m=20, 
+               seed = 0716)</code></pre>
+</div>
+<div id="extracting-datasets" class="section level2">
+<h2>Extracting Datasets</h2>
+<p>The next step is to pull out the imputed data and start examining whether or not the imputed data sets make sense. First, we can examine convergence of the imputation model. If you were to run <code>plot(imp, print='beta')</code> you would be able review convergence for all aspects of the imputation model. Doing so would also reveal that some parameters did not fully converge and the number of iterations between draws likely needs to be increased. To address these problems, I begin by re-running the imputation model with a longer burn-in phase and greater distance between draws.</p>
+<pre class="r"><code>imp&lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=10000, 
+               n.iter = 5000, 
+               m=20, 
+               seed = 0716)</code></pre>
+<p>Having satisfied myself that there are no lingering convergence issues I can create some initial plots. First, I need to re-structure the data to make it a bit easier to plot.</p>
+<pre class="r"><code>dat&lt;-mitmlComplete(imp)
+
+dat.long&lt;-data.frame()
+for(i in 1:20){
+  dat.temp&lt;-dat[[i]]
+  dat.temp$IMP&lt;-rep(i, length(dat.temp[,1]))
+  dat.long&lt;-rbind(dat.long, dat.temp)
+}
+
+dat.study1$IMP&lt;-rep(0, length(dat.study1[,1]))
+dat.long&lt;-rbind(dat.study1, dat.long)
+dat.long$Orig&lt;-ifelse(dat.long$IMP&lt;1, &#39;Original&#39;, &#39;Imputed&#39;)</code></pre>
+<p>Okay now we can plot the results.</p>
+<pre class="r"><code>g1&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=NegAff, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Momentary Negative Affect&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g2&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=PosAff, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Momentary Positive Affect&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g3&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Worst, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Worst Event&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g4&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Best, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Best Event&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+print(cowplot::plot_grid(g1, g2, g3, g4))</code></pre>
+<p><img src="/post/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The good news is that the imputed values largely follow the same distribution as the original values. Having assessed convergence and now the actual imputation results, I feel pretty good about the results. I am now ready to move on to the actual analysis, which will be reviewed in the final post in this series.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-Bodner2008">
+<p>Bodner, Todd E. 2008. “What improves with increased missing data imputations?” <em>Structural Equation Modeling</em> 15 (4): 651–75. doi:<a href="https://doi.org/10.1080/10705510802339072">10.1080/10705510802339072</a>.</p>
+</div>
+<div id="ref-Graham2007">
+<p>Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007. “How many imputations are really needed? Some practical clarifications of multiple imputation theory.” <em>Prevention Science</em> 8 (3): 206–13. doi:<a href="https://doi.org/10.1007/s11121-007-0070-9">10.1007/s11121-007-0070-9</a>.</p>
+</div>
+<div id="ref-mitml_2018">
+<p>Grund, Simon, Alexander Robitzsch, and Oliver Luedtke. 2018. <em>Mitml: Tools for Multiple Imputation in Multilevel Modeling</em>. <a href="https://CRAN.R-project.org/package=mitml" class="uri">https://CRAN.R-project.org/package=mitml</a>.</p>
+</div>
+<div id="ref-Amelia_2011">
+<p>Honaker, James, Gary King, and Matthew Blackwell. 2011. “Amelia II: A Program for Missing Data.” <em>Journal of Statistical Software</em> 45 (7): 1–47. <a href="http://www.jstatsoft.org/v45/i07/" class="uri">http://www.jstatsoft.org/v45/i07/</a>.</p>
+</div>
+<div id="ref-mice_2011">
+<p>van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” <em>Journal of Statistical Software</em> 45 (3): 1–67. <a href="https://www.jstatsoft.org/v45/i03/" class="uri">https://www.jstatsoft.org/v45/i03/</a>.</p>
+</div>
+<div id="ref-pan_2018">
+<p>Zhao, Jing Hua, and Joseph L. Schafer. 2018. <em>Pan: Multiple Imputation for Multivariate Panel or Clustered Data</em>.</p>
+</div>
+</div>
+</div>
+</div>
