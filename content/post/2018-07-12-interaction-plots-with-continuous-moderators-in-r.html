@@ -56,7 +56,10 @@ cdi9inef ~~  masc9ac
 
 fit8&lt;-sem(mod8, data=dat, std.lv = T, estimator = &#39;MLR&#39;)
 summary(fit8, fit.measures=T, standardized=T, rsquare=T)</code></pre>
-<pre><code>## lavaan (0.6-1) converged normally after  68 iterations
+<pre><code>## lavaan 0.6-3 ended normally after 66 iterations
+## 
+##   Optimization method                           NLMINB
+##   Number of free parameters                         65
 ## 
 ##                                                   Used       Total
 ##   Number of observations                           188         330
@@ -79,13 +82,17 @@ summary(fit8, fit.measures=T, standardized=T, rsquare=T)</code></pre>
 ##   Comparative Fit Index (CFI)                    0.914       0.912
 ##   Tucker-Lewis Index (TLI)                       0.876       0.873
 ## 
-##   Robust Comparative Fit Index (CFI)                            NA
-##   Robust Tucker-Lewis Index (TLI)                               NA
+##   Robust Comparative Fit Index (CFI)                         0.916
+##   Robust Tucker-Lewis Index (TLI)                            0.878
 ## 
 ## Loglikelihood and Information Criteria:
 ## 
 ##   Loglikelihood user model (H0)              -3975.960   -3975.960
+##   Scaling correction factor                                  1.222
+##     for the MLR correction
 ##   Loglikelihood unrestricted model (H1)      -3862.702   -3862.702
+##   Scaling correction factor                                  1.091
+##     for the MLR correction
 ## 
 ##   Number of free parameters                         65          65
 ##   Akaike (AIC)                                8081.919    8081.919
@@ -98,8 +105,8 @@ summary(fit8, fit.measures=T, standardized=T, rsquare=T)</code></pre>
 ##   90 Percent Confidence Interval          0.054  0.081       0.052  0.079
 ##   P-value RMSEA &lt;= 0.05                          0.020       0.030
 ## 
-##   Robust RMSEA                                                  NA
-##   90 Percent Confidence Interval                                NA     NA
+##   Robust RMSEA                                               0.067
+##   90 Percent Confidence Interval                             0.052  0.080
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -143,7 +150,7 @@ summary(fit8, fit.measures=T, standardized=T, rsquare=T)</code></pre>
 ##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
 ##   int ~                                                                 
 ##     ysr8anxd          0.121    0.042    2.919    0.004    0.100    0.368
-##     sex1              0.071    0.254    0.280    0.779    0.058    0.029
+##     sex1              0.071    0.254    0.280    0.780    0.058    0.029
 ##     c.pfs            -0.097    0.163   -0.593    0.553   -0.080   -0.064
 ##     c.shy             0.408    0.183    2.227    0.026    0.335    0.213
 ##     c.mospt          -0.337    0.186   -1.814    0.070   -0.277   -0.153

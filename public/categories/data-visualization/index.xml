@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data Visualization on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/categories/data-visualization/</link>
+    <link>https://mgb-research.netlify.com/categories/data-visualization/</link>
     <description>Recent content in Data Visualization on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/categories/data-visualization/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
-      <link>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <link>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <guid>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
       <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
 Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
     </item>
     
     <item>
       <title>RMarkdown is the Most Powerful Codebook Maker You Can Find for Your Datasets</title>
-      <link>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
+      <link>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
       <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
+      <guid>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
       <description>You worked hard to collect, clean, and process your data. Now your dataset is finally ready for that final step. That put a bow on it and send it to all your colleagues phase. You are at that moment when you release a deep sigh of relief at the end of the hard (sometimes underappreciated) work of data wrangling. Now you have to make something that communicates all that you have done.</description>
     </item>
     
     <item>
       <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>/post/interaction-plots-with-continuous-moderators-in-r/</link>
+      <link>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/interaction-plots-with-continuous-moderators-in-r/</guid>
+      <guid>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</description>
     </item>
     

@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bayesian on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>/tags/bayesian/</link>
+    <link>https://mgb-research.netlify.com/tags/bayesian/</link>
     <description>Recent content in Bayesian on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/bayesian/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/bayesian/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
-      <link>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
       <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
-      <description>Overview:This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
-Data Brief Description:The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
+      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <description>Overview: This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
+Data Brief Description: The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
     </item>
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>
-      <link>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
+      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
       <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
-      <description>Overview:This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</description>
+      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
+      <description>Overview: This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/post/gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gaussian-process-imputation-models/</guid>
+      <guid>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</guid>
       <description>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</description>
     </item>
     
