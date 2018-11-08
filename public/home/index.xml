@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Homes on Matt Barstead&#39;s Research, Blog, &amp; Repository</title>
-    <link>https://mgb-research.netlify.com/home/</link>
-    <description>Recent content in Homes on Matt Barstead&#39;s Research, Blog, &amp; Repository</description>
+    <title>Homes on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
+    <link>/home/</link>
+    <description>Recent content in Homes on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Wed, 20 Apr 2016 00:00:00 -0400</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/home/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/home/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>https://mgb-research.netlify.com/home/about/</link>
+      <link>/home/about/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/about/</guid>
-      <description>Biography I am currently a doctoral candidate in the Department of Human Development and Quantitative Methodology at the University of Maryland. To date, much of my work has focused on identifying individual and contextual factors that serve to maintain and exacerbate maladaptive social and emotional development, with a primary focus on anxiety, depression, and social withdrawal. Recently, my research has grown to include the measurement of autonomic dysregulation as a biomarker of deficient self-regulatory capacities.</description>
+      <guid>/home/about/</guid>
+      <description>Biography I recently received my Ph.D. from the Department of Human Development and Quantitative Methodology at the University of Maryland. To date, much of my work has focused on identifying individual and contextual factors that serve to maintain and exacerbate maladaptive social and emotional development, with a primary focus on anxiety, depression, and social withdrawal. Recently, my research has grown to include the measurement of autonomic dysregulation as a biomarker of deficient self-regulatory capacities.</description>
     </item>
     
     <item>
       <title>Projects</title>
-      <link>https://mgb-research.netlify.com/home/projects/</link>
+      <link>/home/projects/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/projects/</guid>
+      <guid>/home/projects/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Posts</title>
-      <link>https://mgb-research.netlify.com/home/posts/</link>
+      <link>/home/posts/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/posts/</guid>
+      <guid>/home/posts/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Selected Publications</title>
-      <link>https://mgb-research.netlify.com/home/publications_selected/</link>
+      <link>/home/publications_selected/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/publications_selected/</guid>
+      <guid>/home/publications_selected/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Recent Publications</title>
-      <link>https://mgb-research.netlify.com/home/publications/</link>
+      <link>/home/publications/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/publications/</guid>
+      <guid>/home/publications/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>https://mgb-research.netlify.com/home/contact/</link>
+      <link>/home/contact/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>https://mgb-research.netlify.com/home/contact/</guid>
+      <guid>/home/contact/</guid>
       <description></description>
     </item>
     

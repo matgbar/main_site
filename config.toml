@@ -7,7 +7,7 @@ baseurl = "https://mgb-research.netlify.com/"
 #relativeurls = false
 
 # Title of your site
-title = "Matt Barstead's Research, Blog, & Repository"
+title = "Matthew Barstead, Ph.D.: Research, Repository, & Blog"
 
 # Your copyright notice - appears in site footer.
 # To display a copyright symbol, type `&copy;`.
@@ -56,7 +56,7 @@ enableGitInfo = false
 
   # Your details.
   name = "Matthew Barstead"
-  role = "Doctoral Candidate of Human Development & Quantitative Methodology"
+  role = "Ph.D. (Human Development & Quantitative Methodology)"
 
   # Organizations/Affiliations.
   #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
