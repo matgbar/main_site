@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>IBI VizEdit on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>/categories/ibi-vizedit/</link>
+    <link>https://mgb-research.netlify.com/categories/ibi-vizedit/</link>
     <description>Recent content in IBI VizEdit on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/ibi-vizedit/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/categories/ibi-vizedit/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
-      <link>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <link>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <guid>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
       <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
 Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
     </item>

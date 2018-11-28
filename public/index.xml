@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>/</link>
+    <link>https://mgb-research.netlify.com/</link>
     <description>Recent content in Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
-      <link>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
       <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
       <description>&lt;div id=&#34;overview&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Overview:&lt;/h1&gt;
 &lt;p&gt;This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and &lt;a href=&#34;https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/&#34;&gt;check it out&lt;/a&gt;. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.&lt;/p&gt;
@@ -94,7 +94,7 @@ g4&amp;lt;-ggplot()+
   xlab(&amp;#39;&amp;#39;)
 
 print(cowplot::plot_grid(g1, g2, g3, g4))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The good news is that the imputed values largely follow the same distribution as the original values. Having assessed convergence and now the actual imputation results, I feel pretty good about the results. I am now ready to move on to the actual analysis, which will be reviewed in the final post in this series.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
@@ -126,10 +126,10 @@ print(cowplot::plot_grid(g1, g2, g3, g4))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
-      <link>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <link>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <guid>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
       <description>&lt;p&gt;It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.&lt;/p&gt;
 &lt;p&gt;Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data. We used a photoplethysmogram to measure changes in light absorption in a local capillary bed, in this case the child’s fingertip. As blood flows through the capillary bed in sync with the beating heart, the amount of light absorbed by the underlying tissue varies, particularly within certain wavelengths. With this knowledge and a sufficiently high sampling rate (we used 2000 Hz), you can readily record heart beats using a relatively low-cost sensor.&lt;/p&gt;
 &lt;p&gt;Individual heart rate data contains a surprising amount of information that can be used to predict an individual’s cognitive and affective states as well as predict global mental and physical health outcomes. Paired with specific tasks, we can get a sense of how effective the autonomic nervous system is at regulating internal states that are designed to potentiate certain response patterns (i.e., fleeing, fighting, freezing, behaviors).&lt;/p&gt;
@@ -155,7 +155,7 @@ g1&amp;lt;-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
   guides(fill=FALSE, color=FALSE)+
   ggtitle(&amp;#39;Distribution of Respiratory Sinus Arrhythmia as a Function of Task&amp;#39;)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention taks (Kids) are higher than the median RSA values for the two distressing tasks.&lt;/p&gt;
 &lt;p&gt;I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats) to show a similar pattern.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df.m&amp;lt;-reshape2::melt(dat.HP[,2:7])
@@ -176,7 +176,7 @@ g2&amp;lt;-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
   ggtitle(&amp;#39;Distribution of Heart Period as a Function of Task&amp;#39;)
 
 g2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Lo and behold largely the same pattern. This is good for me so far. So let’s see if it passes a strict inferential test. Do the two distressing tasks each reliably depress heart rate variability (in the form of respiratory sinus arrhythmia) and average heart period?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.RSA&amp;lt;-lmer(RSA~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -218,12 +218,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8358773  6.52089748
-## 2        Clown -0.5835501 -0.02414472
-## 3       Video2 -0.2309102  0.29280134
-## 4         Kids -0.3630877  0.16442208
-## 5        Intro -0.6471267 -0.11429068
-## 6       Video3 -0.3483911  0.18475985&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8434573  6.52016434
+## 2        Clown -0.5865268 -0.02192026
+## 3       Video2 -0.2346572  0.29326865
+## 4         Kids -0.3667203  0.16051700
+## 5        Intro -0.6460410 -0.11967479
+## 6       Video3 -0.3475177  0.18078148&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -265,12 +265,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58279088  0.629071789
-## 2        Clown -0.03817193 -0.009781127
-## 3       Video2 -0.01908186  0.009332796
-## 4         Kids -0.01480906  0.013192569
-## 5        Intro -0.04392178 -0.015244545
-## 6       Video3 -0.02279506  0.005178729&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58248742  0.629514520
+## 2        Clown -0.03839616 -0.009716458
+## 3       Video2 -0.01933405  0.009232188
+## 4         Kids -0.01541093  0.013376466
+## 5        Intro -0.04398402 -0.015376684
+## 6       Video3 -0.02351053  0.005492370&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>
@@ -278,10 +278,10 @@ print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>RMarkdown is the Most Powerful Codebook Maker You Can Find for Your Datasets</title>
-      <link>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
+      <link>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
       <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
+      <guid>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
       <description>&lt;p&gt;You worked hard to collect, clean, and process your data. Now your dataset is finally ready for that final step. That put a bow on it and send it to all your colleagues phase. You are at that moment when you release a deep sigh of relief at the end of the hard (sometimes underappreciated) work of data wrangling. Now you have to make something that communicates all that you have done. A dataset is often only as good as its documentation. After all, it is rarely &lt;em&gt;only&lt;/em&gt; you, the person hunched over his/her computer for the past 2 weeks learning every nook and cranny of the data, who is going to need understand and explore the data’s contents. You can have different people ask you a million and one questions about where everything is and how it was all coded.&lt;/p&gt;
 &lt;p&gt;Or…&lt;/p&gt;
 &lt;p&gt;You could create a manual that is complete, easy to you use, readily tweakable, completely reproducible, and 100% shareable. Having made a couple of manuals in my time as a former camp director and current Ph.D. candidate, I appreciate well-put-together informational resources that I can consult to quickly find the answer I want.&lt;/p&gt;
@@ -291,10 +291,10 @@ print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>/post/interaction-plots-with-continuous-moderators-in-r/</link>
+      <link>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/interaction-plots-with-continuous-moderators-in-r/</guid>
+      <guid>https://mgb-research.netlify.com/post/interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>&lt;p&gt;Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.&lt;/p&gt;
 &lt;p&gt;It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper &lt;a href=&#34;https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/&#34;&gt;here&lt;/a&gt;. These data come from the &lt;em&gt;Friendship Project&lt;/em&gt; and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose.&lt;/p&gt;
 &lt;p&gt;To understand the data and models, here is some additional information:&lt;/p&gt;
@@ -555,7 +555,7 @@ g1&amp;lt;-ggplot(DF.temp)+
 
 
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-07-12-interaction-plots-with-continuous-moderators-in-r_files/figure-html/graph2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-07-12-interaction-plots-with-continuous-moderators-in-r_files/figure-html/graph2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;And voila! To me, the greatest value of this approach is that I can see exactly where 0 is included in the 95% confidence band and where the value falls outside the confidence band. For instance, in the plot above, I can easily see that the model would only predict a significant and positive association between shyness and dispositional negativity for adolescents with lower levels of self-reported maternal relationship quality.&lt;/p&gt;
 &lt;p&gt;Note that you may have to change the y-axis scaling to get the plot to display correctly. Otherwise, you now never have to ever ever plot the interaction between two continuous variables using a pair of static variables.&lt;/p&gt;
 </description>
@@ -563,10 +563,10 @@ g1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>
-      <link>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
+      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
       <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
+      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
       <description>&lt;div id=&#34;overview&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;Overview:&lt;/h1&gt;
 &lt;p&gt;This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).&lt;/p&gt;
@@ -599,7 +599,7 @@ g1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;code&gt;miss&lt;/code&gt;: 1 if missing EMA measures, 0 if not (more on this later)&lt;/p&gt;
 &lt;p&gt;In this study design, missingness is possible in any one of the EMA variables, though in practice if one of the four scores in question were missing, all scores for that period were typically missing (only 2 instances when this was not the case - see figure below). To understand missingness in this data set a little better, let’s take a closer look, now that we have a better understanding of what every variable represents.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mice::md.pattern(dat.study1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/missing-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/missing-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;##      ID c.DN BFI_O BFI_C BFI_E BFI_A Dep Gender IMP c.Worst c.Best NegAff
 ## 7003  1    1     1     1     1     1   1      1   1       1      1      1
 ## 2     1    1     1     1     1     1   1      1   1       1      1      1
@@ -623,7 +623,7 @@ g1&lt;/code&gt;&lt;/pre&gt;
       )
     ]
   )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/VIM-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/VIM-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So now I can see that I am missing about 20% of data related to momentary events and mood. The next question is whether any of the individual-level variables available to me are related to missingness. First, I am going to need a indicator of missingness.&lt;/p&gt;
 &lt;p&gt;Let’s begin by getting a missingness variable in a new missing data set. Grabbing just the comlumns that I need from the original:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dat.miss&amp;lt;-data.frame(
@@ -675,7 +675,7 @@ g4&amp;lt;-ggplot(
 
 gridExtra::grid.arrange(g1, g2, g3, g4,
                         nrow=2)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There is not much here that would suggest that missingness was related to these personality scores. The distributions look pretty similar. This is an empirical question, though and it is possible, therefore, to determine if any of these measures predict the likelihood of missingness. I am also not considering the nested nature of the data here, just plotting in an absolute sense. To address the issue on more empirical grounds then, I can use the &lt;code&gt;lmer&lt;/code&gt; package.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit.miss&amp;lt;-glmer(
   miss~1+BFI_O+BFI_C+BFI_E+BFI_A+(1|ID), 
@@ -720,7 +720,7 @@ g6&amp;lt;-ggplot(
 
 gridExtra::grid.arrange(g5, g6,
                         nrow=1)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There is a little bit of a right shift in the distribution of DN scores when split by missing vs. complete. Since the two variables (depression and dispostional negativity scores) are also pretty strongly correlated (introducing a good deal of multicollinearity in the model), I am just going to use the dispositional negativity variable as it is most similar to the other personality variables examined above (also it is going in my model anyway). I also want to check to make sure that gender is not a factor in completion rates.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit.miss2&amp;lt;-glmer(
   miss~1+c.DN+Gender+(1|ID), 
@@ -754,28 +754,28 @@ fit.boot2&amp;lt;-bootMer(fit.miss2,
     
     <item>
       <title>Generalization of an early intervention for inhibited preschoolers to the classroom setting</title>
-      <link>/publication/barstead_etal_2018_jcfs/</link>
+      <link>https://mgb-research.netlify.com/publication/barstead_etal_2018_jcfs/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>/publication/barstead_etal_2018_jcfs/</guid>
+      <guid>https://mgb-research.netlify.com/publication/barstead_etal_2018_jcfs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Withdrawing from the peer group</title>
-      <link>/publication/rubin_etal_2018_handbook/</link>
+      <link>https://mgb-research.netlify.com/publication/rubin_etal_2018_handbook/</link>
       <pubDate>Sun, 01 Jul 2018 00:00:00 -0400</pubDate>
       
-      <guid>/publication/rubin_etal_2018_handbook/</guid>
+      <guid>https://mgb-research.netlify.com/publication/rubin_etal_2018_handbook/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <guid>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
       <description>&lt;p&gt;Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (&lt;span class=&#34;math inline&#34;&gt;\(\alpha = .05\)&lt;/span&gt;) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).&lt;/p&gt;
 &lt;p&gt;We collected measures of these variables at three time points, approximately evenly spaced apart, and, for the purposes of these analyses, I decided to treat the data as if they were collected at precisely the same equally spaced interval for all participants. Though this is not technically true, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important depending on your measures and design.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The Problem:&lt;/strong&gt; In short, I need a reasonable population model for my data. Ideally, this model is grounded in both theory and empirical findings.&lt;/p&gt;
@@ -832,7 +832,7 @@ g1&amp;lt;-ggplot(data=DF.temp)+
   geom_line(aes(x=Time.vals, y=pred.y, group = ID, color=ID), lty=&amp;#39;dashed&amp;#39;, alpha=.75)+
   geom_smooth(aes(x=Time.vals, y=pred.y, group=ID, color=ID), method = &amp;#39;lm&amp;#39;, se=F)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Looking at the plot above, let’s see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. Of course, I would need to inspect a larger number of randomly generated datasets (according to my population model) to know for sure. I recommend plotting 10-15 randomly generated data sets and ensuring that the average change and individual heterogeneity of change approximate your expectations.&lt;/p&gt;
 &lt;p&gt;Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both.&lt;/p&gt;
 &lt;p&gt;Though true, this framework encourages thinking at the level of the overall effect. We often turn to meta-analyses or other reviews that have attempt to describe or define the population-level effect. Less often do these sorts of reviews speak to individual variability from mean estimates.&lt;/p&gt;
@@ -949,11 +949,11 @@ for(s in 1:n.sims){
 #Selecting only certain columns related to fixed effects 
 bayesplot::mcmc_dens(dat_small[,c(1:2,6:7)])+
   ggtitle(&amp;#39;Variances of Slope Estimates - Small Effect Model&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/pow_sum-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/pow_sum-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;What about some of the basic properties of the data? Was the average linear effect relatively small (which was the goal of this analysis after all)? What about the intra-class correlations returned by each data set; were they reasonable given the design and expectations based on similar data sets?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bayesplot::mcmc_dens(dat_small[,12:13])+
   ggtitle(&amp;#39;Model Diagnostics - Small Effect Model&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/plot_diag-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/plot_diag-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;I would say yes to both. The maximum a posteriori estimate (MAPE) for standardized average change is:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;median(dat_small$CohensD)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## [1] -0.3826507&lt;/code&gt;&lt;/pre&gt;
@@ -975,15 +975,15 @@ mean(sig)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/post/gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gaussian-process-imputation-models/</guid>
+      <guid>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</guid>
       <description>&lt;p&gt;A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.&lt;/p&gt;
 &lt;p&gt;The models below will make use of the preloaded &lt;code&gt;AirPassengers&lt;/code&gt; data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;#39;AirPassengers&amp;#39;)
 plot(AirPassengers)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data.&lt;/p&gt;
 &lt;p&gt;A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;Python&lt;/code&gt; packages that allow researchers to use this modeling approach. I have become something of a &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; convert recently, but it is not the only option out there.&lt;/p&gt;
 &lt;p&gt;The authoritative text on Gaussian process models was arguably published by &lt;a href=&#34;http://www.gaussianprocess.org/gpml/chapters/RW.pdf&#34;&gt;Rasumssen &amp;amp; Williams in 2006&lt;/a&gt;, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp;amp; Williams (2006) text as a starting point.&lt;/p&gt;
@@ -1132,7 +1132,7 @@ summary(fit.stan1, pars=pars.to.monitor[-4])$summary&lt;/code&gt;&lt;/pre&gt;
 ## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;… and traceplots demonstrate good mixing.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;traceplot(fit.stan1, pars=c(&amp;#39;a1&amp;#39;, &amp;#39;r1&amp;#39;, &amp;#39;sigma_sq&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So the real question is how did the model do?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan1, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
 
@@ -1154,7 +1154,7 @@ g1&amp;lt;-ggplot()+
   geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
   geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.&lt;/p&gt;
 &lt;p&gt;The new periodic covariance function is:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[k(t,t&amp;#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&amp;#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&amp;#39;)^2}{2l_3^2}\Big)\]&lt;/span&gt;&lt;/p&gt;
@@ -1304,7 +1304,7 @@ summary(fit.stan2, pars=pars.to.monitor[-6])$summary&lt;/code&gt;&lt;/pre&gt;
 ## r2  0.700328139  0.7850996  1.00378065 2720.9169 1.000556
 ## r3 19.220095144 25.4484115 45.91201691  232.5309 1.026833&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;traceplot(fit.stan2, pars=pars.to.monitor[-6])&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Ypred&amp;lt;-10^colMeans(extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred)
 
 Ypred.DF&amp;lt;-extract(fit.stan2, pars=&amp;#39;Ypred&amp;#39;)$Ypred
@@ -1325,7 +1325,7 @@ g1&amp;lt;-ggplot()+
   geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
   geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;(fit &amp;lt;- arima(log10(AirPassengers), c(0, 1, 1),
               seasonal = list(order = c(0, 1, 1), period = 12)))&lt;/code&gt;&lt;/pre&gt;
@@ -1369,7 +1369,7 @@ g1&amp;lt;-ggplot()+
                      values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
                      labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;https://mgb-research.netlify.com/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
 The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
 &lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
 </description>
@@ -1377,56 +1377,56 @@ The two models make fairly similar predictions for 1961 (shaded regions represen
     
     <item>
       <title>Dispositional negativity in the wild: Social environment governs momentary emotional experience</title>
-      <link>/publication/shackman_etal_2017_emotion/</link>
+      <link>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/shackman_etal_2017_emotion/</guid>
+      <guid>https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Interpersonal predictors of stress generation: Is there a super factor?</title>
-      <link>/publication/shih_etal_2017_bjop/</link>
+      <link>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/shih_etal_2017_bjop/</guid>
+      <guid>https://mgb-research.netlify.com/publication/shih_etal_2017_bjop/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</title>
-      <link>/publication/smith_etal_2017_joya/</link>
+      <link>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/smith_etal_2017_joya/</guid>
+      <guid>https://mgb-research.netlify.com/publication/smith_etal_2017_joya/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support</title>
-      <link>/publication/barstead_etal_2017_jora/</link>
+      <link>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</link>
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
-      <guid>/publication/barstead_etal_2017_jora/</guid>
+      <guid>https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Callous Unemotional Meta-Analysis</title>
-      <link>/project/cu-meta/</link>
+      <link>https://mgb-research.netlify.com/project/cu-meta/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/cu-meta/</guid>
+      <guid>https://mgb-research.netlify.com/project/cu-meta/</guid>
       <description>&lt;p&gt;&lt;strong&gt;Abstract:&lt;/strong&gt; Callous-unemotional (CU) traits are central to our understanding of antisocial behavior, which is harmful, financially costly to society, and hard to treat. Theoretical and diagnostic models define CU traits based on a lack of empathy, guilt, and prosociality. However, there has been no comprehensive quantitative synthesis of results to support this claim, nor any examination of whether associations differ by age, gender, sample type, or informant. Given its centrality to our understanding and treatment of antisocial behavior, the time is ripe for a critical examination of the meaning of the CU traits construct, including associations with its purported underlying features of low empathy, guilt, and prosociality, and potential demographic and methodological moderators of these associations. To address this gap in the literature, we conducted a systematic search of the literature on CU traits and identified 82 effect sizes from 51 studies (&lt;em&gt;N&lt;/em&gt; = 30,475) that quantified the magnitude of the association between CU traits and either empathy, prosociality, or guilt. The results revealed statistically significant, modest-to-moderate negative correlations between CU traits and empathy (&lt;em&gt;k&lt;/em&gt; = 25, $\rho$  = -.21), CU traits and guilt (&lt;em&gt;k&lt;/em&gt; = 3, $\rho$ = -.18), and CU traits and prosociality (&lt;em&gt;k&lt;/em&gt; = 16, $\rho$ = -.28). The magnitude of the negative association between CU traits and prosociality was stronger among younger children. In addition, the negative correlations between CU traits and both prosociality and cognitive empathy were stronger when the informant was a parent or teacher. We discuss how these findings can inform theory, conceptualization, and measurement of CU traits across the lifespan, as well as implications for models of antisocial behavior and moral development.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation Models</title>
-      <link>/project/gp/</link>
+      <link>https://mgb-research.netlify.com/project/gp/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
       
-      <guid>/project/gp/</guid>
+      <guid>https://mgb-research.netlify.com/project/gp/</guid>
       <description>&lt;p&gt;I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34; target=&#34;_blank&#34;&gt;blog post&lt;/a&gt; on the topic for more information and a toy forecasting problem.&lt;/p&gt;
 
 &lt;p&gt;I am currently working on a study examining the effectiveness of these models in imputing heart rate data that has been severely corrupted by artifact - to the point that there is not &amp;ldquo;enough&amp;rdquo; true signal remaining to do much of anything with.&lt;/p&gt;
