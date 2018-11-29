@@ -19,7 +19,7 @@ weight = 1
 
 # List your qualifications (such as academic degrees).
 [[education.courses]]
-  course = "PhD in Human Development & Quantitative Methodology (ongoing)"
+  course = "PhD in Human Development & Quantitative Methodology"
   institution = "University of Maryland, College Park"
   year = 2018
 

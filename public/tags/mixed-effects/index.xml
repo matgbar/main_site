@@ -2,51 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mixed-Effects on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>https://mgb-research.netlify.com/tags/mixed-effects/</link>
+    <link>/tags/mixed-effects/</link>
     <description>Recent content in Mixed-Effects on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/tags/mixed-effects/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/mixed-effects/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
-      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <link>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
       <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
       <description>Overview: This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
 Data Brief Description: The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
     </item>
     
     <item>
       <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
-      <link>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <link>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <guid>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
       <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
 Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
     </item>
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>
-      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
+      <link>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
       <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
+      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
       <description>Overview: This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</description>
     </item>
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <guid>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
       <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</description>
     </item>
     
