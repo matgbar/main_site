@@ -17,11 +17,11 @@
       
       <guid>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
       <description>&lt;p&gt;I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.D. could bring to bear in a social exchange. Not a good look when you are hunting for a job.&lt;/p&gt;
-&lt;p&gt;I bristle at the distinction between statistics and machine learning, in part, because, &lt;em&gt;statistical modeling&lt;/em&gt; &lt;strong&gt;is&lt;/strong&gt; on my resume. Links to statistical programs that I have created and to this very site are on there as well. References to published work with statistical models I have built and iterated through can also be found on the document. But, I make no overt statements about machine learning algorithms or their use in my work. I would be less annoyed if it were not the case that machine learning is just plain sexier than statistics these days. Machine learning is a buzz word that encapsulates all the possibility in the world for implementing cutting-edge, data-driven solutions to real-world problems. Statistics is the ugly cousin of machine learning that just so happens to make machine learning possible in the first place!&lt;/p&gt;
-&lt;p&gt;Some might argue that the &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34;&gt;Gaussian process models&lt;/a&gt; I work with are machine learning models &lt;span class=&#34;citation&#34;&gt;(Rasmussen and Williams 2006)&lt;/span&gt;. To me, they are mathematical expressions (i.e., models) that are used to explain a covariance matrix (sounds pretty statistics-y right?). I use a Bayesian estimation approach, in which a program, guided by certain rejection rules explores values of parameters until it converges on a likely distribution given the data and prior assumptions about the distribution of the parameters (sounds sort of machine learning-y right?). I could have just as easily specified the same model in a maximum likelihood estimation framework, in which, the most likely point estimates for the population values of the parameters would be determined given the data by minimizing the loglikelihood.&lt;/p&gt;
-&lt;p&gt;If you fell asleep a little bit when reading those last two sentences, I don’t blame you. The point is that these models are statistical models &lt;em&gt;and&lt;/em&gt; they are machine learning models. In the end all statistical models have some sort of algorithm that guides decisions about parameter estimates and/or predicted values. The data goes into the model, the machine (i.e., computer) identifies some set of likely parameter or predicted values based on the rules for the given model, and the end user gets a bunch of output they can use to make sense of the raw data fed into the program in the first place.&lt;/p&gt;
-&lt;p&gt;I am not the first person to struggle with the relevance of distinguishing between statistical models and machine learning models &lt;span class=&#34;citation&#34;&gt;(O’Neil and Schutt 2014; Bzdok, Altman, and Krzywinksi 2018)&lt;/span&gt;. Honestly, it seems to come down to a distinction between the terms commonly employed in a given field, with computer science and data science folks often preferring machine learning over statistical modeling &lt;span class=&#34;citation&#34;&gt;(O’Neil and Schutt 2014)&lt;/span&gt;. I do want to avoid being too glib, though, in my blurring of the lines between these two categories of data analysis, as there may be some value in separating the development of models to explain phenomena (statistical models) and the creation of data-based predictions about phenomena while remaining relatively agnostic about the underlying data-generating process (machine learning models).&lt;/p&gt;
-&lt;p&gt;What I plan to do with the remainder of this post is use some publicly available data sets to walk through a few different implementations of statistical and machine learning models, comparing their outputs and touching briefly on meaningful differneces and potential applications. I’ll briefly review implementations of &lt;em&gt;k&lt;/em&gt;-means, &lt;em&gt;k&lt;/em&gt; nearest neighbor, mixture modeling (latent profile analysis), discriminant analysis, naive Bayes classifier, logistic regression, random forest, and a simple neural network.&lt;/p&gt;
+&lt;p&gt;I bristle at the distinction between statistics and machine learning, in part, because, &lt;em&gt;statistical modeling&lt;/em&gt; &lt;strong&gt;is&lt;/strong&gt; on my resume. Links to statistical programs that I have created and to this very site are on there as well. References to published work with statistical models I have built and iterated through can also be found on the document. But, I make no overt statements about machine learning algorithms or their use in my work. I would be less annoyed if it were not the case that machine learning is just plain sexier than statistics these days. Machine learning is a buzz word that encapsulates all the amazing possibilities that exist for implementing cutting-edge, data-driven solutions to real-world problems. Statistics is the ugly cousin of machine learning that just so happens to make machine learning possible in the first place!&lt;/p&gt;
+&lt;p&gt;Some might argue that the &lt;a href=&#34;https://mgb-research.netlify.com/post/gaussian-process-imputation-models/&#34;&gt;Gaussian process models&lt;/a&gt; I work with are machine learning models &lt;span class=&#34;citation&#34;&gt;(Rasmussen and Williams 2006)&lt;/span&gt;. To me, they are mathematical expressions (i.e., models) that are used to explain a covariance matrix (sounds pretty statistics-y right?). I use a Bayesian estimation approach, in which a program, guided by certain rejection rules explores values of parameters until it converges on a likely distribution given the data and prior assumptions about the distribution of the parameters (sounds sort of machine learning-y right?). I could have just as easily specified the same model in a maximum likelihood estimation framework, in which, the most likely estimates for the population values of the parameters would be determined given the data by minimizing the loglikelihood using a different sort of algorithm.&lt;/p&gt;
+&lt;p&gt;If you fell asleep a little bit when reading those last two sentences, I don’t blame you. The point is that these models are statistical models &lt;em&gt;and&lt;/em&gt; they are machine learning models. In the end, all statistical models have some sort of algorithm that guides decisions about parameter estimates and/or predicted values. The data go into the model, the machine (i.e., computer) identifies some set of likely parameter or predicted values based on the rules for the given model, and the end user gets a bunch of output they can use to make sense of the raw data fed into the program in the first place.&lt;/p&gt;
+&lt;p&gt;I am not the first person to struggle with the relevance of distinguishing between statistical models and machine learning models &lt;span class=&#34;citation&#34;&gt;(Bzdok, Altman, and Krzywinksi 2018; O’Neil and Schutt 2014)&lt;/span&gt;. Honestly, it seems to come down to a distinction between the terms commonly employed in a given field, with computer science and data science folks often preferring machine learning over statistical modeling &lt;span class=&#34;citation&#34;&gt;(O’Neil and Schutt 2014)&lt;/span&gt;. I do want to avoid being too glib, though, in my blurring of the lines between these two categories of data analysis, as there may be some value in separating the development of models to explain phenomena (statistical models) and the creation of data-based predictions about phenomena while remaining relatively agnostic about the underlying data-generating process (machine learning models).&lt;/p&gt;
+&lt;p&gt;So with this bubbling annoyance as my backdrop, I decided I should go ahead and apply different machine learning and statistical modeling approaches to a similar set of data problems. With the remainder of this post I plan to use publicly available data sets to walk through a few different implementations of statistical and machine learning models, comparing their outputs and touching briefly on meaningful differences and potential applications. I’ll briefly review implementations of &lt;em&gt;k&lt;/em&gt;-means, &lt;em&gt;k&lt;/em&gt; nearest neighbor, mixture modeling (latent profile analysis), discriminant analysis, naive Bayes classification, logistic regression, random forest, and a simple neural network.&lt;/p&gt;
 &lt;p&gt;I’ll be tackling the first three models/techniques in this post with future posts in this series tackling the remaining approaches.&lt;/p&gt;
 &lt;div id=&#34;k-means&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;&lt;em&gt;K&lt;/em&gt;-Means&lt;/h2&gt;
@@ -219,7 +219,7 @@ LRT&lt;/code&gt;&lt;/pre&gt;
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.680319680&lt;/code&gt;&lt;/pre&gt;
+## 3 vs 4    25.40075       0.690309690&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, &lt;span class=&#34;math inline&#34;&gt;\(p &amp;lt; .05\)&lt;/span&gt;, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.&lt;/p&gt;
 &lt;p&gt;The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_mix&amp;lt;-Mclust(iris[,1:4], G=3, modelNames = &amp;#39;VVV&amp;#39;)
@@ -555,12 +555,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8405414  6.52901132
-## 2        Clown -0.5847945 -0.01826568
-## 3       Video2 -0.2285945  0.28708353
-## 4         Kids -0.3635407  0.16120225
-## 5        Intro -0.6441773 -0.11850020
-## 6       Video3 -0.3434448  0.17975880&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8352769  6.51867371
+## 2        Clown -0.5768771 -0.02238059
+## 3       Video2 -0.2306422  0.29493910
+## 4         Kids -0.3609744  0.16351767
+## 5        Intro -0.6357144 -0.11662380
+## 6       Video3 -0.3402990  0.18374611&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -602,12 +602,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58262970  0.629694674
-## 2        Clown -0.03851250 -0.009486868
-## 3       Video2 -0.01910894  0.009149314
-## 4         Kids -0.01523421  0.013566780
-## 5        Intro -0.04391109 -0.015298466
-## 6       Video3 -0.02317315  0.005599826&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58270651  0.629339048
+## 2        Clown -0.03839161 -0.009660254
+## 3       Video2 -0.01948443  0.009329591
+## 4         Kids -0.01530346  0.013357233
+## 5        Intro -0.04383837 -0.015355520
+## 6       Video3 -0.02341521  0.005444559&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>
