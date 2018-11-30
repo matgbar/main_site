@@ -108,13 +108,13 @@ summary(fit.RSA)</code></pre>
 <pre class="r"><code>#Getting bootstrapped CIs for model results
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
-<pre><code>##           term   conf.low  conf.high
-## 1 X.Intercept.  5.8403149  6.5229862
-## 2        Clown -0.5768585 -0.0225876
-## 3       Video2 -0.2328610  0.2961096
-## 4         Kids -0.3662401  0.1639284
-## 5        Intro -0.6486382 -0.1137620
-## 6       Video3 -0.3469505  0.1854995</code></pre>
+<pre><code>##           term   conf.low   conf.high
+## 1 X.Intercept.  5.8477538  6.52056042
+## 2        Clown -0.5850222 -0.02170522
+## 3       Video2 -0.2349835  0.29476705
+## 4         Kids -0.3651076  0.15923593
+## 5        Intro -0.6473667 -0.11733670
+## 6       Video3 -0.3446063  0.17935175</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -156,11 +156,11 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58286562  0.629471052
-## 2        Clown -0.03830895 -0.009771437
-## 3       Video2 -0.01937930  0.009535130
-## 4         Kids -0.01539734  0.013623392
-## 5        Intro -0.04376046 -0.015456468
-## 6       Video3 -0.02344761  0.005584745</code></pre>
+## 1 X.Intercept.  0.58255117  0.629525857
+## 2        Clown -0.03838548 -0.009498890
+## 3       Video2 -0.01955566  0.009465409
+## 4         Kids -0.01517398  0.013466810
+## 5        Intro -0.04400257 -0.015228923
+## 6       Video3 -0.02329407  0.005507056</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>

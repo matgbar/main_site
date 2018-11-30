@@ -24,7 +24,7 @@ paginate = 10
 disqusShortname = ""
 
 # Enable analytics by entering your Google Analytics tracking ID
-googleAnalytics = ""
+googleAnalytics = "UA-130198222-1"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
@@ -288,6 +288,11 @@ enableGitInfo = false
   name = "Contact"
   url = "#contact"
   weight = 6
+  
+[[menu.main]]
+  name = "R-Bloggers"
+  url = "https://www.r-bloggers.com/"
+  weight = 7
   
 # Languages
 #   Create a [languages.X] block for each language you want, where X is the language ID.

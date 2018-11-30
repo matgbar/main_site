@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ML on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>https://mgb-research.netlify.com/tags/ml/</link>
+    <link>/tags/ml/</link>
     <description>Recent content in ML on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Thu, 29 Nov 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/tags/ml/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/ml/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</title>
-      <link>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
+      <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
       <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
+      <guid>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
       <description>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.</description>
     </item>
     
