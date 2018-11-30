@@ -12,7 +12,9 @@ weight = 1
   interests = [
     "Psychophysiology",
     "Heart Rate Variability",
-    "Child and Adolescent Social Development", 
+    "Data Science",
+    "Statistical Modeling", 
+    "Machine Learning",
     "R", 
     "Signal Processing"
   ]

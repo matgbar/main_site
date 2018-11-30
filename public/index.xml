@@ -218,8 +218,8 @@ LRT&lt;/code&gt;&lt;/pre&gt;
 ## Replications = 1000 
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
-## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.673326673&lt;/code&gt;&lt;/pre&gt;
+## 2 vs 3    68.33618       0.001998002
+## 3 vs 4    25.40075       0.701298701&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, &lt;span class=&#34;math inline&#34;&gt;\(p &amp;lt; .05\)&lt;/span&gt;, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.&lt;/p&gt;
 &lt;p&gt;The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_mix&amp;lt;-Mclust(iris[,1:4], G=3, modelNames = &amp;#39;VVV&amp;#39;)
@@ -555,12 +555,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8477538  6.52056042
-## 2        Clown -0.5850222 -0.02170522
-## 3       Video2 -0.2349835  0.29476705
-## 4         Kids -0.3651076  0.15923593
-## 5        Intro -0.6473667 -0.11733670
-## 6       Video3 -0.3446063  0.17935175&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8391699  6.51953131
+## 2        Clown -0.5752010 -0.02343634
+## 3       Video2 -0.2282198  0.29490926
+## 4         Kids -0.3621723  0.16060833
+## 5        Intro -0.6368015 -0.11470782
+## 6       Video3 -0.3395756  0.17780480&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -602,12 +602,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58255117  0.629525857
-## 2        Clown -0.03838548 -0.009498890
-## 3       Video2 -0.01955566  0.009465409
-## 4         Kids -0.01517398  0.013466810
-## 5        Intro -0.04400257 -0.015228923
-## 6       Video3 -0.02329407  0.005507056&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58232769  0.629570400
+## 2        Clown -0.03851423 -0.009299026
+## 3       Video2 -0.01968463  0.009678855
+## 4         Kids -0.01533817  0.013875335
+## 5        Intro -0.04405688 -0.015039807
+## 6       Video3 -0.02348049  0.005630745&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>
