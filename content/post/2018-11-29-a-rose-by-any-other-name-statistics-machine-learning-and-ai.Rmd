@@ -195,7 +195,7 @@ pred_new
 
 ## Mixture Modeling (Latent Profile Analysis)
 
-Our departure into mixture modeling represents the first "full-blown" foray into a statistical model. I'll start with the univariate case, as that tends to help people make sense of what a mixture model is trying to do. Taking a step back before an univariate it is worth asking, what value do these models hold? Well, sometimes when researchers obtain a sample of observations, it is possible that they may have sampled multiple, separate populations. These populations in turn, have their own univariate (or multivariate) distributions on target scores of interest. Mixture models offer a means of both a) identifying the maximally likely number of populations (i.e., separate distributions that were sampled) and b) probabilistically determining each case's membership in the sampled, but potentially unmeasured latent populations. 
+Our departure into mixture modeling represents the first "full-blown" foray into a statistical model. I'll start with the univariate case, as that tends to help people make sense of what a mixture model is trying to do. Taking a step back before displaying the univariate example it is worth asking, what value these models hold? Well, sometimes when researchers obtain a sample of observations, it is possible that they may have sampled multiple, separate populations. These populations in turn, have their own univariate (or multivariate) distributions on target scores of interest. Mixture models offer a means of both a) identifying the maximally likely number of populations (i.e., separate distributions that were sampled) and b) probabilistically determining each case's membership in the sampled, but potentially unmeasured latent populations. 
 
 With that, welcome to the world of maximum likelihood estimation!! For you stats folks out there, you will recognize the approach I am using here is frequentist (the package I use relies on the EM algorithm). That is not to say that there are not Bayesian extensions of these sorts of models, though. 
 
@@ -203,7 +203,7 @@ In a practical sense, there are two problems that a mixture modeling approach ha
 
 After negotiating this first step, the next challenge is to estimate the probability that a given case belongs to one class or the other. In a mixture model, the mean and the variances (and covariances in a multivariate classification problem) are used to create a posterior probability for each observed data point, and each case is then classified based on its highest posterior probability. 
 
-Below, as promised, is a simple demonstration of "mixed" univariate distribution. Imagine that I measured a random sample of men and women on height. Let's say that men in the population I sampled had an average height of 70 inches with a standard deviation of 4 inches (i.e., $N\sim(\mu_M=70, \sigma_M=4)$). By comparison, women in the population sampled had a mean height of 65 inches with a standard deviation of 3.5 inches (i.e., $N\sim(\mu_M=65, \sigma_F=3.5)$).
+Below, as promised, is a simple demonstration of a "mixed" univariate distribution. Imagine that I measured a random sample of men and women on height. Let's say that men in the population I sampled had an average height of 70 inches with a standard deviation of 4 inches (i.e., $N\sim(\mu_M=70, \sigma_M=4)$). By comparison, women in the population sampled had a mean height of 65 inches with a standard deviation of 3.5 inches (i.e., $N\sim(\mu_F=65, \sigma_F=3.5)$).
 
 ```{r LPA1}
 DF_mix_uni<-data.frame(Gender = c(rep('Male', 100),

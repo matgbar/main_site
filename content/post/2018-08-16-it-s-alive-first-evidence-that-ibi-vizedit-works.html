@@ -107,12 +107,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8352769  6.51867371
-## 2        Clown -0.5768771 -0.02238059
-## 3       Video2 -0.2306422  0.29493910
-## 4         Kids -0.3609744  0.16351767
-## 5        Intro -0.6357144 -0.11662380
-## 6       Video3 -0.3402990  0.18374611</code></pre>
+## 1 X.Intercept.  5.8433433  6.52840505
+## 2        Clown -0.5863485 -0.01767856
+## 3       Video2 -0.2368340  0.29894714
+## 4         Kids -0.3720094  0.16630235
+## 5        Intro -0.6469521 -0.11660838
+## 6       Video3 -0.3532932  0.18504016</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -154,11 +154,11 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58270651  0.629339048
-## 2        Clown -0.03839161 -0.009660254
-## 3       Video2 -0.01948443  0.009329591
-## 4         Kids -0.01530346  0.013357233
-## 5        Intro -0.04383837 -0.015355520
-## 6       Video3 -0.02341521  0.005444559</code></pre>
+## 1 X.Intercept.  0.58266526  0.629556614
+## 2        Clown -0.03828585 -0.009751051
+## 3       Video2 -0.01911395  0.009082456
+## 4         Kids -0.01494510  0.013210929
+## 5        Intro -0.04399951 -0.015343908
+## 6       Video3 -0.02304615  0.005138162</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>
