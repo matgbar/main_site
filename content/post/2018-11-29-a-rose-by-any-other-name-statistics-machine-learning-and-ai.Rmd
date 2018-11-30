@@ -1,20 +1,21 @@
 ---
-title: 'A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)'
-author: Matthew Barstead, Ph.D.
+title: 'A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of
+  3)'
+author: "Matthew Barstead, Ph.D."
 date: '2018-11-29'
-slug: a-rose-by-any-other-name-statistics-machine-learning-and-ai
 categories:
-  - Modeling
-  - Machine Learning
-tags:
-  - Predictive Modeling
-  - R
-  - Forecasting
-  - AI
-  - ML
+- Modeling
+- Machine Learning
 header:
   caption: ''
   image: ''
+slug: a-rose-by-any-other-name-statistics-machine-learning-and-ai
+tags:
+- Predictive Modeling
+- R
+- Forecasting
+- AI
+- ML
 bibliography: Stats_vs_ML_1.bib
 ---
 ```{r setup, include=FALSE}
@@ -150,7 +151,7 @@ fit_knn<-train(Species~.,
                method='knn', 
                trControl = trainControl(method='repeatedcv', 
                                         number = 15, 
-                                        repeats = 20, 
+                                        repeats = 50, 
                                         classProbs = TRUE, 
                                         summaryFunction = multiClassSummary),
                metric = 'AUC',
