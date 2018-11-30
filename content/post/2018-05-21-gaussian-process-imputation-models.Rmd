@@ -13,6 +13,7 @@ tags:
   - Gaussian Process
   - Forecasting
   - Predictive Modeling
+  - R-bloggers
 header:
   caption: ''
   image: ''

@@ -3,6 +3,7 @@ title: 'A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 o
   3)'
 author: "Matthew Barstead, Ph.D."
 date: '2018-11-29'
+baseurl: "https://mgb-research.netlify.com/"
 categories:
 - Modeling
 - Machine Learning
@@ -16,6 +17,7 @@ tags:
 - Forecasting
 - AI
 - ML
+- R-bloggers
 bibliography: Stats_vs_ML_1.bib
 ---
 ```{r setup, include=FALSE}

@@ -2,6 +2,7 @@
 title: Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)
 author: ''
 date: '2018-09-03'
+baseurl: "https://mgb-research.netlify.com/"
 slug: bayesian-multilevel-model-with-missing-data-complete-workflow-part-2
 categories:
   - Modeling
@@ -10,6 +11,7 @@ tags:
   - Missing Data
   - Mixed-Effects
   - Stan
+  - R-bloggers
 header:
   caption: ''
   image: ''

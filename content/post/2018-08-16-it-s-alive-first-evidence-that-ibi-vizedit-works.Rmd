@@ -2,6 +2,7 @@
 title: It's Alive! First Evidence that IBI VizEdit Works
 author: Matthew Barstead
 date: '2018-08-16'
+baseurl: "https://mgb-research.netlify.com/"
 slug: it-s-alive-first-evidence-that-ibi-vizedit-works
 categories:
   - Data Visualization
@@ -12,6 +13,7 @@ tags:
   - Mixed-Effects
   - R
   - Plotting
+  - R-bloggers
 header:
   caption: ''
   image: ''
@@ -57,14 +59,8 @@ raincloud_theme = theme(
   axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'))
 
 #################################################################################################
-wd<-'/home/mbarsted/Dropbox/UMD/Rubin Lab/SRCD2018'
-out.folder<-paste0(wd, '/Output')
-dir.create(out.folder)
 
-graphics.folder<-paste0(wd, '/Graphics')
-dir.create(graphics.folder)
-#################################################################################################
-dat.RSA<-read.csv(paste0(wd, '/RSA_15.csv'))
+dat.RSA<-read.csv( '~/GitHub/main_site/DFs/RSA_15.csv')
 
 dat.RSA.long<-reshape(dat.RSA, 
                   idvar = 'File',
@@ -88,7 +84,7 @@ dat.RSA.long$Clown<-ifelse(dat.RSA.long$Task=='Clown', 1, 0)
 dat.RSA.long$Kids<-ifelse(dat.RSA.long$Task=='Kids', 1, 0)
 dat.RSA.long$Intro<-ifelse(dat.RSA.long$Task=='Intro', 1, 0)
 
-dat.HP<-read.csv(paste0(wd, '/HP.csv'))
+dat.HP<-read.csv('~/GitHub/main_site/DFs/HP.csv')
 
 dat.HP.long<-reshape(dat.HP, 
                       idvar = 'File',

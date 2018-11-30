@@ -2,6 +2,7 @@
 title: 'Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3'
 author: Matthew Barstead
 date: '2018-07-05'
+baseurl: "https://mgb-research.netlify.com/"
 slug: bayesian-multilevel-model-with-missing-data-complete-work-flow
 categories:
   - Modeling
@@ -11,6 +12,7 @@ tags:
   - R
   - Stan
   - Missing Data
+  - R-bloggers
 header:
   caption: ''
   image: ''

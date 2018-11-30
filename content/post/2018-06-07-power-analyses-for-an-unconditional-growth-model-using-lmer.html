@@ -2,6 +2,7 @@
 title: Power Analyses for an Unconditional Growth Model using {lmer}
 author: Matthew Barstead
 date: '2018-06-07'
+baseurl: "https://mgb-research.netlify.com/"
 slug: power-analyses-for-an-unconditional-growth-model-using-lmer
 categories:
   - Sample Size
@@ -12,6 +13,7 @@ tags:
   - Power
   - Simulation
   - Mixed-Effects
+  - R-bloggers
 header:
   caption: ''
   image: ''
@@ -36,8 +38,7 @@ Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 <p><strong>Level 2 Equations:</strong><br />
 <span class="math display">\[
 \pi_{0i} = \beta_{00} + r_{0i}
-\]</span>
-<span class="math display">\[
+\]</span> <span class="math display">\[
 \pi_{1i} = \beta_{10} + r_{1i}
 \]</span></p>
 <p>As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.</p>

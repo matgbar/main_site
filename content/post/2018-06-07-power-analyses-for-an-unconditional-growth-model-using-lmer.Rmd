@@ -2,6 +2,7 @@
 title: Power Analyses for an Unconditional Growth Model using {lmer}
 author: Matthew Barstead
 date: '2018-06-07'
+baseurl: "https://mgb-research.netlify.com/"
 slug: power-analyses-for-an-unconditional-growth-model-using-lmer
 categories:
   - Sample Size
@@ -12,6 +13,7 @@ tags:
   - Power
   - Simulation
   - Mixed-Effects
+  - R-bloggers
 header:
   caption: ''
   image: ''
