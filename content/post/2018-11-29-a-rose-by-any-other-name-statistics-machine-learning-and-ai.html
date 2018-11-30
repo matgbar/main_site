@@ -20,8 +20,6 @@ bibliography: Stats_vs_ML_1.bib
 
 
 
-<div id="a-rose-by-any-other-name-statistics-machine-learning-and-ai" class="section level1">
-<h1>A Rose by Any Other Name: Statistics, Machine Learning, and AI</h1>
 <p>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.D. could bring to bear in a social exchange. Not a good look when you are hunting for a job.</p>
 <p>I bristle at the distinction between statistics and machine learning, in part, because, <em>statistical modeling</em> <strong>is</strong> on my resume. Links to statistical programs that I have created and to this very site are on there as well. References to published work with statistical models I have built and iterated through can also be found on the document. But, I make no overt statements about machine learning algorithms or their use in my work. I would be less annoyed if it were not the case that machine learning is just plain sexier than statistics these days. Machine learning is a buzz word that encapsulates all the possibility in the world for implementing cutting-edge, data-driven solutions to real-world problems. Statistics is the ugly cousin of machine learning that just so happens to make machine learning possible in the first place!</p>
 <p>Some might argue that the <a href="https://mgb-research.netlify.com/post/gaussian-process-imputation-models/">Gaussian process models</a> I work with are machine learning models <span class="citation">(Rasmussen and Williams 2006)</span>. To me, they are mathematical expressions (i.e., models) that are used to explain a covariance matrix (sounds pretty statistics-y right?). I use a Bayesian estimation approach, in which a program, guided by certain rejection rules explores values of parameters until it converges on a likely distribution given the data and prior assumptions about the distribution of the parameters (sounds sort of machine learning-y right?). I could have just as easily specified the same model in a maximum likelihood estimation framework, in which, the most likely point estimates for the population values of the parameters would be determined given the data by minimizing the loglikelihood.</p>
@@ -79,9 +77,9 @@ iris_kmeans$Cluster[iris_kmeans$Cluster==rownames(tab)[tab[,1]==max(tab[,1])]]&l
 table(iris_kmeans$Cluster, iris_kmeans$Species)</code></pre>
 <pre><code>##                     
 ##                      setosa versicolor virginica
-##   2                      17          4         0
-##   Setosa Cluster         33          0         0
-##   Versicolor Cluster      0         46        50</code></pre>
+##   Setosa Cluster         50          0         0
+##   Versicolor Cluster      0         39        14
+##   Virginica Cluster       0         11        36</code></pre>
 <p>We can see that the algorithm correctly clustered all of the setosa specimens, but had some difficulty differentiating bewteen the virginica and versicolor specimens. We can see this overlap when plotting the first two discriminant functions against one another.</p>
 <pre class="r"><code>plotcluster(iris[,1:4],fit_kmeans$cluster)</code></pre>
 <p><img src="/post/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai_files/figure-html/kmeans4-1.png" width="672" /></p>
@@ -144,8 +142,8 @@ table(pred, iris$Species)</code></pre>
 <pre><code>##             
 ## pred         setosa versicolor virginica
 ##   setosa         50          0         0
-##   versicolor      0         48         4
-##   virginica       0          2        46</code></pre>
+##   versicolor      0         48         3
+##   virginica       0          2        47</code></pre>
 <p>Compared to the <em>k</em>-means approach, we can see that the knn model, using 9 nearest neighborhoods, performs relatively well at separating versicolor and virginica specimens. Recall that <em>k</em>-means struggled making this distinction due to the two species’ overlap in distributions on several of the measures. A key added benefit of knn over <em>k</em>-means is that I can feed this model new data, and receive a species prediction, which is not possible with <em>k</em>-means.</p>
 <pre class="r"><code>#Note I chose values that are more consistent with the versicolor
 newdata&lt;-data.frame(Sepal.Length = .07, 
@@ -167,7 +165,7 @@ newdata&lt;-data.frame(Sepal.Length = .07,
 pred_new&lt;-predict(fit_knn, newdata = newdata, type=&#39;prob&#39;)
 pred_new</code></pre>
 <pre><code>##   setosa versicolor virginica
-## 1      0  0.8888889 0.1111111</code></pre>
+## 1      0          1         0</code></pre>
 </div>
 <div id="mixture-modeling-latent-profile-analysis" class="section level2">
 <h2>Mixture Modeling (Latent Profile Analysis)</h2>
@@ -225,7 +223,7 @@ LRT</code></pre>
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.696303696</code></pre>
+## 3 vs 4    25.40075       0.668331668</code></pre>
 <p>Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, <span class="math inline">\(p &lt; .05\)</span>, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.</p>
 <p>The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.</p>
 <pre class="r"><code>fit_mix&lt;-Mclust(iris[,1:4], G=3, modelNames = &#39;VVV&#39;)
@@ -347,7 +345,6 @@ pred_new</code></pre>
 </div>
 <div id="ref-RasmussenWilliams2006">
 <p>Rasmussen, C.E., and K.I. Williams. 2006. <em>Gaussian Processes for Machine Learning</em>. The MIT Press.</p>
-</div>
 </div>
 </div>
 </div>
