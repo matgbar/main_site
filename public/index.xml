@@ -124,7 +124,7 @@ cowplot::plot_grid(g1, g2, g3, g4, g5, g6, nrow=3)&lt;/code&gt;&lt;/pre&gt;
                method=&amp;#39;knn&amp;#39;, 
                trControl = trainControl(method=&amp;#39;repeatedcv&amp;#39;, 
                                         number = 15, 
-                                        repeats = 20, 
+                                        repeats = 50, 
                                         classProbs = TRUE, 
                                         summaryFunction = multiClassSummary),
                metric = &amp;#39;AUC&amp;#39;,
@@ -138,8 +138,8 @@ table(pred, iris$Species)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##             
 ## pred         setosa versicolor virginica
 ##   setosa         50          0         0
-##   versicolor      0         48         3
-##   virginica       0          2        47&lt;/code&gt;&lt;/pre&gt;
+##   versicolor      0         48         4
+##   virginica       0          2        46&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Compared to the &lt;em&gt;k&lt;/em&gt;-means approach, we can see that the knn model, using 9 nearest neighborhoods, performs relatively well at separating versicolor and virginica specimens. Recall that &lt;em&gt;k&lt;/em&gt;-means struggled making this distinction due to the two species’ overlap in distributions on several of the measures. A key added benefit of knn over &lt;em&gt;k&lt;/em&gt;-means is that I can feed this model new data, and receive a species prediction, which is not possible with &lt;em&gt;k&lt;/em&gt;-means.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Note I chose values that are more consistent with the versicolor
 newdata&amp;lt;-data.frame(Sepal.Length = .07, 
@@ -161,7 +161,7 @@ newdata&amp;lt;-data.frame(Sepal.Length = .07,
 pred_new&amp;lt;-predict(fit_knn, newdata = newdata, type=&amp;#39;prob&amp;#39;)
 pred_new&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   setosa versicolor virginica
-## 1      0          1         0&lt;/code&gt;&lt;/pre&gt;
+## 1      0  0.8888889 0.1111111&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;mixture-modeling-latent-profile-analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Mixture Modeling (Latent Profile Analysis)&lt;/h2&gt;
@@ -219,7 +219,7 @@ LRT&lt;/code&gt;&lt;/pre&gt;
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.668331668&lt;/code&gt;&lt;/pre&gt;
+## 3 vs 4    25.40075       0.680319680&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, &lt;span class=&#34;math inline&#34;&gt;\(p &amp;lt; .05\)&lt;/span&gt;, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.&lt;/p&gt;
 &lt;p&gt;The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_mix&amp;lt;-Mclust(iris[,1:4], G=3, modelNames = &amp;#39;VVV&amp;#39;)
@@ -555,12 +555,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8362444  6.52731252
-## 2        Clown -0.5770886 -0.02319598
-## 3       Video2 -0.2284496  0.29292978
-## 4         Kids -0.3597926  0.16271711
-## 5        Intro -0.6379274 -0.12070288
-## 6       Video3 -0.3414736  0.18240996&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8405414  6.52901132
+## 2        Clown -0.5847945 -0.01826568
+## 3       Video2 -0.2285945  0.28708353
+## 4         Kids -0.3635407  0.16120225
+## 5        Intro -0.6441773 -0.11850020
+## 6       Video3 -0.3434448  0.17975880&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -602,12 +602,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58239001  0.629571051
-## 2        Clown -0.03816723 -0.009666377
-## 3       Video2 -0.01916512  0.009358299
-## 4         Kids -0.01504491  0.013612036
-## 5        Intro -0.04393011 -0.015145748
-## 6       Video3 -0.02299386  0.005592849&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58262970  0.629694674
+## 2        Clown -0.03851250 -0.009486868
+## 3       Video2 -0.01910894  0.009149314
+## 4         Kids -0.01523421  0.013566780
+## 5        Intro -0.04391109 -0.015298466
+## 6       Video3 -0.02317315  0.005599826&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>

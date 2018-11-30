@@ -448,7 +448,7 @@ cowplot::plot_grid(g1, g2, g3, g4, g5, g6, nrow=3)</code></pre>
                method=&#39;knn&#39;, 
                trControl = trainControl(method=&#39;repeatedcv&#39;, 
                                         number = 15, 
-                                        repeats = 20, 
+                                        repeats = 50, 
                                         classProbs = TRUE, 
                                         summaryFunction = multiClassSummary),
                metric = &#39;AUC&#39;,
@@ -462,8 +462,8 @@ table(pred, iris$Species)</code></pre>
 <pre><code>##             
 ## pred         setosa versicolor virginica
 ##   setosa         50          0         0
-##   versicolor      0         48         3
-##   virginica       0          2        47</code></pre>
+##   versicolor      0         48         4
+##   virginica       0          2        46</code></pre>
 <p>Compared to the <em>k</em>-means approach, we can see that the knn model, using 9 nearest neighborhoods, performs relatively well at separating versicolor and virginica specimens. Recall that <em>k</em>-means struggled making this distinction due to the two species’ overlap in distributions on several of the measures. A key added benefit of knn over <em>k</em>-means is that I can feed this model new data, and receive a species prediction, which is not possible with <em>k</em>-means.</p>
 <pre class="r"><code>#Note I chose values that are more consistent with the versicolor
 newdata&lt;-data.frame(Sepal.Length = .07, 
@@ -485,7 +485,7 @@ newdata&lt;-data.frame(Sepal.Length = .07,
 pred_new&lt;-predict(fit_knn, newdata = newdata, type=&#39;prob&#39;)
 pred_new</code></pre>
 <pre><code>##   setosa versicolor virginica
-## 1      0          1         0</code></pre>
+## 1      0  0.8888889 0.1111111</code></pre>
 </div>
 <div id="mixture-modeling-latent-profile-analysis" class="section level2">
 <h2>Mixture Modeling (Latent Profile Analysis)</h2>
@@ -543,7 +543,7 @@ LRT</code></pre>
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.668331668</code></pre>
+## 3 vs 4    25.40075       0.680319680</code></pre>
 <p>Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, <span class="math inline">\(p &lt; .05\)</span>, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.</p>
 <p>The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.</p>
 <pre class="r"><code>fit_mix&lt;-Mclust(iris[,1:4], G=3, modelNames = &#39;VVV&#39;)
