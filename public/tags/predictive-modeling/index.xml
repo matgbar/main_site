@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Predictive Modeling on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>/tags/predictive-modeling/</link>
+    <link>https://mgb-research.netlify.com/tags/predictive-modeling/</link>
     <description>Recent content in Predictive Modeling on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 03 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/predictive-modeling/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/tags/predictive-modeling/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</title>
-      <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</link>
+      <link>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</link>
       <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</guid>
+      <guid>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</guid>
       <description>In the first post in this series, I described the impetus for this trek through statistical modeling, machine learning and artificial intelligence. I also provided an initial set of comparisons for three different approaches to classification: k-means, k-nearest neighbor, and latent profile analysis (model-based clustering). If you want to check those mini-walkthroughs out click here.
 As a reminder, my goal here is to compare and contrast different approaches to data analysis and predictive modeling that are, in my mind, arbitrarily lumped into statistical modeling and machine learing/artificial intelligence categories.</description>
     </item>
     
     <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</title>
-      <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
+      <link>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
       <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
+      <guid>https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
       <description>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.</description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/post/gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/post/gaussian-process-imputation-models/</guid>
+      <guid>https://mgb-research.netlify.com/post/gaussian-process-imputation-models/</guid>
       <description>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</description>
     </item>
     

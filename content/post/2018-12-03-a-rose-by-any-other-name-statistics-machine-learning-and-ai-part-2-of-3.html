@@ -44,7 +44,7 @@ odds_C_nsm&lt;-P_C_nsm/P_NC_nsm
 
 odds_C_sm/odds_C_nsm</code></pre>
 <pre><code>## [1] 3.935223</code></pre>
-<p>An odds ratio of 4.49 would seem to confirm my fictional probabilities result in the difference likelihood I wanted (i.e., smokers are 4x as likely to receive a cancer diagnosis). Now it is time to generate a random sample of each subpopulation. Let’s assume that smoking rates are relatively low in this population, say 15%. Since I am randomly sampling, I would expect that my final sample yields something close to this rate.</p>
+<p>An odds ratio of 3.94 would seem to confirm my fictional probabilities result in the scenario I wanted (i.e., smokers are 4x as likely to receive a cancer diagnosis). Now it is time to generate a random sample of each subpopulation. Let’s assume that smoking rates are relatively low in this population, say 15%. Since I am randomly sampling, I would expect that my final sample yields something close to this rate.</p>
 <pre class="r"><code>set.seed(143)
 Smoker&lt;-sample(c(&#39;Smoker&#39;, &#39;Non-Smoker&#39;), 
                prob=c(.15, .85), 
@@ -79,8 +79,8 @@ table(DF)</code></pre>
 <p><span class="math inline">\(P(S|C) = \frac{33}{80+33}=.292\)</span></p>
 <p>So now plugging this information into Bayes Theorem we get</p>
 <p><span class="math display">\[P(C|S) = \frac{P(S|C)P(C)}{P(S)} = \frac{.292*.226}{.154}=.429\]</span></p>
-<p>This is the basic machinery of all Bayesian models, the naiveBayes classifier included. Accoring to these calculations, even smokers would not be more likely to be diagnosed with cancer relative to other smokers, so using a naive Bayes classifier would not likely provide much additional predictive utility in this case. However, if we had additional predictors, we could model the outcome as a function of a a series of conditional joint probabilites, making finer grade distinctions about the posterior probability of our outcome variable.</p>
-<p>With this brief discussion of Bayes Theorem and probability behind us, we can introduce Naive Bayes classifiers, which can handle mutinomial outcome variables (i.e., multiple categories) and continuous predictors or categorical predictors. The continuous predictors work best when approximately normal in their distribution as the probabilities used in the model are derived from the probability density function of the normal distrbution.</p>
+<p>This is the basic machinery of all Bayesian models, the naive Bayes classifier included. Accoring to these calculations, even smokers would not be more likely to be diagnosed with cancer relative to other smokers, so using a naive Bayes classifier would not likely provide much additional predictive utility in this case. However, if we had additional predictors, we could model the outcome as a function of a a series of conditional joint probabilites, making finer grade distinctions about the posterior probability of our outcome variable.</p>
+<p>With this brief discussion of Bayes Theorem and probability behind us, we can introduce Naive Bayes classifiers, which can handle mutinomial outcome variables (i.e., multiple categories) and continuous predictors or categorical predictors. The continuous predictors work best when approximately normal in their distribution as the probabilities used in the model are derived from the probability density function of the normal distrbution. These models calculate the conditional probability that a given case is in</p>
 <p>To compare the performance of the Naive Bayes classifier in accurately predicting out-of-sample cases, I’ll be using a <em>k</em>-fold cross validation technique in which I will hold out a randomly selected 20% of the cases from the <code>iris</code> data set as a testing sample, train the model on the remaining 80% and aggregate the prediction accuracy across on the testing and training set on 100 trials. With a small data set, this is a more effective technique to evaluate and compare model prediction performance than a single test/train split that could easily over- or underestimate out-of-sample prediction accuracy due to random chance.</p>
 <pre class="r"><code>data(&quot;iris&quot;)
 set.seed(321)
@@ -117,7 +117,7 @@ for(i in 1:k.fold){
   Pred_type&lt;-c(Pred_type, &#39;Testing Set&#39;)
 }
 round(Sys.time()-Start, digits = 2)</code></pre>
-<pre><code>## Time difference of 1.7 secs</code></pre>
+<pre><code>## Time difference of 1.67 secs</code></pre>
 <p>So not too long of a wait time to run through the cross-validation at 100 folds on my personal laptop.</p>
 <p>Now, for the overall results of the model in terms of accurate predictions. I always prefer to show, my data whenever possible.</p>
 <pre class="r"><code>NB_KFold&lt;-data.frame(Accuracy = Accuracy, 
@@ -198,7 +198,7 @@ for(i in 1:k.fold){
   Pred_type&lt;-c(Pred_type, &#39;Testing Set&#39;)
 }
 round(Sys.time()-Start, digits = 2)</code></pre>
-<pre><code>## Time difference of 0.36 secs</code></pre>
+<pre><code>## Time difference of 0.35 secs</code></pre>
 <p>Once again, the the total run-time is not that long for the 100 cross-validation runs. Now let’s plot the results.</p>
 <pre class="r"><code>LDA_KFold&lt;-data.frame(Accuracy = Accuracy, 
                      Model = Model, 

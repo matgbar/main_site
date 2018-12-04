@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>/categories/</link>
+    <link>https://mgb-research.netlify.com/categories/</link>
     <description>Recent content in Categories on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://mgb-research.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Data Visualization</title>
-      <link>/categories/data-visualization/</link>
+      <link>https://mgb-research.netlify.com/categories/data-visualization/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/data-visualization/</guid>
+      <guid>https://mgb-research.netlify.com/categories/data-visualization/</guid>
       <description></description>
     </item>
     
     <item>
       <title>IBI VizEdit</title>
-      <link>/categories/ibi-vizedit/</link>
+      <link>https://mgb-research.netlify.com/categories/ibi-vizedit/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/ibi-vizedit/</guid>
+      <guid>https://mgb-research.netlify.com/categories/ibi-vizedit/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Machine Learning</title>
-      <link>/categories/machine-learning/</link>
+      <link>https://mgb-research.netlify.com/categories/machine-learning/</link>
       <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/machine-learning/</guid>
+      <guid>https://mgb-research.netlify.com/categories/machine-learning/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Modeling</title>
-      <link>/categories/modeling/</link>
+      <link>https://mgb-research.netlify.com/categories/modeling/</link>
       <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/modeling/</guid>
+      <guid>https://mgb-research.netlify.com/categories/modeling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sample Size</title>
-      <link>/categories/sample-size/</link>
+      <link>https://mgb-research.netlify.com/categories/sample-size/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/sample-size/</guid>
+      <guid>https://mgb-research.netlify.com/categories/sample-size/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Simulation</title>
-      <link>/categories/simulation/</link>
+      <link>https://mgb-research.netlify.com/categories/simulation/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/categories/simulation/</guid>
+      <guid>https://mgb-research.netlify.com/categories/simulation/</guid>
       <description></description>
     </item>
     
