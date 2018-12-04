@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
-    <lastBuildDate>Thu, 29 Nov 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>AI</title>
       <link>/tags/ai/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/ai/</guid>
       <description></description>
@@ -24,7 +24,7 @@
     <item>
       <title>Bayesian</title>
       <link>/tags/bayesian/</link>
-      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/bayesian/</guid>
       <description></description>
@@ -51,7 +51,7 @@
     <item>
       <title>Forecasting</title>
       <link>/tags/forecasting/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/forecasting/</guid>
       <description></description>
@@ -87,7 +87,7 @@
     <item>
       <title>ML</title>
       <link>/tags/ml/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/ml/</guid>
       <description></description>
@@ -150,7 +150,7 @@
     <item>
       <title>Predictive Modeling</title>
       <link>/tags/predictive-modeling/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/predictive-modeling/</guid>
       <description></description>
@@ -159,7 +159,7 @@
     <item>
       <title>R</title>
       <link>/tags/r/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/r/</guid>
       <description></description>
@@ -168,7 +168,7 @@
     <item>
       <title>R-bloggers</title>
       <link>/tags/r-bloggers/</link>
-      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/r-bloggers/</guid>
       <description></description>

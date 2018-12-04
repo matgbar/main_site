@@ -465,12 +465,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8391699  6.51953131
-## 2        Clown -0.5752010 -0.02343634
-## 3       Video2 -0.2282198  0.29490926
-## 4         Kids -0.3621723  0.16060833
-## 5        Intro -0.6368015 -0.11470782
-## 6       Video3 -0.3395756  0.17780480</code></pre>
+## 1 X.Intercept.  5.8403588  6.51811709
+## 2        Clown -0.5865350 -0.02018498
+## 3       Video2 -0.2334775  0.29563583
+## 4         Kids -0.3655780  0.15947585
+## 5        Intro -0.6451828 -0.11413764
+## 6       Video3 -0.3486207  0.18237286</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -512,12 +512,12 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58232769  0.629570400
-## 2        Clown -0.03851423 -0.009299026
-## 3       Video2 -0.01968463  0.009678855
-## 4         Kids -0.01533817  0.013875335
-## 5        Intro -0.04405688 -0.015039807
-## 6       Video3 -0.02348049  0.005630745</code></pre>
+## 1 X.Intercept.  0.58213348  0.629967564
+## 2        Clown -0.03838141 -0.009692424
+## 3       Video2 -0.01932891  0.009354245
+## 4         Kids -0.01517713  0.013366966
+## 5        Intro -0.04375183 -0.015363978
+## 6       Video3 -0.02315533  0.005631737</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>
 
@@ -645,6 +645,10 @@ print(sjstats::boot_ci(boot.HP))</code></pre>
       <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
       
 
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+      
+      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
       
 
       

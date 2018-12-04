@@ -11,6 +11,314 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</title>
+      <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</guid>
+      <description>&lt;p&gt;In the first post in this series, I described the impetus for this trek through statistical modeling, machine learning and artificial intelligence. I also provided an initial set of comparisons for three different approaches to classification: &lt;em&gt;k&lt;/em&gt;-means, &lt;em&gt;k&lt;/em&gt;-nearest neighbor, and latent profile analysis (model-based clustering). If you want to check those mini-walkthroughs out &lt;a href=&#34;https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/&#34;&gt;click here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As a reminder, my goal here is to compare and contrast different approaches to data analysis and predictive modeling that are, in my mind, arbitrarily lumped into statistical modeling and machine learing/artificial intelligence categories. Though there may be some good reasons for dichotomizing statistics and machine learning, it has been my experience that each camp that favors one conceptualization over the other (i.e., statisticians vs. data scientists) holds unnecessary comtempt for the other group. On my shelf are textbooks that refer to linear regression models as supervised machine learning techniques &lt;span class=&#34;citation&#34;&gt;(e.g., Zumel and Mount 2014)&lt;/span&gt; and statistical models &lt;span class=&#34;citation&#34;&gt;(e.g., Gelman and Hill 2007)&lt;/span&gt;. I promise that the ordinary least squares solution, regardless of how you categorize the technique, is going to return the same result given the same model and same data each time.&lt;/p&gt;
+&lt;p&gt;To remain consistent with the &lt;a href=&#34;https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/&#34;&gt;first post&lt;/a&gt; in this series, I am going to continue with the &lt;code&gt;iris&lt;/code&gt; data set for now. The data set contains four measurements of plant anatomy: petal length, petal width, sepal length, and sepal width. These measures were collected on 50 specimens from three species for a total of 150 observations. The goal will be the same, continue to assess the accuracy of different classification techniques in predicting class membership using these data.&lt;/p&gt;
+&lt;p&gt;As opposed to the first post, each of the techniques I will employ in this post allow for classification of new data that a trained model has yet to “see.” The ability to predict out-of-sample data allows for a more applied series of testing scenarios. Specifically, I’ll evaluate each technique/model in terms of prediction accuracy using a &lt;em&gt;k&lt;/em&gt;-fold cross validation technique.&lt;/p&gt;
+&lt;p&gt;The models covered in this post will include: naive Bayes classification, discriminant analysis, and multinomial logistic regression. The goal of each model is essentially the same - develop a model (or a series of mathematical rules if you prefer) that maximally predicts observed data and can be used to predict out of sample data (i.e., generalize to a population if you prefer).&lt;/p&gt;
+&lt;div id=&#34;naive-bayes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Naive Bayes&lt;/h2&gt;
+&lt;p&gt;Bayesian models have at their root a simple mathematical truism about the behavior of the probability of independent events. Bayes Theorem elegantly lays this truism out:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P(A|B) = \frac{P(B|A)P(A)}{P(B)}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The probability of &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; given the value of &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt; is equal to the probability of &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt; given &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; times the probability of &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; divided by the probability of &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt;. For those of you who know your way around a cross-tabulated table, these statements may seem pretty obvious. Let’s use some made up data to make it clearer though. Let’s model cancer risk as a function of smoking. I’ll pretend I was able to randomly sample 500 individuals from a population in which smokers are approximately 4 times more likely to receive a cancer diagnosis during their lifetime than non-smokers (&lt;em&gt;Note&lt;/em&gt; I am just making these data up; I have no idea what appropriate base-rates should be). I am going to assume &lt;span class=&#34;math inline&#34;&gt;\(P(C|S)=.48\)&lt;/span&gt; (that is the probability of cancer given smoking) and &lt;span class=&#34;math inline&#34;&gt;\(P(C|NS)=.19\)&lt;/span&gt; (that is the probability of cancer given not-smoking).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;P_C_sm&amp;lt;-.48
+P_NC_sm&amp;lt;-1-P_C_sm
+odds_C_sm&amp;lt;-P_C_sm/P_NC_sm
+
+P_C_nsm&amp;lt;-.19
+P_NC_nsm&amp;lt;-1-P_C_nsm
+odds_C_nsm&amp;lt;-P_C_nsm/P_NC_nsm
+
+odds_C_sm/odds_C_nsm&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 3.935223&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;An odds ratio of 4.49 would seem to confirm my fictional probabilities result in the difference likelihood I wanted (i.e., smokers are 4x as likely to receive a cancer diagnosis). Now it is time to generate a random sample of each subpopulation. Let’s assume that smoking rates are relatively low in this population, say 15%. Since I am randomly sampling, I would expect that my final sample yields something close to this rate.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(143)
+Smoker&amp;lt;-sample(c(&amp;#39;Smoker&amp;#39;, &amp;#39;Non-Smoker&amp;#39;), 
+               prob=c(.15, .85), 
+               size=500, 
+               replace = TRUE)
+
+Cancer&amp;lt;-vector()
+for(i in 1:length(Smoker)){
+  if(Smoker[i]==&amp;#39;Smoker&amp;#39;){
+    Cancer[i]&amp;lt;-sample(c(&amp;#39;Cancer&amp;#39;, &amp;#39;No Cancer&amp;#39;),
+                      prob = c(P_C_sm, P_NC_sm), 
+                      size = 1)
+  }
+  else{
+    Cancer[i]&amp;lt;-sample(c(&amp;#39;Cancer&amp;#39;, &amp;#39;No Cancer&amp;#39;),
+                      prob = c(P_C_nsm, P_NC_nsm), 
+                      size = 1)
+  }
+}
+
+DF&amp;lt;-data.frame(Smoker=Smoker, 
+               Cancer=Cancer)
+table(DF)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##             Cancer
+## Smoker       Cancer No Cancer
+##   Non-Smoker     80       343
+##   Smoker         33        44&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So I now have a simple data set and I can, using Bayes Theorem calculating a probability of having cancer given the fact that an individual is a smoker &lt;span class=&#34;math inline&#34;&gt;\(P(C|S)\)&lt;/span&gt;. We’ll just need some numbers to plug in. First some easy values, &lt;span class=&#34;math inline&#34;&gt;\(P(C)\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(P(S)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P(S) = \frac{33+44}{500} = .154\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[P(C) = \frac{80+33}{500} = .226\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Now, we need to get the probability of smoking, given cancer or &lt;span class=&#34;math inline&#34;&gt;\(P(S|C)\)&lt;/span&gt;, which is just the same as saying, what is the probability of being a smoker, solely among individuals with cancer.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(P(S|C) = \frac{33}{80+33}=.292\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;So now plugging this information into Bayes Theorem we get&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P(C|S) = \frac{P(S|C)P(C)}{P(S)} = \frac{.292*.226}{.154}=.429\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This is the basic machinery of all Bayesian models, the naiveBayes classifier included. Accoring to these calculations, even smokers would not be more likely to be diagnosed with cancer relative to other smokers, so using a naive Bayes classifier would not likely provide much additional predictive utility in this case. However, if we had additional predictors, we could model the outcome as a function of a a series of conditional joint probabilites, making finer grade distinctions about the posterior probability of our outcome variable.&lt;/p&gt;
+&lt;p&gt;With this brief discussion of Bayes Theorem and probability behind us, we can introduce Naive Bayes classifiers, which can handle mutinomial outcome variables (i.e., multiple categories) and continuous predictors or categorical predictors. The continuous predictors work best when approximately normal in their distribution as the probabilities used in the model are derived from the probability density function of the normal distrbution.&lt;/p&gt;
+&lt;p&gt;To compare the performance of the Naive Bayes classifier in accurately predicting out-of-sample cases, I’ll be using a &lt;em&gt;k&lt;/em&gt;-fold cross validation technique in which I will hold out a randomly selected 20% of the cases from the &lt;code&gt;iris&lt;/code&gt; data set as a testing sample, train the model on the remaining 80% and aggregate the prediction accuracy across on the testing and training set on 100 trials. With a small data set, this is a more effective technique to evaluate and compare model prediction performance than a single test/train split that could easily over- or underestimate out-of-sample prediction accuracy due to random chance.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;quot;iris&amp;quot;)
+set.seed(321)
+k.fold&amp;lt;-100
+library(e1071)
+
+#Setting up a series of vectors for tracking accuracy
+Start&amp;lt;-Sys.time()
+Accuracy&amp;lt;-vector()
+Model&amp;lt;-vector()
+Pred_type&amp;lt;-vector()
+for(i in 1:k.fold){
+  #Split data into training/testing set
+  smpl_size&amp;lt;-floor(.8*nrow(iris))
+  ind &amp;lt;- sample(seq_len(nrow(iris)), size = smpl_size)
+  train&amp;lt;-iris[ind, ]
+  test&amp;lt;-iris[-ind, ]
+  
+  #Train the model and obtain accuracy based on observed data
+  NB_train&amp;lt;-naiveBayes(Species~., data=train)
+  NB_train_pred&amp;lt;-predict(NB_train, newdata = train)
+  tab_train&amp;lt;-table(NB_train_pred, train$Species)
+  Train_acc&amp;lt;-sum(diag(tab_train))/nrow(train)
+  Accuracy&amp;lt;-c(Accuracy, Train_acc)
+  Model&amp;lt;-c(Model, &amp;#39;Naive Bayes&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Training Set&amp;#39;)
+  
+  #Test model and get out of sample accuracy
+  NB_test_pred&amp;lt;-predict(NB_train, newdata = test)
+  tab_test&amp;lt;-table(NB_test_pred, test$Species)
+  Test_acc&amp;lt;-sum(diag(tab_test))/nrow(test)
+  Accuracy&amp;lt;-c(Accuracy, Test_acc)
+  Model&amp;lt;-c(Model, &amp;#39;Naive Bayes&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
+}
+round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 1.7 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So not too long of a wait time to run through the cross-validation at 100 folds on my personal laptop.&lt;/p&gt;
+&lt;p&gt;Now, for the overall results of the model in terms of accurate predictions. I always prefer to show, my data whenever possible.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;NB_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
+                     Model = Model, 
+                     Pred_type = Pred_type)
+
+g1&amp;lt;-ggplot(data=NB_KFold, aes(x=Pred_type, y=Accuracy))+
+  geom_bar(aes(fill=Pred_type), 
+           alpha=.5, 
+           stat=&amp;#39;summary&amp;#39;, 
+           fun.y=&amp;#39;mean&amp;#39;)+
+  geom_point(aes(color=Pred_type), 
+             position = position_jitter(w = 0.05, h = 0))+
+  coord_cartesian(ylim=c(.70, 1))+
+  guides(fill=guide_legend(title=&amp;quot;&amp;quot;), 
+         color=guide_legend(title = &amp;quot;&amp;quot;))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 1, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(NB_KFold$Accuracy[Pred_type==&amp;#39;Testing Set&amp;#39;]), 
+                                         digits = 4)))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 2, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(NB_KFold$Accuracy[Pred_type==&amp;#39;Training Set&amp;#39;]), 
+                                         digits = 4)))+
+  theme_bw()
+
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3_files/figure-html/NB4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As expected, there is a slight dropoff in the accuracy of the model predictions when tested against out-of-sample data, but it really is slight. Prediction accuracy does show considerable range across the testing sets, however. Had I randomly selected one of the testing data sets that performs just above 80%, I would have likely come to a very different conclusion about the effectivenes of the model in predicting “unobserved” data. The amount of variability in accurate prediction performance across the different training/testing runs is a secondary property of the models to bear in mind when making comparisons related to model effectiveness.&lt;/p&gt;
+&lt;p&gt;For completeness and to allow a more direct comparison with the techniques described in &lt;a href=&#34;https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/&#34;&gt;the previous post in this series&lt;/a&gt;, below are the prediction results and confusin matrix for the entire &lt;code&gt;iris&lt;/code&gt; sample using a Naive Bayes classifier.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;NB_full&amp;lt;-naiveBayes(Species~., data = iris)
+NB_full_pred&amp;lt;-predict(NB_full, newdata=iris)
+table(NB_full_pred, iris$Species)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##             
+## NB_full_pred setosa versicolor virginica
+##   setosa         50          0         0
+##   versicolor      0         47         3
+##   virginica       0          3        47&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt; the number of errors presented in the confusion matrix above is still higher than the classification model presented &lt;a href=&#34;https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/&#34;&gt;at the end of the previous post&lt;/a&gt; (6 misclassified versus only 3).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;linear-discriminant-analysis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Linear Discriminant Analysis&lt;/h2&gt;
+&lt;p&gt;For individuals familiar with support vector machines, a linear discriminant analysis can be thought of as a special restrictive case of SVMs. Using a combination of linear functions, the model attempts to maximally separate the observed data into its constituent classifications or groupings. The discriminant function or functions represent linear combinations of the predictor variables, and as such have some similarities to principal components analyses as well. However, linear discriminant analyses are trying to categorize &lt;em&gt;cases&lt;/em&gt; into groups, whereas principal components analyses are attempting to form clusters of &lt;em&gt;variables&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Implementing a discriminant analysis is fairly straightforward. Borrowing from the code above, I’ll use the same cross-validation technique to assess model prediction performance.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;quot;iris&amp;quot;)
+set.seed(321)
+k.fold&amp;lt;-100
+library(MASS)
+
+#Setting up a series of vectors for tracking accuracy
+Start&amp;lt;-Sys.time()
+Accuracy&amp;lt;-vector()
+Model&amp;lt;-vector()
+Pred_type&amp;lt;-vector()
+for(i in 1:k.fold){
+  #Split data into training/testing set
+  smpl_size&amp;lt;-floor(.8*nrow(iris))
+  ind &amp;lt;- sample(seq_len(nrow(iris)), size = smpl_size)
+  train&amp;lt;-iris[ind, ]
+  test&amp;lt;-iris[-ind, ]
+  
+  #Train the model and obtain accuracy based on observed data
+  LDA_train&amp;lt;-lda(Species~., data=train)
+  #note the inclusion of $class here - the way an lda object is stored
+  LDA_train_pred&amp;lt;-predict(LDA_train, newdata = train)$class
+  tab_train&amp;lt;-table(LDA_train_pred, train$Species)
+  Train_acc&amp;lt;-sum(diag(tab_train))/nrow(train)
+  Accuracy&amp;lt;-c(Accuracy, Train_acc)
+  Model&amp;lt;-c(Model, &amp;#39;LDA&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Training Set&amp;#39;)
+  
+  #Test model and get out of sample accuracy
+  LDA_test_pred&amp;lt;-predict(LDA_train, newdata = test)$class
+  tab_test&amp;lt;-table(LDA_test_pred, test$Species)
+  Test_acc&amp;lt;-sum(diag(tab_test))/nrow(test)
+  Accuracy&amp;lt;-c(Accuracy, Test_acc)
+  Model&amp;lt;-c(Model, &amp;#39;LDA&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
+}
+round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 0.36 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once again, the the total run-time is not that long for the 100 cross-validation runs. Now let’s plot the results.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;LDA_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
+                     Model = Model, 
+                     Pred_type = Pred_type)
+
+g1&amp;lt;-ggplot(data=LDA_KFold, aes(x=Pred_type, y=Accuracy))+
+  geom_bar(aes(fill=Pred_type), 
+           alpha=.5, 
+           stat=&amp;#39;summary&amp;#39;, 
+           fun.y=&amp;#39;mean&amp;#39;)+
+  geom_point(aes(color=Pred_type), 
+             position = position_jitter(w = 0.05, h = 0))+
+  coord_cartesian(ylim=c(.70, 1))+
+  guides(fill=guide_legend(title=&amp;quot;&amp;quot;), 
+         color=guide_legend(title = &amp;quot;&amp;quot;))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 1, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(LDA_KFold$Accuracy[Pred_type==&amp;#39;Testing Set&amp;#39;]), 
+                                         digits = 4)))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 2, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(LDA_KFold$Accuracy[Pred_type==&amp;#39;Training Set&amp;#39;]), 
+                                         digits = 4)))+
+  theme_bw()
+
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3_files/figure-html/LDA2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Now, whether you believe this model is a statistical model or a machine learning model, it is clear that it outperforms the Naive Bayes classifier, making more accurate in- and out-of-sample predictions in the current data set. The variance in prediction accuracy is also much smaller with this modeling approach. As with the Naive Bayes model, I included, the complete in-sample confusion matrix using a linear discriminant analysis below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;LDA_full&amp;lt;-lda(Species~., data=iris)
+LDA_full_pred&amp;lt;-predict(LDA_full)$class
+table(LDA_full_pred, iris$Species)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##              
+## LDA_full_pred setosa versicolor virginica
+##    setosa         50          0         0
+##    versicolor      0         48         1
+##    virginica       0          2        49&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The pattern of errors is slightly different than the mixture-model discriminant analysis at the end of the &lt;a href=&#34;https://mgb-research.netlify.com/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/&#34;&gt;first post&lt;/a&gt;, but the overall in-sample results are the same. Each techniqued resulted in a total of 3 misclassifications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;multinomial-logistic-regression&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Multinomial logistic regression&lt;/h2&gt;
+&lt;p&gt;I will be switching up the data sets in the next post so that I can compare some more traditional machine learning/artifical intelligence approaches to basic statistical models, and when I do, I will use a binomial logistic regression as one of the models. I only say that to highlight the fact that I am presenting a multinomial logistic regression (which is essentially a series of binomial logistic regressions) before I provide information about logistic regression foundations, which I will detail more in the next post (I’ll add a link here once it is complete).&lt;/p&gt;
+&lt;p&gt;For now, know that a multinomial logistic regression is an extension of binomial or binary logistic regression. These models attempt to predict the log odds of an event occurring (also known as the logits).&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[log\Big(\frac{P(y)}{1-P(y)}\Big)=\beta_0+\beta_1X_1+\beta_2X_2+...\beta_pX_p+\epsilon\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This link function is one of several that form the basis of what are referred to as generalized linear models. This class of models allows analysts to predict, via linear combinations of predictors (as is the case with linear regression), outcomes that do not result in normal distributions of model-based residuals. Normality of residuals is a statistical property assumed by ordinary least squares regression, which works through minimizing the total error.&lt;/p&gt;
+&lt;p&gt;Using a special case of a generalized linear model, the multinomial logistic regression, let’s go ahead and attempt to predict &lt;code&gt;Species&lt;/code&gt; as we have done so many times before. A quick note, the function I am using to create a logistic regression model comes from the &lt;code&gt;nnet&lt;/code&gt; package.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data(&amp;quot;iris&amp;quot;)
+set.seed(321)
+k.fold&amp;lt;-100
+library(nnet)
+
+#Setting up a series of vectors for tracking accuracy
+Start&amp;lt;-Sys.time()
+Accuracy&amp;lt;-vector()
+Model&amp;lt;-vector()
+Pred_type&amp;lt;-vector()
+for(i in 1:k.fold){
+  #Split data into training/testing set
+  smpl_size&amp;lt;-floor(.8*nrow(iris))
+  ind &amp;lt;- sample(seq_len(nrow(iris)), size = smpl_size)
+  train&amp;lt;-iris[ind, ]
+  test&amp;lt;-iris[-ind, ]
+  
+  #Train the model and obtain accuracy based on observed data
+  MLR_train&amp;lt;-multinom(Species~., data=train, trace=FALSE)
+  #note the inclusion of $class here - the way an lda object is stored
+  MLR_train_pred&amp;lt;-predict(MLR_train, newdata = train)
+  tab_train&amp;lt;-table(MLR_train_pred, train$Species)
+  Train_acc&amp;lt;-sum(diag(tab_train))/nrow(train)
+  Accuracy&amp;lt;-c(Accuracy, Train_acc)
+  Model&amp;lt;-c(Model, &amp;#39;MLR&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Training Set&amp;#39;)
+  
+  #Test model and get out of sample accuracy
+  MLR_test_pred&amp;lt;-predict(MLR_train, newdata = test)
+  tab_test&amp;lt;-table(MLR_test_pred, test$Species)
+  Test_acc&amp;lt;-sum(diag(tab_test))/nrow(test)
+  Accuracy&amp;lt;-c(Accuracy, Test_acc)
+  Model&amp;lt;-c(Model, &amp;#39;MLR&amp;#39;)
+  Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
+}
+round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 0.77 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once again a fairly quick run time (by the way I keep saying this because I am used to waiting a few hours for multilevel Bayesian regression models with correlated random effects to coverge. Waiting a second or two to get aggregated results is nothing).&lt;/p&gt;
+&lt;p&gt;Let’s see the prediction results…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;MLR_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
+                     Model = Model, 
+                     Pred_type = Pred_type)
+
+g1&amp;lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
+  geom_bar(aes(fill=Pred_type), 
+           alpha=.5, 
+           stat=&amp;#39;summary&amp;#39;, 
+           fun.y=&amp;#39;mean&amp;#39;)+
+  geom_point(aes(color=Pred_type), 
+             position = position_jitter(w = 0.05, h = 0))+
+  coord_cartesian(ylim=c(.70, 1))+
+  guides(fill=guide_legend(title=&amp;quot;&amp;quot;), 
+         color=guide_legend(title = &amp;quot;&amp;quot;))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 1, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(MLR_KFold$Accuracy[Pred_type==&amp;#39;Testing Set&amp;#39;]), 
+                                         digits = 4)))+
+  annotate(geom=&amp;#39;text&amp;#39;, x = 2, y = .75, 
+           label = paste(&amp;#39;Mean =&amp;#39;, 
+                         round(mean(MLR_KFold$Accuracy[Pred_type==&amp;#39;Training Set&amp;#39;]), 
+                                         digits = 4)))+
+  theme_bw()
+
+g1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3_files/figure-html/MLR2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, compared to the Naive Bayes model, the multinomial logistic regression performs better in-sample. However, there is a larger dropoff in this model’s in-sample versus out-of-sample predictive accuracy. Additionally, the results indicate that cross-validated variability in predictive accuracy is about as variable as the Naive Bayes model. If I were considering these three models for a prediction task related to these data, so far the linear discriminant model is the best.&lt;/p&gt;
+&lt;p&gt;The next post will delve into additional modeling approaches using a new dataset. Where possible these same models covered using the &lt;code&gt;iris&lt;/code&gt; data set will also be applied to compare their predictive performance under the same set of data conditions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Gelman2007&#34;&gt;
+&lt;p&gt;Gelman, Andrew, and Jennifer Hill. 2007. &lt;em&gt;Data Analysis Using Regression and Multilevel/Hierarchical Models&lt;/em&gt;. Cambridge Press.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Zumel2014&#34;&gt;
+&lt;p&gt;Zumel, Nina, and John Mount. 2014. &lt;em&gt;Practical Data Science with R&lt;/em&gt;. Manning Publications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</title>
       <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
       <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
@@ -128,8 +436,10 @@ cowplot::plot_grid(g1, g2, g3, g4, g5, g6, nrow=3)&lt;/code&gt;&lt;/pre&gt;
                                         classProbs = TRUE, 
                                         summaryFunction = multiClassSummary),
                metric = &amp;#39;AUC&amp;#39;,
-               tuneLength = 10)
-plot(fit_knn)&lt;/code&gt;&lt;/pre&gt;
+               tuneLength = 10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info =
+## trainInfo, : There were missing values in resampled performance measures.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(fit_knn)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai_files/figure-html/knn-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So if we look at this plot, we see that the area under the curve (AUC) is highest at &lt;em&gt;k&lt;/em&gt;=9 (values for AUC closer to 1 represent a better performing knn model). Other relevant performance statistics can be viewed by simply running &lt;code&gt;fit_knn&lt;/code&gt; in your console.&lt;/p&gt;
 &lt;p&gt;Next, we will want to see how the model performed in predicting the data. As an aside, with larger datasets it is possible to mitigate against overfitting by holding out a proportion of the data for testing model performance. My goal in this post is to compare the performance of statistical vs. machine learning techniques in correctly identifying patterns in the underlying data. As such, I will be keeping the entire &lt;code&gt;iris&lt;/code&gt; data set in tact so that supervised and unsupervised models can be evaluated on similar grounds.&lt;/p&gt;
@@ -218,8 +528,8 @@ LRT&lt;/code&gt;&lt;/pre&gt;
 ## Replications = 1000 
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
-## 2 vs 3    68.33618       0.001998002
-## 3 vs 4    25.40075       0.701298701&lt;/code&gt;&lt;/pre&gt;
+## 2 vs 3    68.33618       0.000999001
+## 3 vs 4    25.40075       0.688311688&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, &lt;span class=&#34;math inline&#34;&gt;\(p &amp;lt; .05\)&lt;/span&gt;, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.&lt;/p&gt;
 &lt;p&gt;The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_mix&amp;lt;-Mclust(iris[,1:4], G=3, modelNames = &amp;#39;VVV&amp;#39;)
@@ -331,7 +641,7 @@ pred_new&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
 &lt;div id=&#34;ref-baudry2015&#34;&gt;
-&lt;p&gt;Baudry, Jean-Patrick. 2015. “Estimation and Model Selection for Model-Based Clustering with the Conditional Classification Likelihood.” &lt;em&gt;Electronic Journal of Statistics&lt;/em&gt; 9 (1). The Institute of Mathematical Statistics; the Bernoulli Society: 1041–77.&lt;/p&gt;
+&lt;p&gt;Baudry, Jean-Patrick. 2015. “Estimation and Model Selection for Model-Based Clustering with the Conditional Classification Likelihood.” &lt;em&gt;Electronic Journal of Statistics&lt;/em&gt; 9 (1): 1041–77.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-Bzdoketal2018&#34;&gt;
 &lt;p&gt;Bzdok, Danilo, Naomi Altman, and Martin Krzywinksi. 2018. “Statistics Versus Machine Learning.” &lt;em&gt;Nature Methods&lt;/em&gt; 15: 233–34.&lt;/p&gt;
@@ -438,19 +748,19 @@ print(cowplot::plot_grid(g1, g2, g3, g4))&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;References&lt;/h2&gt;
 &lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
 &lt;div id=&#34;ref-Bodner2008&#34;&gt;
-&lt;p&gt;Bodner, Todd E. 2008. “What improves with increased missing data imputations?” &lt;em&gt;Structural Equation Modeling&lt;/em&gt; 15 (4): 651–75. doi:&lt;a href=&#34;https://doi.org/10.1080/10705510802339072&#34;&gt;10.1080/10705510802339072&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Bodner, Todd E. 2008. “What improves with increased missing data imputations?” &lt;em&gt;Structural Equation Modeling&lt;/em&gt; 15 (4): 651–75. &lt;a href=&#34;https://doi.org/10.1080/10705510802339072&#34;&gt;https://doi.org/10.1080/10705510802339072&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-Graham2007&#34;&gt;
-&lt;p&gt;Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007. “How many imputations are really needed? Some practical clarifications of multiple imputation theory.” &lt;em&gt;Prevention Science&lt;/em&gt; 8 (3): 206–13. doi:&lt;a href=&#34;https://doi.org/10.1007/s11121-007-0070-9&#34;&gt;10.1007/s11121-007-0070-9&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007. “How many imputations are really needed? Some practical clarifications of multiple imputation theory.” &lt;em&gt;Prevention Science&lt;/em&gt; 8 (3): 206–13. &lt;a href=&#34;https://doi.org/10.1007/s11121-007-0070-9&#34;&gt;https://doi.org/10.1007/s11121-007-0070-9&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-mitml_2018&#34;&gt;
-&lt;p&gt;Grund, Simon, Alexander Robitzsch, and Oliver Luedtke. 2018. &lt;em&gt;Mitml: Tools for Multiple Imputation in Multilevel Modeling&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mitml&#34; class=&#34;uri&#34;&gt;https://CRAN.R-project.org/package=mitml&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Grund, Simon, Alexander Robitzsch, and Oliver Luedtke. 2018. &lt;em&gt;Mitml: Tools for Multiple Imputation in Multilevel Modeling&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=mitml&#34;&gt;https://CRAN.R-project.org/package=mitml&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-Amelia_2011&#34;&gt;
-&lt;p&gt;Honaker, James, Gary King, and Matthew Blackwell. 2011. “Amelia II: A Program for Missing Data.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (7): 1–47. &lt;a href=&#34;http://www.jstatsoft.org/v45/i07/&#34; class=&#34;uri&#34;&gt;http://www.jstatsoft.org/v45/i07/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Honaker, James, Gary King, and Matthew Blackwell. 2011. “Amelia II: A Program for Missing Data.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (7): 1–47. &lt;a href=&#34;http://www.jstatsoft.org/v45/i07/&#34;&gt;http://www.jstatsoft.org/v45/i07/&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-mice_2011&#34;&gt;
-&lt;p&gt;van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (3): 1–67. &lt;a href=&#34;https://www.jstatsoft.org/v45/i03/&#34; class=&#34;uri&#34;&gt;https://www.jstatsoft.org/v45/i03/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 45 (3): 1–67. &lt;a href=&#34;https://www.jstatsoft.org/v45/i03/&#34;&gt;https://www.jstatsoft.org/v45/i03/&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;ref-pan_2018&#34;&gt;
 &lt;p&gt;Zhao, Jing Hua, and Joseph L. Schafer. 2018. &lt;em&gt;Pan: Multiple Imputation for Multivariate Panel or Clustered Data&lt;/em&gt;.&lt;/p&gt;
@@ -555,12 +865,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8391699  6.51953131
-## 2        Clown -0.5752010 -0.02343634
-## 3       Video2 -0.2282198  0.29490926
-## 4         Kids -0.3621723  0.16060833
-## 5        Intro -0.6368015 -0.11470782
-## 6       Video3 -0.3395756  0.17780480&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8403588  6.51811709
+## 2        Clown -0.5865350 -0.02018498
+## 3       Video2 -0.2334775  0.29563583
+## 4         Kids -0.3655780  0.15947585
+## 5        Intro -0.6451828 -0.11413764
+## 6       Video3 -0.3486207  0.18237286&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -602,12 +912,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58232769  0.629570400
-## 2        Clown -0.03851423 -0.009299026
-## 3       Video2 -0.01968463  0.009678855
-## 4         Kids -0.01533817  0.013875335
-## 5        Intro -0.04405688 -0.015039807
-## 6       Video3 -0.02348049  0.005630745&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58213348  0.629967564
+## 2        Clown -0.03838141 -0.009692424
+## 3       Video2 -0.01932891  0.009354245
+## 4         Kids -0.01517713  0.013366966
+## 5        Intro -0.04375183 -0.015363978
+## 6       Video3 -0.02315533  0.005631737&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>
@@ -1130,7 +1440,8 @@ Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 &lt;p&gt;&lt;strong&gt;Level 2 Equations:&lt;/strong&gt;&lt;br /&gt;
 &lt;span class=&#34;math display&#34;&gt;\[
 \pi_{0i} = \beta_{00} + r_{0i}
-\]&lt;/span&gt; &lt;span class=&#34;math display&#34;&gt;\[
+\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[
 \pi_{1i} = \beta_{10} + r_{1i}
 \]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.&lt;/p&gt;
@@ -1705,7 +2016,8 @@ g1&amp;lt;-ggplot()+
                      values = c(&amp;#39;blue&amp;#39;, &amp;#39;red&amp;#39;), 
                      labels = c(&amp;#39;Gaussian Process&amp;#39;, &amp;#39;ARIMA&amp;#39;))
 g1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt; The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.&lt;/p&gt;
 &lt;p&gt;Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.&lt;/p&gt;
 </description>
     </item>
@@ -1744,16 +2056,6 @@ g1&lt;/code&gt;&lt;/pre&gt;
       
       <guid>/publication/barstead_etal_2017_jora/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>Callous Unemotional Meta-Analysis</title>
-      <link>/project/cu-meta/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 -0400</pubDate>
-      
-      <guid>/project/cu-meta/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;Abstract:&lt;/strong&gt; Callous-unemotional (CU) traits are central to our understanding of antisocial behavior, which is harmful, financially costly to society, and hard to treat. Theoretical and diagnostic models define CU traits based on a lack of empathy, guilt, and prosociality. However, there has been no comprehensive quantitative synthesis of results to support this claim, nor any examination of whether associations differ by age, gender, sample type, or informant. Given its centrality to our understanding and treatment of antisocial behavior, the time is ripe for a critical examination of the meaning of the CU traits construct, including associations with its purported underlying features of low empathy, guilt, and prosociality, and potential demographic and methodological moderators of these associations. To address this gap in the literature, we conducted a systematic search of the literature on CU traits and identified 82 effect sizes from 51 studies (&lt;em&gt;N&lt;/em&gt; = 30,475) that quantified the magnitude of the association between CU traits and either empathy, prosociality, or guilt. The results revealed statistically significant, modest-to-moderate negative correlations between CU traits and empathy (&lt;em&gt;k&lt;/em&gt; = 25, $\rho$  = -.21), CU traits and guilt (&lt;em&gt;k&lt;/em&gt; = 3, $\rho$ = -.18), and CU traits and prosociality (&lt;em&gt;k&lt;/em&gt; = 16, $\rho$ = -.28). The magnitude of the negative association between CU traits and prosociality was stronger among younger children. In addition, the negative correlations between CU traits and both prosociality and cognitive empathy were stronger when the informant was a parent or teacher. We discuss how these findings can inform theory, conceptualization, and measurement of CU traits across the lifespan, as well as implications for models of antisocial behavior and moral development.&lt;/p&gt;
-</description>
     </item>
     
   </channel>
