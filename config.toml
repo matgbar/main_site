@@ -223,7 +223,7 @@ enableGitInfo = false
   [[params.social]]
     icon = "envelope"
     icon_pack = "fa"
-    link = "mailto:barstead@umd.edu"
+    link = "mailto:mbarstead@gmail.com"
 
   [[params.social]]
     icon = "twitter"
@@ -254,6 +254,11 @@ enableGitInfo = false
     icon = "linkedin"
     icon_pack = "fa"
     link = "https://www.linkedin.com/in/mbarstead/"
+    
+  [[params.social]]
+    icon = "stack-exchange"
+    icon_pack = "fa"
+    link = "https://stackexchange.com/users/9987725/matt-barstead?tab=accounts"
 
 
 # Navigation Links
