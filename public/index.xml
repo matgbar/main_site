@@ -11,6 +11,715 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Visualizing Variance in Multilevel Models Using the Riverplot Package</title>
+      <link>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</guid>
+      <description>&lt;p&gt;Spurred on by my boss &lt;a href=&#34;https://psyc.umd.edu/facultyprofile/shackman/alexander&#34;&gt;Alex Shackman&lt;/a&gt;, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/Variance_Graphic_Positive.png&#34; alt=&#34;Figure 1 - Stacked Barplot of Model Variance Decomposition&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Figure 1&lt;/em&gt; - Stacked Barplot of Model Variance Decomposition&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Now, choosing a color scheme that screams “HI I’M A COLOR!!” is one reasonable critique of this image. But, my more pressing issue is that this image, while accurately representing our model results asks a lot of the reader. You have to move back and forth between the legend and the graph to effectively map the different sources of explained variance onto their segments in the bar plot. Additioanlly, the denominator for the variance calculations shifts as you move across the &lt;em&gt;x&lt;/em&gt; axis, and it may not be obvious to readers with passing familiarity of these models how the stacked bar plots in the right 2 columns merge together to form the stacked bar plot in the “Total” variance column. Relatedly, there is no place in this image to easily represent the total variance accounted for by between-subjects factors and within-subjects factors separately.&lt;/p&gt;
+&lt;p&gt;Unsatisfied with this graph, I played around with a number of different visualization approaches. Here is another attempt in which I tried to use the posterior distribution from our mood models, separate color schemes for between- and within-subjects sources of variation, and pie charts to provide a different visual breakdown of the variance terms. Within the violin plot on the left, I think I was going for something like the fundraising thermometer image churches place on roadsides to indicate how close they are to getting that new roof or expanding their parking lots.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/Test_comb_vardecomp.png&#34; alt=&#34;Figure 2 - Combined Posterior Distribution Thermometer Plot and Pie Charts&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Figure 2&lt;/em&gt; - Combined Posterior Distribution Thermometer Plot and Pie Charts&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;I liked the idea of including the posterior distibution from the models in this way so the reader could see that our model results mirrored the obtained data and our general expectation that negative mood is positively skewed in a relatively healthy population like the one we sampled. However, I did not like the execution of this vision, which yielded a busy plot that still requires a lot of work on the part of the reader to decipher the meaning of its components.&lt;/p&gt;
+&lt;p&gt;I knew there had to be a more elegant way to visually relate our findings to a reader. Data visualization after all should easliy summarize findings in a straightforward, transparent, and easy to digest way. These images are perhaps transparent in their representation of model results, but the are not straightforward and they are not easy to digest.&lt;/p&gt;
+&lt;div id=&#34;enter-the-sankey-plot&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Enter the Sankey Plot&lt;/h1&gt;
+&lt;p&gt;So I did what all good researchers and data scientists do when they hit a wall, I searched the Internet for solutions. Here are just a couple of links I found helpful in my digital quest: &lt;a href=&#34;http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html&#34;&gt;Top 50 ggplot2 Visualizations&lt;/a&gt; and &lt;a href=&#34;https://www.r-graph-gallery.com/&#34;&gt;The R Graph Gallery&lt;/a&gt;. It was on this latter site that I came across the &lt;a href=&#34;https://www.r-graph-gallery.com/sankey-diagram/&#34;&gt;Sankey Diagram&lt;/a&gt;. I immediately saw the potential to separate out between- and within-subjects variance, but also show how they combine to form the total variability in our dependent measure.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/S1_PosMood_river.png&#34; alt=&#34;Figure 3 - Our Final Riverplot - Based on Multiple Models&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Figure 3&lt;/em&gt; - Our Final Riverplot - Based on Multiple Models&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;This image ticks all of my data visaulization boxes, and, in my opinion, does a better job of representing what it is multilevel models do in terms of partitioning variance from multiple levels of the data. The remainder of this post is dedicated to how I got to this final plot. I will be including code from our models and I need to strongly recommend data scientists and researchers read &lt;span class=&#34;citation&#34;&gt;(Rights and Sterba 2018)&lt;/span&gt;. For related discussions and adapting the approach for non-Gaussian distributed outcomes see &lt;span class=&#34;citation&#34;&gt;(Jaeger et al. 2017; Nakagawa and Schielzeth 2016)&lt;/span&gt;. The &lt;code&gt;r2mlm&lt;/code&gt; function Rights and Sterba &lt;a href=&#34;https://my.vanderbilt.edu/jasonrights/software/r2mlm/&#34;&gt;created&lt;/a&gt; as part of their variance decomposition framework was instrumental in terms of my ability to extract the relevant variance components from our different models.&lt;/p&gt;
+&lt;p&gt;(&lt;em&gt;As an aside, Jason Rights was quick to respond to an email request of mine and re-uploaded his function after I had informed him that the original formatting on his site made it difficult to easily copy and paste into R. Thanks Jason!&lt;/em&gt;)&lt;/p&gt;
+&lt;p&gt;The remainder of this post is going to be a walkthrough, with code snippets, of how I used the &lt;code&gt;r2mlm&lt;/code&gt; function to extract variance components from our models and eventually create a plot the ticked all my nerdy data visualization boxes. This work is all part of a manuscript that will be sumbitted soon for publication, but I want to be upfront and say that the final products of that manuscript may not reflect exactly what you read here in this blog post.&lt;/p&gt;
+&lt;p&gt;I am going to provide a little background on our models and hypotheses, but it will not be exhaustive. I hope it is enough context to effectively understand how one might adapt this approach to their own multilevel data problems.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;methods-and-background&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Methods and Background&lt;/h1&gt;
+&lt;p&gt;There are numerous good resources out there that explain the basics of multilevel modeling &lt;span class=&#34;citation&#34;&gt;(Gelman et al. 2013; Gelman and Hill 2007; Raudenbush and Bryk 2002)&lt;/span&gt;, and the goal of this post is not to recapitulate what is often a semester-long graduate course in the use of these models. Briefly, these models separate out sources of variability in nested data structures. The nesting can be individuals within groups (i.e., students within classrooms) or observations within individuals (i.e., repeated sampling of the same subjects).&lt;/p&gt;
+&lt;p&gt;Dr. Shackman’s data fall into this latter category. He and his collaborators designed a study in which college students responded to 10 survey prompts throughout the day, for an entire week (yielding up to 70 observations per participant). Along with basic questions about recent activities and social surroundings, participants provided information about how they felt at the moment they were responding to the survey (i.e., measures of negative and positive mood). They also rated how pleasant the “Best” event was that happened to them since the last prompt and how distressing the “Worst” event was that had occurred since their last survey.&lt;/p&gt;
+&lt;p&gt;A key construct in Dr. Shackman’s work is dispositional negativity - which is a risk factor for a host of undesirable and interconnected outcomes &lt;span class=&#34;citation&#34;&gt;(Shackman, Stockbridge, et al. 2016, 2018; Shackman, Tromp, et al. 2016; Shackman, Weinstein, et al. 2018)&lt;/span&gt;. Where I come in is attempting to use his data to illustrate how it is dispositional negativity contributes to momentary mood and reactions to recent negative and positive events. I took the data from his 127 participants and, using &lt;span class=&#34;citation&#34;&gt;Bolger and Schilling (1991)&lt;/span&gt; as a guide, set about the task of testing the different processes that link dispositional negativity to momentary affect.&lt;/p&gt;
+&lt;p&gt;One component of this research was separating out the unique variance explained by dispositional negativity from its shared variance with overall exposure to less positive and more negative daily events. To understand how this worked from a modeling standpoint, see the equations and walkthrough below. For simplicity’s sake I will be focusing solely on the positive mood model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;decomposing-variance-from-single-model&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Decomposing Variance from Single Model&lt;/h1&gt;
+&lt;p&gt;The key innovation provided by Rights and Sterba (2018) with their integrated variance decomposition framework is the ability to extract &lt;span class=&#34;math inline&#34;&gt;\(R^2\)&lt;/span&gt; values from multiple levels of a single multilevel model. Prior to the publication of this new technique, parsing sources of explained variance in a multilevel model was a non-trivial challenge that required multiple separate models and could occaisionally yield unsatisfactory results, including negative &lt;span class=&#34;math inline&#34;&gt;\(R^2\)&lt;/span&gt; values (Gelman &amp;amp; Hill, 2007; Rights &amp;amp; Sterba, 2018).&lt;/p&gt;
+&lt;p&gt;We adapted the Rights and Sterba approach to our data and hypotheses and utilized their &lt;code&gt;r2MLM&lt;/code&gt; function to partition between- and within-subjects sources of variation in our momentary mood variables. Because we hoped to isolate the total, unique, and shared (with exposure) variation in momentary mood accounted for by our primary predictor dispositional negativity, we did have to run several models in which we varied which level-2 predictors. The level-1 equation for each of these models remained constant and level-1 predictors were group-mean centered as a means of maintaining the separation of between- and within-subjects sources of variability in the model.&lt;/p&gt;
+&lt;div id=&#34;level-1-equation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Level 1 Equation:&lt;/h2&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+Y_{ti} = \pi_{0i} + \pi_{1i}(NegEvent_{ti} - \bar{NegEvent_{.i}}) + \pi_{2i}(PosEvent_{ti} - \bar{PosEvent_{.i}}) + e_{ti} 
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Our models diverged in their inclusion of predictors at the second level of the model. Model 1, which we used to examine the overall effect of dispositional negativity on momentary mood, included standardized dispositional negativity scores as the sole level-2 predictor.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-1-level-2-equations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Model 1 Level-2 Equations:&lt;/h2&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+    \pi_{0i} = \beta_{00} + \beta_{01}(DN_i) + r_{0i} \\
+    \pi_{1i} = \beta_{10} + r_{1i} \\
+    \pi_{2i} = \beta_{20} + r_{2i}
+\end{aligned}
+\]&lt;/span&gt;
+In &lt;code&gt;R&lt;/code&gt; the model was estimated using &lt;code&gt;brms&lt;/code&gt;, a wraparound package developed for Bayesian regression models that draws on &lt;a href=&#34;https://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; a general purpose Bayesian modeling program &lt;span class=&#34;citation&#34;&gt;(Bürkner 2017)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Pos_lv2_DN&amp;lt;-brms::brm_multiple(T.PosAff~1+c.Worst+c.Best+
+                                 c.DN+
+                                 (1+c.Worst+c.Best|ID), 
+                               data = dat.study1.list, 
+                               family = &amp;#39;normal&amp;#39;,
+                               prior = c(set_prior(&amp;#39;student_t(3,0,1)&amp;#39;, class=&amp;#39;sd&amp;#39;), 
+                                         set_prior(&amp;#39;normal(3.104,2)&amp;#39;, class=&amp;#39;Intercept&amp;#39;), 
+                                         set_prior(&amp;#39;normal(0,5)&amp;#39;, class=&amp;#39;b&amp;#39;), 
+                                         set_prior(&amp;#39;lkj(2)&amp;#39;, class=&amp;#39;cor&amp;#39;)),
+                               warmup = 2000, 
+                               iter = 3000, 
+                               chains = 3,
+                               control = list(adapt_delta=.99, 
+                                              max_treedepth=15), 
+                               save_model = paste0(stan.code, &amp;#39;/S1_lv2a.stan&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;brm_multiple&lt;/code&gt; function integrates the results from the 20 imputed data sets we created to address missing survey responses in the data. If you do not have missing data, or you want to use a frequentist approach you will have to modify this walkthrough a little, and it will be more difficult to generate 95% Highest density intervals for variance estimates (which I can do by repeatedly drawing parameter estimates from the posterior distributions and re-calculating my &lt;span class=&#34;math inline&#34;&gt;\(R^2\)&lt;/span&gt; terms).&lt;/p&gt;
+&lt;p&gt;To separately evaluate the overall effect of exposure (i.e., the tendency to report more negative and/or more positive events), Model 2 included individual averages of reported negative and positive events. These are sometimes referred to in the literature as contextual effects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-2-level-2-equations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Model 2 Level-2 Equations:&lt;/h2&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+  \pi_{0i} = \beta_{00} + \beta_{01}(\bar{NegEvent_{.i}}) + \beta_{02}(\bar{PosEvent_{.i}}) + r_{0i} \\
+  \pi_{1i} = \beta_{10} + r_{1i} \\
+  \pi_{2i} = \beta_{20} + r_{2i}
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;R&lt;/code&gt;…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Pos_lv2_Evnt&amp;lt;-brms::brm_multiple(T.PosAff~1+c.Worst+c.Best+
+                                   mean.Worst+mean.Best+
+                                   (1+c.Worst+c.Best|ID), 
+                                 data = dat.study1.list, 
+                                 family = &amp;#39;normal&amp;#39;,
+                                 prior = c(set_prior(&amp;#39;student_t(3,0,1)&amp;#39;, class=&amp;#39;sd&amp;#39;), 
+                                           set_prior(&amp;#39;normal(3.104,2)&amp;#39;, class=&amp;#39;Intercept&amp;#39;), 
+                                           set_prior(&amp;#39;normal(0,5)&amp;#39;, class=&amp;#39;b&amp;#39;), 
+                                           set_prior(&amp;#39;lkj(2)&amp;#39;, class=&amp;#39;cor&amp;#39;)),
+                                 warmup = 2000, 
+                                 iter = 3000, 
+                                 chains = 3,
+                                 control = list(adapt_delta=.99, 
+                                                max_treedepth=15), 
+                                 save_model = paste0(stan.code, &amp;#39;/S1_lv2b.stan&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, we included all three individual-level predictors in Model 3. Doing so allowed us to separately calculate the unique and shared variability in momentary mood attributable to dispositional negativity and overall exposure to positive and negative daily events:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-3-level-2-equations&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Model 3 Level-2 Equations:&lt;/h2&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[
+\begin{aligned}
+  \pi_{0i} = \beta_{00} + \beta_{01}(DN_i) + \beta_{02}(\bar{NegEvent_{.i}}) + \beta_{03}(\bar{PosEvent_{.i}}) + r_{0i} \\
+  \pi_{1i} = \beta_{10} + r_{1i} \\
+  \pi_{2i} = \beta_{20} + r_{2i}
+\end{aligned}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;R&lt;/code&gt;…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Pos_lv2_All&amp;lt;-brms::brm_multiple(T.PosAff~1+c.Worst+c.Best+
+                                  mean.Worst+mean.Best+c.DN+
+                                  (1+c.Worst+c.Best|ID), 
+                                data = dat.study1.list, 
+                                family = &amp;#39;normal&amp;#39;,
+                                prior = c(set_prior(&amp;#39;student_t(3,0,1)&amp;#39;, class=&amp;#39;sd&amp;#39;), 
+                                          set_prior(&amp;#39;normal(3.104,2)&amp;#39;, class=&amp;#39;Intercept&amp;#39;), 
+                                          set_prior(&amp;#39;normal(0,5)&amp;#39;, class=&amp;#39;b&amp;#39;), 
+                                          set_prior(&amp;#39;lkj(2)&amp;#39;, class=&amp;#39;cor&amp;#39;)),
+                                warmup = 2000, 
+                                iter = 3000, 
+                                chains = 3,
+                                control = list(adapt_delta=.99, 
+                                               max_treedepth=15), 
+                                save_model = paste0(stan.code, &amp;#39;/S1_lv2c.stan&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Differences in between-subjects and total variance in momentary mood explained by each of these models formed the basis of our overall variance attributable to DN (&lt;span class=&#34;math inline&#34;&gt;\(R_{M1}^2\)&lt;/span&gt;), unique variance associated with DN (&lt;span class=&#34;math inline&#34;&gt;\(R_{M3}^2 - R_{M1}^2\)&lt;/span&gt;), and variance shared between DN and exposure (&lt;span class=&#34;math inline&#34;&gt;\(R_{M3}^2 - [R_{M3}^2 - R_{M1}^2]\)&lt;/span&gt;), where &lt;span class=&#34;math inline&#34;&gt;\(R^2s\)&lt;/span&gt; could represent total variability or be isolated solely to between-subjects variability in momentary mood and &lt;span class=&#34;math inline&#34;&gt;\(M1\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(M2\)&lt;/span&gt;, and &lt;span class=&#34;math inline&#34;&gt;\(M3\)&lt;/span&gt; represent terms extracted from Models 1, 2, and 3 respectively. To complete our understanding of sources of between subjects variability in our models, we also estimated the variance explained by an individual’s average exposure to positive and negative events (&lt;span class=&#34;math inline&#34;&gt;\(R_{M3}^2 - R_{M2}^2\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;As noted above a strength of this Bayesian modeling approach is that we were able to draw parameter estimates from the posterior distributions implied by our models and calculate 95% highest density intervals for our various &lt;span class=&#34;math inline&#34;&gt;\(R^2\)&lt;/span&gt; terms of interest across the imputed data sets.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;extracting-relevant-variance-terms-using-r2mlm&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Extracting Relevant Variance Terms using &lt;code&gt;r2mlm&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;My approach to using this function is a little bit complicated because of the multiple imputations and the need to isolate specific variance terms from each model. If you do not have missing data (email me immediately and tell me your secrets), not everything I am about to do is necessary. Also if you do not have a posterior distribution to draw from, you won’t need to get a vector of &lt;span class=&#34;math inline&#34;&gt;\(R^2s\)&lt;/span&gt;. Just running the &lt;code&gt;r2mlm&lt;/code&gt; function once for each model will be sufficient.&lt;/p&gt;
+&lt;p&gt;First, I need to collect information to pass along to the &lt;code&gt;r2mlm&lt;/code&gt; function, including the columns in my data that correspond to my variables in the model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Attempting Variance Partionining for DN alone
+within_cov&amp;lt;-c(21,23)                    #Columns with group-mean centered predictors
+between_cov&amp;lt;-c(6)                       #Columns with between-subject predictors
+random_cov&amp;lt;-c(21,23)                    #Level 1 predictors with random slopes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next I extract the posterior distributions for my parameters as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Getting distributions of fixed effects
+Intercept&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;b_Intercept&amp;#39;) 
+DN&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;b_c.DN&amp;#39;) 
+Worst&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;b_c.Worst&amp;#39;) 
+Best&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;b_c.Best&amp;#39;) 
+
+#Getting between-subjects variance terms for random effects
+Int_var&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__Intercept&amp;#39;)^2
+Worst_var&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)^2 
+Best_var&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Best&amp;#39;)^2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I am going to need a covariance matrix for my random effects in each model. Luckily this is relatively straightforward as long as you can remember that &lt;span class=&#34;math inline&#34;&gt;\(Cov(x,y) = r_{xy} sd_x sd_y\)&lt;/span&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Getting covariances of random effects (i.e., tau matrix)
+cov_Int_Worst&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;cor_ID__Intercept__c.Worst&amp;#39;)
+
+cov_Int_Best&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;cor_ID__Intercept__c.Best&amp;#39;) 
+
+cov_Worst_Best&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_DN, pars = &amp;#39;cor_ID__c.Worst__c.Best&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Last but not least, I need the level-1 residuals (i.e., &lt;span class=&#34;math inline&#34;&gt;\(\sigma_e^2\)&lt;/span&gt;)&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Getting level 1 error variance
+sigma&amp;lt;-posterior_samples(Pos_lv2_DN, pars = &amp;#39;sigma&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Having the main components it is time for some cleanup so that I can begin extracting variance terms from my model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;post_samples&amp;lt;-data.frame(Intercept,
+                         DN, 
+                         Worst, 
+                         Best, 
+                         Int_var, 
+                         Worst_var, 
+                         Best_var, 
+                         cov_Int_Worst, 
+                         cov_Int_Best, 
+                         cov_Worst_Best, 
+                         sigma)
+
+colnames(post_samples)&amp;lt;-c(&amp;#39;Intercept&amp;#39;, 
+                          &amp;#39;DN&amp;#39;, 
+                          &amp;#39;Worst&amp;#39;, 
+                          &amp;#39;Best&amp;#39;, 
+                          &amp;#39;Int_var&amp;#39;, 
+                          &amp;#39;Worst_var&amp;#39;, 
+                          &amp;#39;Best_var&amp;#39;,
+                          &amp;#39;cov_Int_Worst&amp;#39;, 
+                          &amp;#39;cov_Int_Best&amp;#39;, 
+                          &amp;#39;cov_Worst_Best&amp;#39;, 
+                          &amp;#39;sigma&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I mentioned before that I am going to be taking a Bayesian approach here, which means sampling repeatedly from my posterior distributions. This approach is complicated slightly by the fact that my posterior distributions are unique to each of the 20 datasets I imputed. This means I need to be deliberate about how I sample from the posterior and which of the 20 data sets I apply the sampled parameter estimates to when running the &lt;code&gt;r2mlm&lt;/code&gt; function. The code below makes this happen and extracts the variance terms of interest for my final graphic.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Aggregate across imputed datasets
+#Currently going to take 1000 draws from posterior distributions
+#Will then apply across all 20 data sets
+
+P_DN_alone&amp;lt;-list(between_var=vector(), 
+               within_var=vector(), 
+               between_All_tot=vector(),
+               between_All_btw=vector(),
+               between_res_btw=vector(),
+               within_fix_wthn=vector(),
+               within_fix_tot=vector(),
+               within_slope_var_wthn=vector(),
+               within_res_wthn=vector(), 
+               within_unmod_tot=vector())
+
+#Will be used to line up posterior distributions 
+#Because  posterior parameter estimates are unique to each imputed data set
+#Probably ways to make this more programmatically fluid... 
+sampling_list&amp;lt;-list(imp1 = 1:3000, 
+                    imp2 = 1:3000 + 3000, 
+                    imp3 = 1:3000 + 6000, 
+                    imp4 = 1:3000 + 9000,
+                    imp5 = 1:3000 + 12000,
+                    imp6 = 1:3000 + 15000,
+                    imp7 = 1:3000 + 18000,
+                    imp8 = 1:3000 + 21000,
+                    imp9 = 1:3000 + 24000,
+                    imp10 = 1:3000 + 27000,
+                    imp11 = 1:3000 + 30000,
+                    imp12 = 1:3000 + 33000,
+                    imp13 = 1:3000 + 36000,
+                    imp14 = 1:3000 + 39000,
+                    imp15 = 1:3000 + 42000,
+                    imp16 = 1:3000 + 45000,
+                    imp17 = 1:3000 + 48000,
+                    imp18 = 1:3000 + 51000,
+                    imp19 = 1:3000 + 54000,
+                    imp20 = 1:3000 + 57000)
+
+for(i in 1:length(dat.study1.list)){
+  print(paste(&amp;#39;Starting w/ imputed set&amp;#39;, i, &amp;#39;out of&amp;#39;, M))
+  D&amp;lt;-sample(sampling_list[[i]], size = 1000, replace = FALSE)
+  for(d in 1:length(D)){
+    #browser()
+    Gamma_w&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Worst&amp;#39;, &amp;#39;Best&amp;#39;)]))       #Make sure the effects line up - in order of within_cov
+    Gamma_b&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Intercept&amp;#39;, &amp;#39;DN&amp;#39;)]))    #level fixed intercept and any level 2 fixed effects
+    tau&amp;lt;-c(post_samples[D[d], c(&amp;#39;Int_var&amp;#39;, &amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;cov_Int_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;Worst_var&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Best&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;, &amp;#39;Best_var&amp;#39;)])
+    
+    tau&amp;lt;-matrix(unlist(tau), 
+                byrow=TRUE, 
+                ncol=3)
+    
+    #Matrix rows/columns ordered starting with tau.00 (intercept variance)
+    #then add columns/rows for random effects of slopes in order of within_cov
+    
+    Sigma2&amp;lt;-post_samples[D[d], &amp;#39;sigma&amp;#39;]
+    
+    r2mlm_DN&amp;lt;-r2MLM(data=dat.study1.list[[i]], 
+                    within_covs = within_cov, 
+                    between_covs = between_cov, 
+                    random_covs = random_cov, 
+                    gamma_w = Gamma_w, 
+                    gamma_b = Gamma_b, 
+                    Tau = tau, 
+                    sigma2 = Sigma2, 
+                    has_intercept = TRUE, 
+                    clustermeancentered = TRUE)
+    
+    #Extracting relevant values across imputed datasets
+    P_DN_alone$between_var&amp;lt;-c(P_DN_alone$between_var, as.numeric(r2mlm_DN$Decompositions[&amp;#39;fixed, between&amp;#39;, &amp;#39;total&amp;#39;])+
+                              as.numeric(r2mlm_DN$Decompositions[&amp;#39;mean variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_DN_alone$within_var&amp;lt;-c(P_DN_alone$within_var, as.numeric(r2mlm_DN$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                             as.numeric(r2mlm_DN$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;])+
+                             as.numeric(r2mlm_DN$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_DN_alone$between_All_tot&amp;lt;-c(P_DN_alone$between_All_tot, as.numeric(r2mlm_DN$R2s[&amp;#39;f2&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_DN_alone$between_All_btw&amp;lt;-c(P_DN_alone$between_All_btw, as.numeric(r2mlm_DN$R2s[&amp;#39;f2&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_DN_alone$between_res_btw&amp;lt;-c(P_DN_alone$between_res_btw, as.numeric(r2mlm_DN$R2s[&amp;#39;m&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_DN_alone$within_fix_wthn&amp;lt;-c(P_DN_alone$within_fix_wthn, as.numeric(r2mlm_DN$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_DN_alone$within_fix_tot&amp;lt;-c(P_DN_alone$within_fix_wthn, as.numeric(r2mlm_DN$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_DN_alone$within_slope_var_wthn&amp;lt;-c(P_DN_alone$within_slope_var, as.numeric(r2mlm_DN$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_DN_alone$within_res_wthn&amp;lt;-c(P_DN_alone$within_res_wthn, as.numeric(r2mlm_DN$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_DN_alone$within_unmod_tot&amp;lt;-c(P_DN_alone$within_unmod_wthn, as.numeric(r2mlm_DN$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                                   as.numeric(r2mlm_DN$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    
+    print(paste(&amp;quot;Sampling&amp;quot;, d, &amp;quot;out of&amp;quot;, length(D), &amp;#39;- Dataset:&amp;#39;, i))
+  }
+  print(paste(&amp;quot;*** Finshed imputed data set&amp;quot;, i, &amp;#39;out of&amp;#39;, M, &amp;quot;***&amp;quot;))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I then repeat this approach with the average event ratings as the sole predictors of the intercept.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Event only model (these are context effects on intercept)
+within_cov&amp;lt;-c(21,23)                    #Columns with group-mean centered predictors
+between_cov&amp;lt;-c(22, 24)                  #Columns with between-subject predictors
+random_cov&amp;lt;-c(21,23)                    #Level 1 predictors with random slopes
+
+#Getting distributions of fixed effects
+Intercept&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;b_Intercept&amp;#39;) 
+M.Worst&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;b_mean.Worst&amp;#39;)
+M.Best&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;b_mean.Best&amp;#39;)
+Worst&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;b_c.Worst&amp;#39;) 
+Best&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;b_c.Best&amp;#39;) 
+
+#Getting between-subjects variance terms for random effects
+Int_var&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__Intercept&amp;#39;)^2
+Worst_var&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)^2 
+Best_var&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Best&amp;#39;)^2
+
+#Getting covariances of random effects (i.e., tau matrix)
+cov_Int_Worst&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;cor_ID__Intercept__c.Worst&amp;#39;)
+
+cov_Int_Best&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;cor_ID__Intercept__c.Best&amp;#39;) 
+
+cov_Worst_Best&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;cor_ID__c.Worst__c.Best&amp;#39;)
+
+#Getting level 1 error variance
+sigma&amp;lt;-posterior_samples(Pos_lv2_Evnt, pars = &amp;#39;sigma&amp;#39;)
+post_samples&amp;lt;-data.frame(Intercept,
+                         M.Worst,
+                         M.Best,
+                         Worst, 
+                         Best, 
+                         Int_var, 
+                         Worst_var, 
+                         Best_var, 
+                         cov_Int_Worst, 
+                         cov_Int_Best, 
+                         cov_Worst_Best, 
+                         sigma)
+
+colnames(post_samples)&amp;lt;-c(&amp;#39;Intercept&amp;#39;, 
+                          &amp;#39;M.Worst&amp;#39;,
+                          &amp;#39;M.Best&amp;#39;,
+                          &amp;#39;Worst&amp;#39;, 
+                          &amp;#39;Best&amp;#39;, 
+                          &amp;#39;Int_var&amp;#39;, 
+                          &amp;#39;Worst_var&amp;#39;, 
+                          &amp;#39;Best_var&amp;#39;,
+                          &amp;#39;cov_Int_Worst&amp;#39;, 
+                          &amp;#39;cov_Int_Best&amp;#39;, 
+                          &amp;#39;cov_Worst_Best&amp;#39;, 
+                          &amp;#39;sigma&amp;#39;)
+#Aggregate across imputed datasets
+#Currently going to take 1000 draws from posterior distributions
+#Will then apply across all 20 data sets
+P_Evnt_alone&amp;lt;-list(between_var=vector(), 
+                 within_var=vector(), 
+                 between_All_tot=vector(),
+                 between_All_btw=vector(),
+                 between_res_btw=vector(),
+                 within_fix_wthn=vector(),
+                 within_fix_tot=vector(),
+                 within_slope_var_wthn=vector(),
+                 within_res_wthn=vector(), 
+                 within_unmod_tot=vector())
+
+for(i in 1:length(dat.study1.list)){
+  print(paste(&amp;#39;Starting w/ imputed set&amp;#39;, i, &amp;#39;out of&amp;#39;, M))
+  D&amp;lt;-sample(sampling_list[[i]], size = 1000, replace = FALSE)
+  for(d in 1:length(D)){
+    #browser()
+    Gamma_w&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Worst&amp;#39;, &amp;#39;Best&amp;#39;)]))       #Make sure the effects line up - in order of within_cov
+    Gamma_b&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Intercept&amp;#39;, &amp;#39;M.Worst&amp;#39;, &amp;#39;M.Best&amp;#39;)]))    #level fixed intercept and any level 2 fixed effects
+    tau&amp;lt;-c(post_samples[D[d], c(&amp;#39;Int_var&amp;#39;, &amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;cov_Int_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;Worst_var&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Best&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;, &amp;#39;Best_var&amp;#39;)])
+    
+    tau&amp;lt;-matrix(unlist(tau), 
+                byrow=TRUE, 
+                ncol=3)
+    
+    #Matrix rows/columns ordered starting with tau.00 (intercept variance)
+    #then add columns/rows for random effects of slopes in order of within_cov
+    
+    Sigma2&amp;lt;-post_samples[D[d], &amp;#39;sigma&amp;#39;]
+    
+    r2mlm_Evnt&amp;lt;-r2MLM(data=dat.study1.list[[i]], 
+                      within_covs = within_cov, 
+                      between_covs = between_cov, 
+                      random_covs = random_cov, 
+                      gamma_w = Gamma_w, 
+                      gamma_b = Gamma_b, 
+                      Tau = tau, 
+                      sigma2 = Sigma2, 
+                      has_intercept = TRUE, 
+                      clustermeancentered = TRUE)
+    
+    #Extracting relevant values across imputed datasets
+    P_Evnt_alone$between_var&amp;lt;-c(P_Evnt_alone$between_var, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;fixed, between&amp;#39;, &amp;#39;total&amp;#39;])+
+                                as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;mean variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Evnt_alone$within_var&amp;lt;-c(P_Evnt_alone$within_var, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                               as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;])+
+                               as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Evnt_alone$between_All_tot&amp;lt;-c(P_Evnt_alone$between_All_tot, as.numeric(r2mlm_Evnt$R2s[&amp;#39;f2&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Evnt_alone$between_All_btw&amp;lt;-c(P_Evnt_alone$between_All_btw, as.numeric(r2mlm_Evnt$R2s[&amp;#39;f2&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_Evnt_alone$between_res_btw&amp;lt;-c(P_Evnt_alone$between_res_btw, as.numeric(r2mlm_Evnt$R2s[&amp;#39;m&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_Evnt_alone$within_fix_wthn&amp;lt;-c(P_Evnt_alone$within_fix_wthn, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Evnt_alone$within_fix_tot&amp;lt;-c(P_Evnt_alone$within_fix_wthn, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Evnt_alone$within_slope_var_wthn&amp;lt;-c(P_Evnt_alone$within_slope_var, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Evnt_alone$within_res_wthn&amp;lt;-c(P_Evnt_alone$within_res_wthn, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Evnt_alone$within_unmod_tot&amp;lt;-c(P_Evnt_alone$within_unmod_wthn, as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                                     as.numeric(r2mlm_Evnt$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    
+    print(paste(&amp;quot;Sampling&amp;quot;, d, &amp;quot;out of&amp;quot;, length(D), &amp;#39;- Dataset:&amp;#39;, i))
+  }
+  print(paste(&amp;quot;*** Finshed imputed data set&amp;quot;, i, &amp;#39;out of&amp;#39;, M, &amp;quot;***&amp;quot;))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And finally, I do the same with the combined model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Combined Level 2 Model (these are context effects on intercept)
+within_cov&amp;lt;-c(21,23)                    #Columns with group-mean centered predictors
+between_cov&amp;lt;-c(6, 22, 24)               #Columns with between-subject predictors
+random_cov&amp;lt;-c(21,23)                    #Level 1 predictors with random slopes
+
+#Getting distributions of fixed effects
+Intercept&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_Intercept&amp;#39;) 
+DN&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_c.DN&amp;#39;)
+M.Worst&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_mean.Worst&amp;#39;)
+M.Best&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_mean.Best&amp;#39;)
+Worst&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_c.Worst&amp;#39;) 
+Best&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;b_c.Best&amp;#39;) 
+
+#Getting between-subjects variance terms for random effects
+Int_var&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__Intercept&amp;#39;)^2
+Worst_var&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)^2 
+Best_var&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Best&amp;#39;)^2
+
+#Getting covariances of random effects (i.e., tau matrix)
+cov_Int_Worst&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;cor_ID__Intercept__c.Worst&amp;#39;)
+
+cov_Int_Best&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__Intercept&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;cor_ID__Intercept__c.Best&amp;#39;) 
+
+cov_Worst_Best&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Worst&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;sd_ID__c.Best&amp;#39;)*
+  posterior_samples(Pos_lv2_All, pars = &amp;#39;cor_ID__c.Worst__c.Best&amp;#39;)
+
+#Getting level 1 error variance
+sigma&amp;lt;-posterior_samples(Pos_lv2_All, pars = &amp;#39;sigma&amp;#39;)
+post_samples&amp;lt;-data.frame(Intercept,
+                         DN,
+                         M.Worst,
+                         M.Best,
+                         Worst, 
+                         Best, 
+                         Int_var, 
+                         Worst_var, 
+                         Best_var, 
+                         cov_Int_Worst, 
+                         cov_Int_Best, 
+                         cov_Worst_Best, 
+                         sigma)
+
+colnames(post_samples)&amp;lt;-c(&amp;#39;Intercept&amp;#39;, 
+                          &amp;#39;DN&amp;#39;,
+                          &amp;#39;M.Worst&amp;#39;,
+                          &amp;#39;M.Best&amp;#39;,
+                          &amp;#39;Worst&amp;#39;, 
+                          &amp;#39;Best&amp;#39;, 
+                          &amp;#39;Int_var&amp;#39;, 
+                          &amp;#39;Worst_var&amp;#39;, 
+                          &amp;#39;Best_var&amp;#39;,
+                          &amp;#39;cov_Int_Worst&amp;#39;, 
+                          &amp;#39;cov_Int_Best&amp;#39;, 
+                          &amp;#39;cov_Worst_Best&amp;#39;, 
+                          &amp;#39;sigma&amp;#39;)
+#Aggregate across imputed datasets
+#Currently going to take 1000 draws from posterior distributions
+#Will then apply across all 20 data sets
+P_Lv2_comb&amp;lt;-list(between_var=vector(), 
+               within_var=vector(), 
+               between_All_tot=vector(),
+               between_All_btw=vector(),
+               between_res_btw=vector(),
+               within_fix_wthn=vector(),
+               within_fix_tot=vector(),
+               within_slope_var_wthn=vector(),
+               within_res_wthn=vector(), 
+               within_unmod_tot=vector())
+
+for(i in 1:length(dat.study1.list)){
+  print(paste(&amp;#39;Starting w/ imputed set&amp;#39;, i, &amp;#39;out of&amp;#39;, M))
+  D&amp;lt;-sample(sampling_list[[i]], size = 1000, replace = FALSE)
+  for(d in 1:length(D)){
+    #browser()
+    Gamma_w&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Worst&amp;#39;, &amp;#39;Best&amp;#39;)]))       #Make sure the effects line up - in order of within_cov
+    Gamma_b&amp;lt;-as.vector(
+      as.matrix(
+        post_samples[D[d], c(&amp;#39;Intercept&amp;#39;, &amp;#39;DN&amp;#39;, &amp;#39;M.Worst&amp;#39;, &amp;#39;M.Best&amp;#39;)]))    #level fixed intercept and any level 2 fixed effects
+    tau&amp;lt;-c(post_samples[D[d], c(&amp;#39;Int_var&amp;#39;, &amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;cov_Int_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Worst&amp;#39;, &amp;#39;Worst_var&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;)], 
+           post_samples[D[d], c(&amp;#39;cov_Int_Best&amp;#39;, &amp;#39;cov_Worst_Best&amp;#39;, &amp;#39;Best_var&amp;#39;)])
+    
+    tau&amp;lt;-matrix(unlist(tau), 
+                byrow=TRUE, 
+                ncol=3)
+    
+    #Matrix rows/columns ordered starting with tau.00 (intercept variance)
+    #then add columns/rows for random effects of slopes in order of within_cov
+    
+    Sigma2&amp;lt;-post_samples[D[d], &amp;#39;sigma&amp;#39;]
+    
+    r2mlm_All&amp;lt;-r2MLM(data=dat.study1.list[[i]], 
+                     within_covs = within_cov, 
+                     between_covs = between_cov, 
+                     random_covs = random_cov, 
+                     gamma_w = Gamma_w, 
+                     gamma_b = Gamma_b, 
+                     Tau = tau, 
+                     sigma2 = Sigma2, 
+                     has_intercept = TRUE, 
+                     clustermeancentered = TRUE)
+    
+    #Extracting relevant values across imputed datasets
+    P_Lv2_comb$between_var&amp;lt;-c(P_Lv2_comb$between_var, as.numeric(r2mlm_All$Decompositions[&amp;#39;fixed, between&amp;#39;, &amp;#39;total&amp;#39;])+
+                              as.numeric(r2mlm_All$Decompositions[&amp;#39;mean variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Lv2_comb$within_var&amp;lt;-c(P_Lv2_comb$within_var, as.numeric(r2mlm_All$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                             as.numeric(r2mlm_All$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;])+
+                             as.numeric(r2mlm_All$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Lv2_comb$between_All_tot&amp;lt;-c(P_Lv2_comb$between_All_tot, as.numeric(r2mlm_All$R2s[&amp;#39;f2&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Lv2_comb$between_All_btw&amp;lt;-c(P_Lv2_comb$between_All_btw, as.numeric(r2mlm_All$R2s[&amp;#39;f2&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_Lv2_comb$between_res_btw&amp;lt;-c(P_Lv2_comb$between_res_btw, as.numeric(r2mlm_All$R2s[&amp;#39;m&amp;#39;, &amp;#39;between&amp;#39;]))
+    P_Lv2_comb$within_fix_wthn&amp;lt;-c(P_Lv2_comb$within_fix_wthn, as.numeric(r2mlm_All$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Lv2_comb$within_fix_tot&amp;lt;-c(P_Lv2_comb$within_fix_wthn, as.numeric(r2mlm_All$Decompositions[&amp;#39;fixed, within&amp;#39;, &amp;#39;total&amp;#39;]))
+    P_Lv2_comb$within_slope_var_wthn&amp;lt;-c(P_Lv2_comb$within_slope_var, as.numeric(r2mlm_All$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Lv2_comb$within_res_wthn&amp;lt;-c(P_Lv2_comb$within_res_wthn, as.numeric(r2mlm_All$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;within&amp;#39;]))
+    P_Lv2_comb$within_unmod_tot&amp;lt;-c(P_Lv2_comb$within_unmod_wthn, as.numeric(r2mlm_All$Decompositions[&amp;#39;sigma2&amp;#39;, &amp;#39;total&amp;#39;])+
+                                   as.numeric(r2mlm_All$Decompositions[&amp;#39;slope variation&amp;#39;, &amp;#39;total&amp;#39;]))
+    
+    print(paste(&amp;quot;Sampling&amp;quot;, d, &amp;quot;out of&amp;quot;, length(D), &amp;#39;- Dataset:&amp;#39;, i))
+  }
+  print(paste(&amp;quot;*** Finshed imputed data set&amp;quot;, i, &amp;#39;out of&amp;#39;, M, &amp;quot;***&amp;quot;))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now that I have all of the values I need for my plot, I am just a few calculations away from getting what I want. As a quick aside here, note that I can now get 95% highest density intervals for my different variance terms using different adaptations of the following code: &lt;code&gt;quantile(P_DN_alone$between_All_tot, c(.025, .975))&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;using-the-riverplot-package&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Using the &lt;code&gt;riverplot&lt;/code&gt; Package&lt;/h1&gt;
+&lt;p&gt;Remember this all started with a desire to get a graphic that was straightforward, transparent, and easy to digest?&lt;/p&gt;
+&lt;p&gt;Well we are almost there, but first, I need to isolate the variance explained by the dispositional negativity variable (&lt;code&gt;DN&lt;/code&gt;) and the shared variance between &lt;code&gt;DN&lt;/code&gt; and individual variation in the average ratings of positive and negative daily events. I also threw in the unique variance explained by average exposure to positive and negative events, above and beyond individual differences in dispositional negativity.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;P_btw_DN_uni_tot&amp;lt;-mean(P_Lv2_comb$between_All_tot)-mean(P_Evnt_alone$between_All_tot)
+P_btw_shared_tot&amp;lt;-mean(P_DN_alone$between_All_tot)-P_btw_DN_uni_tot
+P_btw_context_uni_tot&amp;lt;-mean(P_Lv2_comb$between_All_tot)-mean(P_DN_alone$between_All_tot)
+
+sum(c(P_btw_DN_uni_tot, 
+      P_btw_shared_tot,
+      P_btw_context_uni_tot))
+
+#The above total should equal: 
+mean(P_Lv2_comb$between_All_tot)
+
+#Now getting the between subjects residual variance from final model
+P_btw_res_tot&amp;lt;-mean(P_Lv2_comb$between_var-P_Lv2_comb$between_All_tot)
+P_btw_res_tot+sum(c(P_btw_DN_uni_tot, 
+                    P_btw_shared_tot,
+                    P_btw_context_uni_tot))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now it is the within-subject variance I need to extract:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Final getting the within subjects variance: 
+P_wthn_best_worst_tot&amp;lt;-mean(P_Lv2_comb$within_fix_tot)
+P_wthn_res_tot&amp;lt;-mean(P_Lv2_comb$within_var)-P_wthn_best_worst_tot
+
+#Should be equal to 1
+sum(c(P_wthn_best_worst_tot, 
+      P_wthn_res_tot, 
+      mean(P_Lv2_comb$between_var)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And finally the total between- and within-subjects variability estimated in the models.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;P_tot_btw&amp;lt;-mean(P_Lv2_comb$between_var)
+P_tot_wthn&amp;lt;-mean(P_Lv2_comb$within_var)  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using the &lt;code&gt;riverplot&lt;/code&gt; package &lt;span class=&#34;citation&#34;&gt;(Weiner 2017)&lt;/span&gt;, I then created my Sankey diagram as follows:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;River_DF&amp;lt;-data.frame(N1 = c(&amp;#39;DN&amp;#39;,
+                            &amp;#39;DN &amp;lt;--&amp;gt; Exposure&amp;#39;,
+                            &amp;#39;Exposure&amp;#39;, 
+                            &amp;#39;Unmodeled Between&amp;#39;, 
+                            &amp;#39;Momentary Events&amp;#39;, 
+                            &amp;#39;Unmodeled Within&amp;#39;, 
+                            &amp;#39;Total Between&amp;#39;, 
+                            &amp;#39;Total Within&amp;#39;), 
+                     N2 = c(&amp;#39;Total Between&amp;#39;, 
+                            &amp;#39;Total Between&amp;#39;, 
+                            &amp;#39;Total Between&amp;#39;, 
+                            &amp;#39;Total Between&amp;#39;, 
+                            &amp;#39;Total Within&amp;#39;, 
+                            &amp;#39;Total Within&amp;#39;, 
+                            &amp;#39;Total Variance&amp;#39;, 
+                            &amp;#39;Total Variance&amp;#39;), 
+                     Value = c(P_btw_DN_uni_tot, 
+                               P_btw_shared_tot,
+                               P_btw_context_uni_tot, 
+                               P_btw_res_tot, 
+                               P_wthn_best_worst_tot, 
+                               P_wthn_res_tot, 
+                               P_tot_btw, 
+                               P_tot_wthn), 
+                     ID = 1:8)
+
+River_DF$N1&amp;lt;-paste(River_DF$N1, 
+                   &amp;#39;\n&amp;#39;, 
+                   paste0(round(River_DF$Value*100, 
+                                digits = 2), &amp;#39;%&amp;#39;
+                   )
+)
+River_DF$N2&amp;lt;-c(rep(River_DF$N1[7], 4),
+               rep(River_DF$N1[8], 2), 
+               rep(&amp;#39;Total Variance&amp;#39;, 2)
+)
+
+nodes&amp;lt;-data.frame(ID = c(River_DF$N1, 
+                         &amp;#39;Total Variance&amp;#39;), 
+                  x = c(1,1,1,1,1,1,2,2,3), 
+                  y = c(0,1.5,3.25,5.25,8,10.5,2.5,7.5,5))
+
+palette = c(paste0(brewer.pal(9, &amp;quot;Blues&amp;quot;), 90)[c(2, 4, 6, 8)], 
+            paste0(brewer.pal(9, &amp;quot;Reds&amp;quot;), 90)[c(6, 8)], 
+            paste0(brewer.pal(9, &amp;quot;Blues&amp;quot;), 90)[9], 
+            paste0(brewer.pal(9, &amp;quot;Reds&amp;quot;), 90)[9], 
+            paste0(brewer.pal(9, &amp;#39;Purples&amp;#39;), 90)[9])
+
+styles = lapply(nodes$y, function(n) {
+  list(col = palette[n], lty = 0, textcol = &amp;quot;black&amp;quot;)
+})
+
+#Not sure why color is not mapping correctly with code above but it if I add this code:
+for(i in 1:length(palette)){
+  styles[[i]]$col&amp;lt;-palette[i]
+}
+
+names(styles) = nodes$ID
+
+riv&amp;lt;-makeRiver(nodes = nodes, 
+               edges =  River_DF, 
+               node_styles = styles)
+
+#Generating and saving image to my folder 
+png(paste0(study1.graphics, &amp;#39;/S1_PosMood_river.png&amp;#39;), 
+    units = &amp;#39;in&amp;#39;, 
+    res = 1200, 
+    height = 10, 
+    width = 10)
+riverplot(riv, 
+          nodewidth = 3, 
+          plot_area = .95)
+title(ylab = &amp;#39;Study 1 - Riverplot of Total Variance Decomposition Estimated from Positive Mood Models&amp;#39;)
+dev.off()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And here you have it, the final result, which I rotated outside of &lt;code&gt;R&lt;/code&gt; to be oriented vertically. The &lt;code&gt;riverplot&lt;/code&gt; package will provide a flow that moves from left to right by default.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;/img/S1_PosMood_river.png&#34; alt=&#34;Figure 4 - Variance Decomposition - As Visually Straightforward as I can make it&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Figure 4&lt;/em&gt; - Variance Decomposition - As Visually Straightforward as I can make it&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Best of luck applying this approach to your own data. And let’s hope the reviewers of our forthcoming manuscript are sufficiently impressed with this attempt to visually present our model results.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level1 unnumbered&#34;&gt;
+&lt;h1&gt;References&lt;/h1&gt;
+&lt;div id=&#34;refs&#34; class=&#34;references&#34;&gt;
+&lt;div id=&#34;ref-Bolger1991&#34;&gt;
+&lt;p&gt;Bolger, Niall, and Elizabeth A. Schilling. 1991. “Personality and the problems of everyday Life: The role of neuroticism in exposure and reactivity to daily stressors.” &lt;em&gt;Journal of Personality&lt;/em&gt; 59 (3): 355–86. &lt;a href=&#34;https://doi.org/10.1111/j.1467-6494.1991.tb00253.x&#34;&gt;https://doi.org/10.1111/j.1467-6494.1991.tb00253.x&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Burkner2017&#34;&gt;
+&lt;p&gt;Bürkner, Paul-Christian. 2017. “brms : An R Package for Bayesian Multilevel Models Using Stan.” &lt;em&gt;Journal of Statistical Software&lt;/em&gt; 80 (1). &lt;a href=&#34;https://doi.org/10.18637/jss.v080.i01&#34;&gt;https://doi.org/10.18637/jss.v080.i01&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Gelman2013&#34;&gt;
+&lt;p&gt;Gelman, Andrew, John B. Carlin, Hal S. Stern, David B. Dunson, Aki Vehtari, and Donald B. Rubin. 2013. &lt;em&gt;Bayesian data analysis&lt;/em&gt;. New York: CRC Press.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Gelman2007&#34;&gt;
+&lt;p&gt;Gelman, Andrew, and Jennifer Hill. 2007. &lt;em&gt;Data analysis using regression and multilevel/hierarchical models&lt;/em&gt;. New York: Cambridge University Press.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Jaeger2017&#34;&gt;
+&lt;p&gt;Jaeger, Byron C., Lloyd J. Edwards, Kalyan Das, and Pranab K. Sen. 2017. “An R2 statistic for fixed effects in the generalized linear mixed model.” &lt;em&gt;Journal of Applied Statistics&lt;/em&gt; 44 (6): 1086–1105. &lt;a href=&#34;https://doi.org/10.1080/02664763.2016.1193725&#34;&gt;https://doi.org/10.1080/02664763.2016.1193725&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Nakagawa2016&#34;&gt;
+&lt;p&gt;Nakagawa, Shinichi, and Holger Schielzeth. 2016. “Coefficient of determination R2 and intra-class correlation coefficient ICC from generalized linear mixed-effects models.” &lt;em&gt;Ecology and Evolution&lt;/em&gt;. &lt;a href=&#34;https://doi.org/10.1101/095851&#34;&gt;https://doi.org/10.1101/095851&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Raudenbush2002&#34;&gt;
+&lt;p&gt;Raudenbush, S. W., and A. S. Bryk. 2002. &lt;em&gt;Hierarchical linear models: Applications and data analysis methods&lt;/em&gt;. 2nd ed. Thousand Oaks, CA: Sage.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Rights2018&#34;&gt;
+&lt;p&gt;Rights, Jason D., and Sonya K. Sterba. 2018. “Quantifying explained variance in multilevel models: An integrative framework for defining R-squared measures.” &lt;em&gt;Psychological Methods&lt;/em&gt;. &lt;a href=&#34;https://doi.org/10.1037/met0000184&#34;&gt;https://doi.org/10.1037/met0000184&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Shackman2018b&#34;&gt;
+&lt;p&gt;Shackman, Alexander J., Melissa D. Stockbridge, Edward P. Lemay, and Andrew S. Fox. 2018. “The psychological and neurobiological bases of dispositional negativity.” In &lt;em&gt;The Nature of Emotion: Fundamental Questions2&lt;/em&gt;, edited by Andrew S. Fox, R. C. Lapate, Alexander J. Shackman, and R. J. Davidson, 2nd ed. New York: Oxford University Press.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Shackman2016&#34;&gt;
+&lt;p&gt;Shackman, Alexander J., Melissa Stockbridge, Rachael Tillman, Claire Kaplan, Do Tromp, Andrew Fox, and Matthias Gamer. 2016. “The neurobiology of dispositional negativity and attentional biases to threat: Implications for understanding anxiety disorders in adults and youth.” &lt;em&gt;Journal of Experimental Psychopathology&lt;/em&gt; 7 (3): 311–42. &lt;a href=&#34;https://doi.org/10.5127/jep.054015&#34;&gt;https://doi.org/10.5127/jep.054015&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Shackman2016a&#34;&gt;
+&lt;p&gt;Shackman, Alexander J., Do P.M. Tromp, Melissa D. Stockbridge, Claire M. Kaplan, Rachael M. Tillman, and Andrew S. Fox. 2016. “Dispositional negativity: An integrative psychological and neurobiological perspective.” &lt;em&gt;Psychological Bulletin&lt;/em&gt; 142 (12): 1275–1314. &lt;a href=&#34;https://doi.org/10.1037/bul0000073&#34;&gt;https://doi.org/10.1037/bul0000073&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Shackman2018&#34;&gt;
+&lt;p&gt;Shackman, Alexander J., Jennifer S. Weinstein, Stanton N. Hudja, Conor D. Bloomer, Matthew G. Barstead, Andrew S. Fox, and Edward P. Lemay. 2018. “Dispositional negativity in the wild: Social environment governs momentary emotional experience.” &lt;em&gt;Emotion&lt;/em&gt; 18 (5): 707–24. &lt;a href=&#34;https://doi.org/10.1037/emo0000339&#34;&gt;https://doi.org/10.1037/emo0000339&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;ref-Weiner2017&#34;&gt;
+&lt;p&gt;Weiner, January. 2017. &lt;em&gt;Riverplot: Sankey or Ribbon Plots&lt;/em&gt;. &lt;a href=&#34;https://CRAN.R-project.org/package=riverplot&#34;&gt;https://CRAN.R-project.org/package=riverplot&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</title>
       <link>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</link>
       <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
@@ -109,7 +818,7 @@ for(i in 1:k.fold){
   Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
 }
 round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Time difference of 1.71 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 1.69 secs&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;So not too long of a wait time to run through the cross-validation at 100 folds on my personal laptop.&lt;/p&gt;
 &lt;p&gt;Now, for the overall results of the model in terms of accurate predictions. I always prefer to show, my data whenever possible.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;NB_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
@@ -190,7 +899,7 @@ for(i in 1:k.fold){
   Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
 }
 round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Time difference of 0.35 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 0.37 secs&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Once again, the the total run-time is not that long for the 100 cross-validation runs. Now let’s plot the results.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;LDA_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
                      Model = Model, 
@@ -272,7 +981,7 @@ for(i in 1:k.fold){
   Pred_type&amp;lt;-c(Pred_type, &amp;#39;Testing Set&amp;#39;)
 }
 round(Sys.time()-Start, digits = 2)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## Time difference of 0.76 secs&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Time difference of 0.77 secs&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Once again a fairly quick run time (by the way I keep saying this because I am used to waiting a few hours for multilevel Bayesian regression models with correlated random effects to coverge. Waiting a second or two to get aggregated results is nothing).&lt;/p&gt;
 &lt;p&gt;Let’s see the prediction results…&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;MLR_KFold&amp;lt;-data.frame(Accuracy = Accuracy, 
@@ -448,8 +1157,8 @@ table(pred, iris$Species)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##             
 ## pred         setosa versicolor virginica
 ##   setosa         50          0         0
-##   versicolor      0         48         4
-##   virginica       0          2        46&lt;/code&gt;&lt;/pre&gt;
+##   versicolor      0         48         3
+##   virginica       0          2        47&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Compared to the &lt;em&gt;k&lt;/em&gt;-means approach, we can see that the knn model, using 9 nearest neighborhoods, performs relatively well at separating versicolor and virginica specimens. Recall that &lt;em&gt;k&lt;/em&gt;-means struggled making this distinction due to the two species’ overlap in distributions on several of the measures. A key added benefit of knn over &lt;em&gt;k&lt;/em&gt;-means is that I can feed this model new data, and receive a species prediction, which is not possible with &lt;em&gt;k&lt;/em&gt;-means.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Note I chose values that are more consistent with the versicolor
 newdata&amp;lt;-data.frame(Sepal.Length = .07, 
@@ -471,7 +1180,7 @@ newdata&amp;lt;-data.frame(Sepal.Length = .07,
 pred_new&amp;lt;-predict(fit_knn, newdata = newdata, type=&amp;#39;prob&amp;#39;)
 pred_new&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   setosa versicolor virginica
-## 1      0  0.8888889 0.1111111&lt;/code&gt;&lt;/pre&gt;
+## 1      0          1         0&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;mixture-modeling-latent-profile-analysis&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Mixture Modeling (Latent Profile Analysis)&lt;/h2&gt;
@@ -528,8 +1237,8 @@ LRT&lt;/code&gt;&lt;/pre&gt;
 ## Replications = 1000 
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
-## 2 vs 3    68.33618       0.001998002
-## 3 vs 4    25.40075       0.689310689&lt;/code&gt;&lt;/pre&gt;
+## 2 vs 3    68.33618       0.000999001
+## 3 vs 4    25.40075       0.696303696&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, &lt;span class=&#34;math inline&#34;&gt;\(p &amp;lt; .05\)&lt;/span&gt;, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.&lt;/p&gt;
 &lt;p&gt;The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;fit_mix&amp;lt;-Mclust(iris[,1:4], G=3, modelNames = &amp;#39;VVV&amp;#39;)
@@ -865,12 +1574,12 @@ summary(fit.RSA)&lt;/code&gt;&lt;/pre&gt;
 boot.RSA&amp;lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8476381  6.51430698
-## 2        Clown -0.5822343 -0.02026263
-## 3       Video2 -0.2363901  0.29824926
-## 4         Kids -0.3677560  0.16103191
-## 5        Intro -0.6459272 -0.11635412
-## 6       Video3 -0.3423177  0.17863409&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  5.8461916  6.51835122
+## 2        Clown -0.5745105 -0.02711436
+## 3       Video2 -0.2306269  0.29390313
+## 4         Kids -0.3614856  0.15929225
+## 5        Intro -0.6389775 -0.11748473
+## 6       Video3 -0.3396095  0.18202275&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#--
 fit.HP&amp;lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -912,12 +1621,12 @@ summary(fit.HP)&lt;/code&gt;&lt;/pre&gt;
 boot.HP&amp;lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58293154  0.629789602
-## 2        Clown -0.03849714 -0.009679799
-## 3       Video2 -0.01928067  0.009230765
-## 4         Kids -0.01525000  0.013530564
-## 5        Intro -0.04408096 -0.015366219
-## 6       Video3 -0.02328209  0.005496324&lt;/code&gt;&lt;/pre&gt;
+## 1 X.Intercept.  0.58292213  0.629251479
+## 2        Clown -0.03811022 -0.010124543
+## 3       Video2 -0.01933273  0.009207608
+## 4         Kids -0.01495332  0.013203824
+## 5        Intro -0.04387540 -0.015426344
+## 6       Video3 -0.02317571  0.005322745&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And the pattern was replicated with heart period.&lt;/p&gt;
 &lt;p&gt;I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.&lt;/p&gt;
 </description>
@@ -2046,15 +2755,6 @@ The two models make fairly similar predictions for 1961 (shaded regions represen
       <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
       
       <guid>/publication/smith_etal_2017_joya/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support</title>
-      <link>/publication/barstead_etal_2017_jora/</link>
-      <pubDate>Sat, 01 Jul 2017 00:00:00 -0400</pubDate>
-      
-      <guid>/publication/barstead_etal_2017_jora/</guid>
       <description></description>
     </item>
     

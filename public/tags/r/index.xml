@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
-    <lastBuildDate>Mon, 03 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Visualizing Variance in Multilevel Models Using the Riverplot Package</title>
+      <link>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</guid>
+      <description>Spurred on by my boss Alex Shackman, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.
+Figure 1 - Stacked Barplot of Model Variance Decomposition</description>
+    </item>
     
     <item>
       <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</title>

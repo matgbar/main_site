@@ -5,6 +5,15 @@
     
     <url>
     
+      <loc>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</loc>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</loc>
       <lastmod>2018-12-03T00:00:00+00:00</lastmod>
     </url>
@@ -232,6 +241,16 @@
     
     <url>
     
+      <loc>/tags/bayesian-models/</loc>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/categories/</loc>
       <priority>0</priority>
     </url>
@@ -262,7 +281,7 @@
     <url>
     
       <loc>/categories/data-visualization/</loc>
-      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -401,6 +420,26 @@
     
     <url>
     
+      <loc>/categories/multilevel-modeling/</loc>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/tags/multiple-imputation/</loc>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
       <loc>/tags/plotting/</loc>
       <lastmod>2018-08-16T00:00:00+00:00</lastmod>
       <priority>0</priority>
@@ -442,7 +481,7 @@
     <url>
     
       <loc>/tags/r/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
@@ -493,6 +532,16 @@
     
       <loc>/tags/stan/</loc>
       <lastmod>2018-09-03T00:00:00+00:00</lastmod>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    
+    <url>
+    
+      <loc>/tags/statistics/</loc>
+      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
       <priority>0</priority>
     </url>
     
