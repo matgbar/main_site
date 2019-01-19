@@ -487,10 +487,8 @@ cowplot::plot_grid(g1, g2, g3, g4, g5, g6, nrow=3)</code></pre>
                                         classProbs = TRUE, 
                                         summaryFunction = multiClassSummary),
                metric = &#39;AUC&#39;,
-               tuneLength = 10)</code></pre>
-<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info =
-## trainInfo, : There were missing values in resampled performance measures.</code></pre>
-<pre class="r"><code>plot(fit_knn)</code></pre>
+               tuneLength = 10)
+plot(fit_knn)</code></pre>
 <p><img src="/post/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai_files/figure-html/knn-1.png" width="672" /></p>
 <p>So if we look at this plot, we see that the area under the curve (AUC) is highest at <em>k</em>=9 (values for AUC closer to 1 represent a better performing knn model). Other relevant performance statistics can be viewed by simply running <code>fit_knn</code> in your console.</p>
 <p>Next, we will want to see how the model performed in predicting the data. As an aside, with larger datasets it is possible to mitigate against overfitting by holding out a proportion of the data for testing model performance. My goal in this post is to compare the performance of statistical vs. machine learning techniques in correctly identifying patterns in the underlying data. As such, I will be keeping the entire <code>iris</code> data set in tact so that supervised and unsupervised models can be evaluated on similar grounds.</p>
@@ -499,8 +497,8 @@ table(pred, iris$Species)</code></pre>
 <pre><code>##             
 ## pred         setosa versicolor virginica
 ##   setosa         50          0         0
-##   versicolor      0         48         3
-##   virginica       0          2        47</code></pre>
+##   versicolor      0         48         4
+##   virginica       0          2        46</code></pre>
 <p>Compared to the <em>k</em>-means approach, we can see that the knn model, using 9 nearest neighborhoods, performs relatively well at separating versicolor and virginica specimens. Recall that <em>k</em>-means struggled making this distinction due to the two species’ overlap in distributions on several of the measures. A key added benefit of knn over <em>k</em>-means is that I can feed this model new data, and receive a species prediction, which is not possible with <em>k</em>-means.</p>
 <pre class="r"><code>#Note I chose values that are more consistent with the versicolor
 newdata&lt;-data.frame(Sepal.Length = .07, 
@@ -522,7 +520,7 @@ newdata&lt;-data.frame(Sepal.Length = .07,
 pred_new&lt;-predict(fit_knn, newdata = newdata, type=&#39;prob&#39;)
 pred_new</code></pre>
 <pre><code>##   setosa versicolor virginica
-## 1      0          1         0</code></pre>
+## 1      0  0.8888889 0.1111111</code></pre>
 </div>
 <div id="mixture-modeling-latent-profile-analysis" class="section level2">
 <h2>Mixture Modeling (Latent Profile Analysis)</h2>
@@ -580,7 +578,7 @@ LRT</code></pre>
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.696303696</code></pre>
+## 3 vs 4    25.40075       0.691308691</code></pre>
 <p>Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, <span class="math inline">\(p &lt; .05\)</span>, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.</p>
 <p>The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.</p>
 <pre class="r"><code>fit_mix&lt;-Mclust(iris[,1:4], G=3, modelNames = &#39;VVV&#39;)
