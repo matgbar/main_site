@@ -26,6 +26,7 @@ math = false
 #image = ""
 #caption = ""
 
+baseurl = "https://mgb-research.netlify.com/"
 +++
 
 Cell phones are ubiquitous on college campuses, annoying many an instructor who looks back at a classroom filled with young adults enamored with their black mirrors (and yes I am still very impressed with the underlying meaning of the hit Netflix series' title). As others have in the past [Dr. Alex Shackman](https://psyc.umd.edu/facultyprofile/Shackman/Alexander), sought to use the constant presence of cell phones to better understand the daily lives of individuals. 

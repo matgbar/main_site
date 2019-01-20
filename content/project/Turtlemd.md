@@ -26,6 +26,7 @@ math = false
 #image = ""
 #caption = ""
 
+baseurl = "https://mgb-research.netlify.com/"
 +++
 
 [Dr. Ken Rubin](https://education.umd.edu/directory/kenneth-rubin) has spent the majority of his career studying the causes, correlates, and consequences of childhood anxiety and social withdrawal. As a result of an ongoing collaboration with [Dr. Andrea Chronis-Tuscano](https://psyc.umd.edu/facultyprofile/Chronis-Tuscano/Andrea), a clinical psychology professor and researcher, and in consultation with [Dr. Rob Coplan](https://carleton.ca/psychology/people/robert-coplan/), this career has recently been translated into the creation of an early intervention program. The intervention, named the *Turtle Program*, simultaneously targets maladaptive parenting behaviors known to maintain and exacerbate childhood anxiety in addition to anxious and inhibited children's social skills and emotion regulation deficits. 

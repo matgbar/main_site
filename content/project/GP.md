@@ -26,6 +26,7 @@ math = false
 #image = ""
 #caption = ""
 
+baseurl = "https://mgb-research.netlify.com/"
 +++
 
 I have become increasingly interested in the use of Gaussian process models as a tool for forecasting and imputation with univariate time series. See my [blog post](https://mgb-research.netlify.com/post/gaussian-process-imputation-models/) on the topic for more information and a toy forecasting problem. 

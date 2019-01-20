@@ -26,6 +26,7 @@ math = false
 image = "IBI-Screen.PNG"
 caption = "IBI VizEdit's Primary Editing Interface"
 
+baseurl = "https://mgb-research.netlify.com/"
 +++
 
 IBI VizEdit is a program built using RShiny. It is designed to assist in the manual editing of inter-beat interval files that are derived from photoplethysmogram (PPG) recordings. Unlike the electrocardiogram signal (EKG or ECG), PPG signals are characterized by a slow-moving waveform, which presents a different set of challenges when the true signal becomes corrupted by motion artefacts and other sources of noise.

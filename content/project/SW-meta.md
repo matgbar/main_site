@@ -26,6 +26,7 @@ math = false
 image = "Multiple Bivariate Plots in one.jpeg"
 caption = "Simulated Effect Sizes Plotted in Bivariate Space"
 
+baseurl = "https://mgb-research.netlify.com/"
 +++
 
 Are the terms anxious withdrawal, anxious solitude, behavioral inhibition, shyness-sensitivity, interchangeable? Are peer, parent, teacher, and self-perceptions of social withdrawal measuring the same thing? To date, researchers have relied on narrative arguments to build a case for or againts correspondence among the terms and measurement approaches used by developmental scientists interested in these and related constructs. I want to let the data speak for itself, and I am conducting a meta-analysis to do just that. 

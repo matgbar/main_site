@@ -577,8 +577,8 @@ LRT</code></pre>
 ## Replications = 1000 
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
-## 2 vs 3    68.33618       0.001998002
-## 3 vs 4    25.40075       0.709290709</code></pre>
+## 2 vs 3    68.33618       0.000999001
+## 3 vs 4    25.40075       0.692307692</code></pre>
 <p>Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, <span class="math inline">\(p &lt; .05\)</span>, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.</p>
 <p>The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.</p>
 <pre class="r"><code>fit_mix&lt;-Mclust(iris[,1:4], G=3, modelNames = &#39;VVV&#39;)
