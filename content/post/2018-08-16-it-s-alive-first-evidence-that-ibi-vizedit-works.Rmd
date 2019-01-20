@@ -1,6 +1,6 @@
 ---
-title: It's Alive! First Evidence that IBI VizEdit Works
-author: Matthew Barstead
+title: "It's Alive! First Evidence that IBI VizEdit Works"
+author: 'Matthew Barstead'
 date: '2018-08-16'
 baseurl: "https://mgb-research.netlify.com/"
 slug: it-s-alive-first-evidence-that-ibi-vizedit-works
@@ -9,7 +9,6 @@ categories:
   - IBI VizEdit
 tags:
   - Data Processing
-  - Data Visualization
   - Mixed-Effects
   - R
   - Plotting

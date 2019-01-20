@@ -1,6 +1,6 @@
 ---
-title: Power Analyses for an Unconditional Growth Model using {lmer}
-author: Matthew Barstead
+title: 'Power Analyses for an Unconditional Growth Model using {lmer}'
+author: 'Matthew Barstead, Ph.D.'
 date: '2018-06-07'
 baseurl: "https://mgb-research.netlify.com/"
 slug: power-analyses-for-an-unconditional-growth-model-using-lmer

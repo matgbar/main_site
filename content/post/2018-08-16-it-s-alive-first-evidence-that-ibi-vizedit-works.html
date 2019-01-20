@@ -1,6 +1,6 @@
 ---
-title: It's Alive! First Evidence that IBI VizEdit Works
-author: Matthew Barstead
+title: "It's Alive! First Evidence that IBI VizEdit Works"
+author: 'Matthew Barstead'
 date: '2018-08-16'
 baseurl: "https://mgb-research.netlify.com/"
 slug: it-s-alive-first-evidence-that-ibi-vizedit-works
@@ -9,7 +9,6 @@ categories:
   - IBI VizEdit
 tags:
   - Data Processing
-  - Data Visualization
   - Mixed-Effects
   - R
   - Plotting
@@ -109,12 +108,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8417730  6.51417279
-## 2        Clown -0.5771673 -0.02190948
-## 3       Video2 -0.2298986  0.29637104
-## 4         Kids -0.3658665  0.16165921
-## 5        Intro -0.6398971 -0.11707437
-## 6       Video3 -0.3418027  0.18421925</code></pre>
+## 1 X.Intercept.  5.8444824  6.51896204
+## 2        Clown -0.5772547 -0.02373644
+## 3       Video2 -0.2326024  0.29193528
+## 4         Kids -0.3609703  0.16039454
+## 5        Intro -0.6449919 -0.11827675
+## 6       Video3 -0.3385069  0.17773378</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -156,11 +155,11 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58247464  0.629675147
-## 2        Clown -0.03805024 -0.009702722
-## 3       Video2 -0.01901185  0.009273031
-## 4         Kids -0.01484539  0.013487318
-## 5        Intro -0.04361189 -0.015266986
-## 6       Video3 -0.02310782  0.005601319</code></pre>
+## 1 X.Intercept.  0.58256395  0.629390825
+## 2        Clown -0.03833483 -0.009560948
+## 3       Video2 -0.01950740  0.009232397
+## 4         Kids -0.01522311  0.013456060
+## 5        Intro -0.04400520 -0.015332747
+## 6       Video3 -0.02350393  0.005322209</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>

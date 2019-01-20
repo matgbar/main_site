@@ -1,6 +1,6 @@
 ---
-title: Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)
-author: ''
+title: 'Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)'
+author: 'Matthew Barstead, Ph.D.'
 date: '2018-09-03'
 baseurl: "https://mgb-research.netlify.com/"
 slug: bayesian-multilevel-model-with-missing-data-complete-workflow-part-2

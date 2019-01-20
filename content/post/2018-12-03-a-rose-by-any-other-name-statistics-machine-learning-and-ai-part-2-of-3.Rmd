@@ -1,7 +1,6 @@
 ---
-title: 'A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of
-  3)'
-author: Matthew Barstead, Ph.D.
+title: 'A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)'
+author: 'Matthew Barstead, Ph.D.'
 date: '2018-12-03'
 baseurl: "https://mgb-research.netlify.com/"
 slug: a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3

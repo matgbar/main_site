@@ -1,6 +1,6 @@
 ---
 title: "Interaction Plots with Continuous Moderators in R"
-author: "Matthew Barstead"
+author: "Matthew Barstead, Ph.D."
 date: '2018-07-11'
 baseurl: "https://mgb-research.netlify.com/"
 header:
@@ -8,14 +8,13 @@ header:
   image: ''
 slug: interaction-plots-with-continuous-moderators-in-r
 tags:
-- R
-- Data Visualization
-- Plotting
-- Structural Equation Modeling
-- lavaan
-- R-bloggers
+  - R
+  - Plotting
+  - Structural Equation Modeling
+  - lavaan
+  - R-bloggers
 categories:
-- Data Visualization
+  - Data Visualization
 ---
 
 ```{r setup, include=FALSE}

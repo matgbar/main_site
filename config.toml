@@ -37,6 +37,11 @@ defaultContentLanguageInSubdir = false
 # Get last modified date for content from Git?
 enableGitInfo = false
 
+# Not sure why this is needed
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
 [outputs]
   home = [ "HTML", "CSS", "RSS" ]
   section = [ "HTML", "RSS" ]
