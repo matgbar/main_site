@@ -4,7 +4,7 @@
 # The URL of your website.
 # End your URL with a `/` trailing slash, e.g. `https://example.com/`.
 baseurl = "https://mgb-research.netlify.com/"
-#relativeurls = false
+#relativeurls = true
 
 # Title of your site
 title = "Matthew Barstead, Ph.D.: Research, Repository, & Blog"
@@ -25,6 +25,9 @@ disqusShortname = ""
 
 # Enable analytics by entering your Google Analytics tracking ID
 googleAnalytics = "UA-130198222-1"
+
+# Twitter username (without @). Used when a vistor shares your site on Twitter.
+twitter = "MGB_Research"
 
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"

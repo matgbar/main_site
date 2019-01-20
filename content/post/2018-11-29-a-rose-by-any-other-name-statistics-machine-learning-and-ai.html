@@ -80,9 +80,9 @@ iris_kmeans$Cluster[iris_kmeans$Cluster==rownames(tab)[tab[,1]==max(tab[,1])]]&l
 table(iris_kmeans$Cluster, iris_kmeans$Species)</code></pre>
 <pre><code>##                     
 ##                      setosa versicolor virginica
-##   Setosa Cluster         50          0         0
-##   Versicolor Cluster      0         39        14
-##   Virginica Cluster       0         11        36</code></pre>
+##   1                      17          4         0
+##   Setosa Cluster         33          0         0
+##   Versicolor Cluster      0         46        50</code></pre>
 <p>We can see that the algorithm correctly clustered all of the setosa specimens, but had some difficulty differentiating bewteen the virginica and versicolor specimens. We can see this overlap when plotting the first two discriminant functions against one another.</p>
 <pre class="r"><code>plotcluster(iris[,1:4],fit_kmeans$cluster)</code></pre>
 <p><img src="/post/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai_files/figure-html/kmeans4-1.png" width="672" /></p>
@@ -226,7 +226,7 @@ LRT</code></pre>
 ##               LRTS bootstrap p-value
 ## 1 vs 2   331.11985       0.000999001
 ## 2 vs 3    68.33618       0.000999001
-## 3 vs 4    25.40075       0.691308691</code></pre>
+## 3 vs 4    25.40075       0.673326673</code></pre>
 <p>Okay so in reviewing these results, we see that the likelihood ratio test indicates that going from 1 to 2 classes improves model fit significantly (i.e, <span class="math inline">\(p &lt; .05\)</span>, a commonly used cutoff). Going from 2 classes to 3 classes further improves model fit, but going from 3 classes to 4 classes does not.</p>
 <p>The conclusion here, based on all of this exploratory work, is that we can go ahead and conclude that 3-classes is likely the optimal number to extract with no equality constraints placed on the multivariate distributions across groups.</p>
 <pre class="r"><code>fit_mix&lt;-Mclust(iris[,1:4], G=3, modelNames = &#39;VVV&#39;)
