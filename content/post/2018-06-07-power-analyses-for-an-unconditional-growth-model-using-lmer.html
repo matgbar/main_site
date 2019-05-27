@@ -21,7 +21,6 @@ header:
 
 
 
-<pre><code>## Warning: package &#39;sjstats&#39; was built under R version 3.5.2</code></pre>
 <p>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (<span class="math inline">\(\alpha = .05\)</span>) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</p>
 <p>We collected measures of these variables at three time points, approximately evenly spaced apart, and, for the purposes of these analyses, I decided to treat the data as if they were collected at precisely the same equally spaced interval for all participants. Though this is not technically true, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important depending on your measures and design.</p>
 <p><strong>The Problem:</strong> In short, I need a reasonable population model for my data. Ideally, this model is grounded in both theory and empirical findings.</p>

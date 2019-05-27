@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Missing Data on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
-    <link>https://mgb-research.netlify.com/tags/missing-data/</link>
+    <link>/tags/missing-data/</link>
     <description>Recent content in Missing Data on Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2018 Matthew Barstead</copyright>
     <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://mgb-research.netlify.com/tags/missing-data/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/missing-data/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
-      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <link>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
       <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
       <description>Overview:This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
 Data Brief Description:The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
     </item>
     
     <item>
       <title>RMarkdown is the Most Powerful Codebook Maker You Can Find for Your Datasets</title>
-      <link>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
+      <link>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</link>
       <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
+      <guid>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</guid>
       <description>You worked hard to collect, clean, and process your data. Now your dataset is finally ready for that final step. That put a bow on it and send it to all your colleagues phase. You are at that moment when you release a deep sigh of relief at the end of the hard (sometimes underappreciated) work of data wrangling. Now you have to make something that communicates all that you have done.</description>
     </item>
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>
-      <link>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
+      <link>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</link>
       <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
+      <guid>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</guid>
       <description>Overview:This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</description>
     </item>
     
