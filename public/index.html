@@ -1,1721 +1,691 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="theme" content="hugo-academic">
-  <meta name="generator" content="Hugo 0.44" />
-  <meta name="author" content="Matthew Barstead">
+  
+  <title>Dead Reckoning Analytics and Consulting</title>
+  <meta name="author" content="Matthew Barstead, Ph.D." />
+  
+  
+  
+  
+  <meta name="keywords" content="R, R programming, Data Science, Statistics">
+  
+  
+  <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
+
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  
+  <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,500,700,800' rel='stylesheet' type='text/css'>
+
+  
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  
+  <link href="/css/animate.css" rel="stylesheet">
+
+  
+  
+    <link href="/css/style.blue.css" rel="stylesheet" id="theme-stylesheet">
+  
+
+  
+  <link href="/css/custom.css" rel="stylesheet">
+
+  
+  
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+
+  
+  <link href="/css/owl.carousel.css" rel="stylesheet">
+  <link href="/css/owl.theme.css" rel="stylesheet">
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
 
   
   
   
   
-  <meta name="description" content="Ph.D. (Human Development &amp; Quantitative Methodology)">
-
-  
-  <link rel="alternate" hreflang="en-us" href="/">
-
-  
-
-
-  
-
-  
-  
-  <meta name="theme-color" content="#3f51b5">
   
   
   
-  
-    
-  
-  
-    
-    
-      
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-      
-    
-  
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha512-6MXa8B6uaO18Hid6blRMetEIoPqHf7Ux1tnyIQdpt9qI5OACx7C+O3IVTr98vwGnlcg0LOLa02i9Y1HpVhlfiw==" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
+  <meta property="og:title" content="Dead Reckoning Analytics and Consulting">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/" />
+  <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
+  <meta property="og:image" content="/img/favicon-dead-1_thumb_20.png">
+  <meta property="og:image:type" content="image/png">
   
   
   
+    <meta property="og:image:width" content="50">
+    <meta property="og:image:height" content="50">
   
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700%7cRoboto:400,400italic,700%7cRoboto&#43;Mono">
   
-  <link rel="stylesheet" href="/styles.css">
+  <meta property="og:updated_time" content="2018-07-05T00:00:00Z">
   
 
   
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'UA-130198222-1', 'auto');
-      
-      ga('require', 'eventTracker');
-      ga('require', 'outboundLinkTracker');
-      ga('require', 'urlChangeTracker');
-      ga('send', 'pageview');
-    </script>
-    <script async src="//www.google-analytics.com/analytics.js"></script>
-    
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js" integrity="sha512-HUmooslVKj4m6OBu0OgzjXXr+QuFYy/k7eLI5jdeEy/F4RSgMn6XRWRGkFi5IFaFgy7uFTkegp3Z0XnJf3Jq+g==" crossorigin="anonymous"></script>
-    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@dead_reck">
+  <meta name="twitter:title" content="Dead Reckoning Analytics and Consulting">
   
-
+  <meta name="twitter:image" content="/img/favicon-dead-1_thumb_20.png">
   
-  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog">
-  <link rel="feed" href="/index.xml" type="application/rss+xml" title="Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog">
-  
-
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" type="image/png" href="/img/icon.png">
-  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
-
-  <link rel="canonical" href="/">
-
-  <meta property="twitter:card" content="summary_large_image">
-  
-  <meta property="twitter:site" content="@MGB_Research">
-  <meta property="twitter:creator" content="@MGB_Research">
-  
-  <meta property="og:site_name" content="Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog">
-  <meta property="og:url" content="/">
-  <meta property="og:title" content="Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog">
-  <meta property="og:description" content="Ph.D. (Human Development &amp; Quantitative Methodology)">
-  <meta property="og:locale" content="en-us">
-  
-  <meta property="og:updated_time" content="2016-04-20T00:00:00-04:00">
-  
-
+  <meta name="twitter:description" content="Musings on R, Statistics, Data Science, and Programming">
   
   
-
-  <title>Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</title>
+  
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX&#45;AMS&#45;MML_HTMLorMML" type="text/javascript"></script>
+  <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}}); </script>
 
 </head>
-<body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71" >
 
-<nav class="navbar navbar-default navbar-fixed-top" id="navbar-main">
+
+  <body>
+
+    <div id="all">
+
+        <header>
+
+          
+<div id="top">
   <div class="container">
-
-    
-    <div class="navbar-header">
-      
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-              data-target=".navbar-collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      
-      <a class="navbar-brand" href="/">Matthew Barstead, Ph.D.: Research, Repository, &amp; Blog</a>
-    </div>
-
-    
-    <div class="collapse navbar-collapse">
-
-      
-      
-      <ul class="nav navbar-nav navbar-right">
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/#about" data-target="#about">
-            
-            <span>Home</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/#projects" data-target="#projects">
-            
-            <span>Projects</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/#posts" data-target="#posts">
-            
-            <span>Blog</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/#publications_selected" data-target="#publications_selected">
-            
-            <span>Publications</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/pdf/barstead_cv.pdf" data-target="/pdf/barstead_cv.pdf">
-            
-            <span>CV</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-        
-
-        <li class="nav-item">
-          <a href="/#contact" data-target="#contact">
-            
-            <span>Contact</span>
-            
-          </a>
-        </li>
-
-        
-        
-
-        
-        
-        
-        
-        
-          
-            
-          
-        
-
-        <li class="nav-item">
-          <a href="https://www.r-bloggers.com/" data-target="https://www.r-bloggers.com/" target="_blank" rel="noopener">
-            
-            <span>R-Bloggers</span>
-            
-          </a>
-        </li>
-
-        
-        
-      
-
-      
-      </ul>
-
-    </div>
-  </div>
-</nav>
-
-
-
-<span id="homepage" style="display: none"></span>
-
-
-  
-
-
-
-
-
-  
-  
-  
-  <section id="about" class="home-section">
-    <div class="container">
-      
-
-
-
-<div class="row" itemprop="author" itemscope itemtype="http://schema.org/Person" itemref="person-email person-address">
-  <div class="col-xs-12 col-md-4">
-    <div id="profile">
-
-      
-      <div class="portrait" style="background-image: url('/img/portrait.jpg');"></div>
-      <meta itemprop="image" content="/img/portrait.jpg">
-      
-
-      <div class="portrait-title">
-        <h2 itemprop="name">Matthew Barstead</h2>
-        <h3 itemprop="jobTitle">Ph.D. (Human Development &amp; Quantitative Methodology)</h3>
-
-        
-        
-
-        
-        <h3 itemprop="worksFor" itemscope itemtype="http://schema.org/Organization">
-          
-          <span itemprop="name">University of Maryland</span>
-          
-        </h3>
-        
-      </div>
-
-      <link itemprop="url" href="/">
-
-      <ul class="network-icon" aria-hidden="true">
-        
-        
-        <li>
-          <a itemprop="sameAs" href="mailto:mbarstead@gmail.com" target="_blank" rel="noopener">
-            <i class="fa fa-envelope big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="//twitter.com/MGB_Research" target="_blank" rel="noopener">
-            <i class="fa fa-twitter big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="https://scholar.google.com/citations?user=BPm5ErAAAAAJ&amp;hl=en" target="_blank" rel="noopener">
-            <i class="ai ai-google-scholar big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="https://www.researchgate.net/profile/Matthew_Barstead" target="_blank" rel="noopener">
-            <i class="ai ai-researchgate big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="https://www.mendeley.com/profiles/matthew-barstead/" target="_blank" rel="noopener">
-            <i class="ai ai-mendeley big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="//github.com/matgbar" target="_blank" rel="noopener">
-            <i class="fa fa-github big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="https://www.linkedin.com/in/mbarstead/" target="_blank" rel="noopener">
-            <i class="fa fa-linkedin big-icon"></i>
-          </a>
-        </li>
-        
-        
-        <li>
-          <a itemprop="sameAs" href="https://stackexchange.com/users/9987725/matt-barstead?tab=accounts" target="_blank" rel="noopener">
-            <i class="fa fa-stack-exchange big-icon"></i>
-          </a>
-        </li>
-        
-      </ul>
-
-    </div>
-  </div>
-  <div class="col-xs-12 col-md-8" itemprop="description">
-
-    
-
-<h1 id="biography">Biography</h1>
-
-<p>I received my Ph.D. from the Department of Human Development and Quantitative Methodology at the University of Maryland. To date, much of my work has focused on identifying individual and contextual factors that serve to maintain and exacerbate maladaptive social and emotional development, with a primary focus on anxiety, depression, and social withdrawal. Recently, my research has grown to include the measurement of autonomic dysregulation as a biomarker of deficient self-regulatory capacities. A primary interest of mine is the creation of open-source tools to aid researchers in their efforts to effectively extract features from peripheral physiological measures. These features can then be used to improve mental health diagnoses, monitor treatment response, and conduct basic research. My approach to the creation of these tools is best characterized as a marriage of machine learning/statistical modeling with trained user oversight, in the hopes that their combination achieves an effective balance between efficiency and accuracy. <a href="https://mgb-research.netlify.com/pdf/barstead_cv.pdf" target="_blank">CV</a></p>
-
-<p>Interested in hiring me as a Consultant? Contact me <a href="https://www.wyzant.com/Tutors/the_versatile_tutor" target="_blank">here</a>.</p>
-
-
     <div class="row">
-
-      
-      <div class="col-sm-5">
-        <h3>Interests</h3>
-        <ul class="ul-interests">
-          
-          <li>Psychophysiology</li>
-          
-          <li>Heart Rate Variability</li>
-          
-          <li>Data Science</li>
-          
-          <li>Statistical Modeling</li>
-          
-          <li>Machine Learning</li>
-          
-          <li>R</li>
-          
-          <li>Signal Processing</li>
-          
-        </ul>
+      <div class="col-xs-5">
+        
       </div>
-      
-
-      
-      <div class="col-sm-7">
-        <h3>Education</h3>
-        <ul class="ul-edu fa-ul">
+      <div class="col-xs-7">
+        <div class="social">
           
-          <li>
-            <i class="fa-li fa fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">PhD in Human Development &amp; Quantitative Methodology, 2018</p>
-              <p class="institution">University of Maryland, College Park</p>
-            </div>
-          </li>
+          <a href="https://github.com/dr-consulting" target="_blank" style="opacity: 1;"><i class='fab fa-2x fa-github'></i></a>
           
-          <li>
-            <i class="fa-li fa fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">MSc Psychology, 2013</p>
-              <p class="institution">Saint Joseph&#39;s University</p>
-            </div>
-          </li>
+          <a href="https://twitter.com/dead_reck" target="_blank" style="opacity: 1;"><i class='fab fa-2x fa-twitter'></i></a>
           
-          <li>
-            <i class="fa-li fa fa-graduation-cap"></i>
-            <div class="description">
-              <p class="course">BSc in Psychology, 2011</p>
-              <p class="institution">Wilmington University</p>
-            </div>
-          </li>
+          <a href="mailto:info@deadreckoning.consulting" target="_blank" style="opacity: 1;"><i class='fas fa-2x fa-envelope'></i></a>
           
-        </ul>
+        </div>
       </div>
-      
-
     </div>
   </div>
 </div>
 
-    </div>
-  </section>
-  
-
-  
-  
-  
-  <section id="projects" class="home-section">
-    <div class="container">
-      
 
 
+          <div class="navbar-affixed-top" data-spy="affix" data-offset-top="200">
 
-<div class="row">
-  <div class="col-xs-12 col-md-4 section-heading">
-    <h1>Projects</h1>
-    
-  </div>
-  <div class="col-xs-12 col-md-8">
-    
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
 
-    
-    
-    <span class="hidden default-project-filter">*</span>
-    
-
-    
-    
-    <div class="project-toolbar">
-      <div class="project-filters">
-        <div class="btn-toolbar">
-          <div class="btn-group">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="/">
+                    <img src="/img/logo-dead-8_20.png" alt="Dead Reckoning Analytics and Consulting logo" class="hidden-xs hidden-sm">
+                    <img src="/img/logo-dead-8_20.png" alt="Dead Reckoning Analytics and Consulting logo" class="visible-xs visible-sm">
+                    <span class="sr-only">Dead Reckoning Analytics and Consulting - go to homepage</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
             
-              <a href="#" data-filter="*" class="btn btn-primary btn-large active">All</a>
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  
+                  
+                  <li class="dropdown active">
+                    
+                    <a href="/">Home</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/blog/">Blog</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/contact/">Contact</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
             
-              <a href="#" data-filter=".Individual-Risk" class="btn btn-primary btn-large">Individual Risk</a>
+
+            <div class="collapse clearfix" id="search">
+
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+
+                </span>
+                    </div>
+                </form>
+
+            </div>
             
-              <a href="#" data-filter=".Methods" class="btn btn-primary btn-large">Methods</a>
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        
+
+
+<section>
+    <div class="home-carousel">
+        <div class="dark-mask"></div>
+        <div class="container">
+            <div class="homepage owl-carousel">
+                
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-5 right">
+                            <h1>Customizable GUIs</h1>
+                            <ul class="list-style-none">
+  <li>Design your own graphic interface.</li>
+  <li>Manipulate data and customize outputs</li>
+  <li>Host your applications on servers or in the cloud</li>
+</ul>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <img class="img-responsive" src="img/carousel/gui-example.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-5 right">
+                            <h1>Open Source Tools</h1>
+                            <ul class="list-style-none">
+   <li>Customized programs made with open source languages</li>
+   <li>Control exactly what you tool is doing and how</li>
+   <li>Outputs are reproducible</li>
+   <li>Share with the world or keep to yourself</li>
+ </ul>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <img class="img-responsive" src="img/carousel/combined-logos-laptop.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-5 right">
+                            <h1>GitHub Repos</h1>
+                            <ul class="list-style-none">
+   <li></li>
+   <li>Controllable access to codebase</li>
+   <li>Transferable ownership</li>
+   <li>Transparent code changes</li>
+   <li>Complete version history</li>
+ </ul>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <img class="img-responsive" src="img/carousel/github-repo.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-5 right">
+                            <h1>Project Management</h1>
+                            <ul class="list-style-none">
+   <li></li>
+   <li>Adherence to Agile principles</li>
+   <li>Work scoped and agreed to in advance</li>
+   <li>Timeline management via ZenHub</li>
+ </ul>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <img class="img-responsive" src="img/carousel/kanban_zenhub.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
             
-              <a href="#" data-filter=".Meta-Analysis" class="btn btn-primary btn-large">Meta-Analysis</a>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+        
+
+
+<section class="bar background-white">
+    <div class="container">
+        
+        
+        <div class="col-md-12">
+            <div class="row">
+        
+                <div class="col-md-4">
+                    <div class="box-simple">
+                        
+                        <a href="pipelines">
+                        
+                            <div class="icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                        
+                        </a>
+                        
+                        <h3>Data Pipelines</h3>
+                        <p>The most challenging aspect of effective data analysis is often getting your data into a useable format. We use open-source software to get your data into a stable, usable format empowering you to draw insights with confidence</p>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="col-md-4">
+                    <div class="box-simple">
+                        
+                        <a href="predictive-analytics">
+                        
+                            <div class="icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                        
+                        </a>
+                        
+                        <h3>Predictive Analytics</h3>
+                        <p>Let us guide you through a principled model design approach that meets your use case and enables better data-driven decision-making.</p>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="col-md-4">
+                    <div class="box-simple">
+                        
+                        <a href="dashboards">
+                        
+                            <div class="icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                        
+                        </a>
+                        
+                        <h3>Customized Dashboards &amp; Reports</h3>
+                        <p>Leverage your data processing and modeling pipelines to generate dashboards and reports that transform your data into actionable insigths and communicate key information to key stakeholders</p>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+        
+        
+    </div>
+</section>
+
+
+
+
+
+        
+
+
+
+
+        
+
+<section class="bar background-image-fixed-2 no-mb color-white text-center">
+    <div class="dark-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="icon icon-lg"><i class="far fa-drafting-compass"></i>
+                </div>
+                <h3 class="text-uppercase">Do you want to learn more?</h3>
+                <p class="lead">Learn more about Dead Reckoning as an approach to navigating data science challenges and opportunities</p>
+                <p class="text-center">
+                    
+                    <a href="background" class="btn btn-template-transparent-black btn-lg">
+                    
+                        
+                        The Reason for the Name
+                        
+                    
+                    </a>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+        
+
+<section class="bar background-white no-mb">
+    <div class="container">
+
+        <div class="col-md-12">
+            <div class="heading text-center">
+                <h2>From the blog</h2>
+            </div>
+
+            <p class="lead">
+              Recent posts
+            </p>
+
             
-          </div>
+
+            <div class="row">
+                
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="box-image-text blog">
+                        <div class="top">
+                            <div class="image" style="overflow:hidden">
+                                
+                                <img src="/img/banners/bayesian-missing-data-pt1.png" class="img-responsive" alt="" >
+                                
+                            </div>
+                            <div class="bg"></div>
+                            <div class="text">
+                                <p class="buttons">
+                                    <a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/" class="btn btn-template-transparent-primary"><i class="fas fa-link"></i> Read more</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <h4><a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</a></h4>
+                            <p class="author-category">
+                            
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                            
+                            on July 5, 2018
+                            </p>
+                            <p class="intro">Overview: This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</p>
+                            <p class="read-more">
+                              <a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/" class="btn btn-template-main">Continue reading</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="box-image-text blog">
+                        <div class="top">
+                            <div class="image" style="overflow:hidden">
+                                
+                                <img src="/img/banners/power-analysis-growth-model-banner.png" class="img-responsive" alt="" >
+                                
+                            </div>
+                            <div class="bg"></div>
+                            <div class="text">
+                                <p class="buttons">
+                                    <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/" class="btn btn-template-transparent-primary"><i class="fas fa-link"></i> Read more</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <h4><a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h4>
+                            <p class="author-category">
+                            
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                            
+                            on June 7, 2018
+                            </p>
+                            <p class="intro">Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</p>
+                            <p class="read-more">
+                              <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/" class="btn btn-template-main">Continue reading</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="box-image-text blog">
+                        <div class="top">
+                            <div class="image" style="overflow:hidden">
+                                
+                                <img src="/img/banners/gp-forecast-banner.png" class="img-responsive" alt="" >
+                                
+                            </div>
+                            <div class="bg"></div>
+                            <div class="text">
+                                <p class="buttons">
+                                    <a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/" class="btn btn-template-transparent-primary"><i class="fas fa-link"></i> Read more</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <h4><a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">Gaussian Process Imputation/Forecast Models</a></h4>
+                            <p class="author-category">
+                            
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                            
+                            on May 21, 2018
+                            </p>
+                            <p class="intro">A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</p>
+                            <p class="read-more">
+                              <a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/" class="btn btn-template-main">Continue reading</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+                
+
+            </div>
+            
+
+            
+
         </div>
-      </div>
     </div>
     
-    
+</section>
 
-    
 
-    <div class="row isotope projects-container js-layout-masonry">
 
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Meta-Analysis Individual-Risk">
-        <div class="card">
-          
-          <a href="/project/cu-meta/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/Prosoc_Moderated_by_Age.jpeg" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/cu-meta/" >Callous Unemotional Meta-Analysis</a></h4>
-            <div class="card-desription">
-              <p>A theoretically driven meta-analysis of the correlates of callous and unemotional traits among youth</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Methods">
-        <div class="card">
-          
-          <a href="/project/gp/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/GP_results.png" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/gp/" >Gaussian Process Imputation Models</a></h4>
-            <div class="card-desription">
-              <p>Understanding new approaches to old imputations problems</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Methods">
-        <div class="card">
-          
-          <a href="/project/ibi-vizedit/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/IBI-thumb.jpg" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/ibi-vizedit/" >IBI VizEdit</a></h4>
-            <div class="card-desription">
-              <p>A brand-new, open-source, RShiny application for processing and editing heart rate data</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Individual-Risk">
-        <div class="card">
-          
-          <a href="/project/dn_research/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/ANX_Posterior_Moderation_Single.jpeg" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/dn_research/" >Individual Risk for Anxiety and Depression</a></h4>
-            <div class="card-desription">
-              <p>Understanding the daily emotional lives of individuals who vary in dispositional risk for anxiety and depression</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Individual-Risk">
-        <div class="card">
-          
-          <a href="/project/turtlemd/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/Turtle.png" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/turtlemd/" >Preventing Anxiety in Early Childhood</a></h4>
-            <div class="card-desription">
-              <p>Investigating a recently developed intervention for inhibited and anxious preschoolers</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-6 project-item isotope-item Meta-Analysis Individual-Risk">
-        <div class="card">
-          
-          <a href="/project/sw-meta/" title="" class="card-image hover-overlay"
-             >
-            <img src="/img/SW_meta-thumb.jpg" alt="" class="img-responsive">
-          </a>
-          
-          <div class="card-text">
-            <h4><a href="/project/sw-meta/" >Social Withdrawal Meta-Analysis</a></h4>
-            <div class="card-desription">
-              <p>A quantiative synthesis of 40 years of research on the correlates and consequences of childhood social withdrawal</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
 
-    </div>
 
-    
+        
 
-  </div>
-</div>
 
-    </div>
-  </section>
-  
 
-  
-  
-  
-  <section id="posts" class="home-section">
+
+        <footer id="footer">
     <div class="container">
-      
-
-
-
-
-<div class="row">
-  <div class="col-xs-12 col-md-4 section-heading">
-
-    <h1>Recent Posts</h1>
-    
-    
-    <p class="view-all">
-      <a href="/post/">
-        More Posts
-        <i class="fa fa-angle-double-right"></i>
-      </a>
-    </p>
-    
-
-  </div>
-  <div class="col-xs-12 col-md-8">
-
-    
-
-    
-      
-
-      
-      
 
         
+        <div class="col-md-4 col-sm-6">
+            <h4>About us</h4>
 
+            <p>Consulting company specializing in the design of open source data processing and analytics pipelines.</p>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
         
         
 
-        
-        
-          
-      
-          
-      
-          
-      
-          
-      
+        <div class="col-md-4 col-sm-6">
 
-      
-      
-        
-        
-          
+             
+            <h4>Recent posts</h4>
 
-<div class="card-simple" itemscope itemprop="blogPost" itemtype="http://schema.org/BlogPosting">
-  
+            <div class="blog-entries">
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">
+                          
+                            <img src="/img/banners/bayesian-missing-data-pt1.png" class="img-responsive" alt="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">
+                          
+                            <img src="/img/banners/power-analysis-growth-model-banner.png" class="img-responsive" alt="Power Analyses for an Unconditional Growth Model using {lmer}">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">
+                          
+                            <img src="/img/banners/gp-forecast-banner.png" class="img-responsive" alt="Gaussian Process Imputation/Forecast Models">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">Gaussian Process Imputation/Forecast Models</a></h5>
+                    </div>
+                </div>
+                
+            </div>
 
-<div class="article-metadata">
+            <hr class="hidden-md hidden-lg">
+             
 
-  <span class="article-date">
-    
-    <time datetime="2019-01-19 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
-      Jan 19, 2019
-    </time>
-  </span>
-  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Matthew Barstead">
-  </span>
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    21 min read
-  </span>
-  
-
-  
-  
-
-  
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/data-visualization/">Data Visualization</a
-    >, 
-    
-    <a href="/categories/multilevel-modeling/">Multilevel Modeling</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-
-  
-  
-  <a href="/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/">
-    
-    
-      <img src="/img/River_header.png" class="article-banner" itemprop="image">
-    
-  </a>
-  
-  <h3 class="article-title" itemprop="headline">
-    <a href="/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/" itemprop="url">Visualizing Variance in Multilevel Models Using the Riverplot Package</a>
-  </h3>
-  <div class="article-style" itemprop="articleBody">
-    
-    Spurred on by my boss Alex Shackman, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.
-Figure 1 - Stacked Barplot of Model Variance Decomposition
-    
-  </div>
-  <p class="read-more" itemprop="mainEntityOfPage">
-    <a href="/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-        
-      
-
-      
-
+        </div>
         
 
         
-        
+        <div class="col-md-4 col-sm-6">
 
-        
-        
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
+          <h4>Contact</h4>
+
+            <p class="text-uppercase"><strong>Dead Reckoning Analytics & Consulting</strong>
+        <br>PO Box 194
+        <br>College Park, MD 20740
+        <strong>United States</strong>
+      </p>
       
 
-      
-      
+            <a href="/contact" class="btn btn-small btn-template-main">Go to contact page</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
         
         
-          
-
-<div class="card-simple" itemscope itemprop="blogPost" itemtype="http://schema.org/BlogPosting">
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    
-    <time datetime="2018-12-03 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
-      Dec 3, 2018
-    </time>
-  </span>
-  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Matthew Barstead">
-  </span>
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    12 min read
-  </span>
-  
-
-  
-  
-
-  
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/modeling/">Modeling</a
-    >, 
-    
-    <a href="/categories/machine-learning/">Machine Learning</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-
-  
-  
-  <h3 class="article-title" itemprop="headline">
-    <a href="/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/" itemprop="url">A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</a>
-  </h3>
-  <div class="article-style" itemprop="articleBody">
-    
-    In the first post in this series, I described the impetus for this trek through statistical modeling, machine learning and artificial intelligence. I also provided an initial set of comparisons for three different approaches to classification: k-means, k-nearest neighbor, and latent profile analysis (model-based clustering). If you want to check those mini-walkthroughs out click here.
-As a reminder, my goal here is to compare and contrast different approaches to data analysis and predictive modeling that are, in my mind, arbitrarily lumped into statistical modeling and machine learing/artificial intelligence categories.
-    
-  </div>
-  <p class="read-more" itemprop="mainEntityOfPage">
-    <a href="/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-        
-      
-
-      
-
-        
-
-        
-        
-
-        
-        
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-
-      
-      
-        
-        
-          
-
-<div class="card-simple" itemscope itemprop="blogPost" itemtype="http://schema.org/BlogPosting">
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    
-    <time datetime="2018-11-29 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
-      Nov 29, 2018
-    </time>
-  </span>
-  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Matthew Barstead">
-  </span>
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    20 min read
-  </span>
-  
-
-  
-  
-
-  
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/modeling/">Modeling</a
-    >, 
-    
-    <a href="/categories/machine-learning/">Machine Learning</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-
-  
-  
-  <h3 class="article-title" itemprop="headline">
-    <a href="/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/" itemprop="url">A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</a>
-  </h3>
-  <div class="article-style" itemprop="articleBody">
-    
-    I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.
-    
-  </div>
-  <p class="read-more" itemprop="mainEntityOfPage">
-    <a href="/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-        
-      
-
-      
-
-        
-
-        
-        
-
-        
-        
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-
-      
-      
-        
-        
-          
-
-<div class="card-simple" itemscope itemprop="blogPost" itemtype="http://schema.org/BlogPosting">
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    
-    <time datetime="2018-09-03 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
-      Sep 3, 2018
-    </time>
-  </span>
-  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Matthew Barstead">
-  </span>
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    5 min read
-  </span>
-  
-
-  
-  
-
-  
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/modeling/">Modeling</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-
-  
-  
-  <h3 class="article-title" itemprop="headline">
-    <a href="/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/" itemprop="url">Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</a>
-  </h3>
-  <div class="article-style" itemprop="articleBody">
-    
-    Overview:This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
-Data Brief Description:The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.
-    
-  </div>
-  <p class="read-more" itemprop="mainEntityOfPage">
-    <a href="/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-        
-      
-
-      
-
-        
-
-        
-        
-
-        
-        
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-
-      
-      
-        
-        
-          
-
-<div class="card-simple" itemscope itemprop="blogPost" itemtype="http://schema.org/BlogPosting">
-  
-
-<div class="article-metadata">
-
-  <span class="article-date">
-    
-    <time datetime="2018-08-16 00:00:00 &#43;0000 UTC" itemprop="datePublished dateModified">
-      Aug 16, 2018
-    </time>
-  </span>
-  <span itemscope itemprop="author publisher" itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Matthew Barstead">
-  </span>
-
-  
-  <span class="middot-divider"></span>
-  <span class="article-reading-time">
-    6 min read
-  </span>
-  
-
-  
-  
-
-  
-  
-  
-  <span class="middot-divider"></span>
-  <span class="article-categories">
-    <i class="fa fa-folder"></i>
-    
-    <a href="/categories/data-visualization/">Data Visualization</a
-    >, 
-    
-    <a href="/categories/ibi-vizedit/">IBI VizEdit</a
-    >
-    
-  </span>
-  
-  
-
-  
-
-</div>
-
-
-  
-  
-  <h3 class="article-title" itemprop="headline">
-    <a href="/post/it-s-alive-first-evidence-that-ibi-vizedit-works/" itemprop="url">It&#39;s Alive! First Evidence that IBI VizEdit Works</a>
-  </h3>
-  <div class="article-style" itemprop="articleBody">
-    
-    It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
-Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.
-    
-  </div>
-  <p class="read-more" itemprop="mainEntityOfPage">
-    <a href="/post/it-s-alive-first-evidence-that-ibi-vizedit-works/" class="btn btn-primary btn-outline">
-      CONTINUE READING
-    </a>
-  </p>
-</div>
-
-        
-      
-
-      
-    
-
-  </div>
-</div>
 
     </div>
-  </section>
-  
-
-  
-  
-  
-  <section id="publications_selected" class="home-section">
-    <div class="container">
-      
-
-
-
-<div class="row">
-  <div class="col-xs-12 col-md-4 section-heading">
-    <h1>Selected Publications</h1>
     
-  </div>
-  <div class="col-xs-12 col-md-8">
-    
-
-    
-      
-    
-
-    
-    
-      
-        <div class="pub-list-item card-simple" itemscope itemtype="http://schema.org/CreativeWork">
-
-  
-  
-
-  <h3 class="article-title" itemprop="name">
-    <a href="/publication/barstead_etal_2018_jcfs/" itemprop="url">Generalization of an early intervention for inhibited preschoolers to the classroom setting</a>
-  </h3>
-
-  <div class="pub-abstract" itemprop="text">
-    
-    Considerable evidence has accumulated supporting transactional influences between early childhood behavioral inhibition (BI), parent-child and child-peer relationships, and the development of anxiety disorders in adolescence and adulthood. Drawing from this literature, the Turtle Program was designed to treat children high in BI by intervening at the level of both parents and peers. In this pilot study, we sought to determine whether benefits of participating in the Turtle Program extended to children’s classrooms in the form of increased positive social interactions with peers. Forty inhibited children (42-60 months) and their parent(s) were randomized to either the Turtle Program (n = 18) or a waitlist control group (WLC; n = 22). The Turtle Program involved 8 weeks of concurrent parent and child treatment. Trained research assistants, blind to treatment condition, coded participants’ social interactions with peers during free play at each child’s preschool at the beginning and end of treatment. Teachers unaware of group assignment also provided reports of social behaviors at these time points. Reliable change index scores revealed that both Turtle Program and WLC participants experienced relatively high rates of reliable increases in observed peer play interactions from pre- to post-treatment (73.3% and 42.1% respectively). Additionally, Turtle Program participants experienced high rates of reliable increase in observed initiations to peers (73.3%) as well as a moderate degree of reliable decrease in teacher-reported displays of fear/anxiety (33.3%). These data provide preliminary, but promising, evidence that increases in children’s social behaviors as a result of participation in the Turtle Program generalize to their preschool classrooms.
-    
-  </div>
-
-  <div class="pub-authors" itemprop="author">
-    
-    MG Barstead, CM Danko, A Chronis-Tuscano, KA O&rsquo;Brien, RJ Coplan, KH Rubin
-    
-  </div>
-
-  <div class="pub-publication">
-    
-    <em>Journal of Child and Family Studies</em>,
-    
-    2018
-  </div>
-
-  <div class="pub-links">
-    
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.researchgate.net/publication/325226718_Generalization_of_an_early_intervention_for_inhibited_preschoolers_to_the_classroom_setting" target="_blank" rel="noopener">
-  Preprint
-</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-</div>
-
-      
-    
-      
-        <div class="pub-list-item card-simple" itemscope itemtype="http://schema.org/CreativeWork">
-
-  
-  
-
-  <h3 class="article-title" itemprop="name">
-    <a href="/publication/rubin_etal_2018_handbook/" itemprop="url">Withdrawing from the peer group</a>
-  </h3>
-
-  <div class="pub-abstract" itemprop="text">
-    
-    In many ways this chapter concerns a topic unlike most that appear in this Handbook. Rather than focusing on the ways in which children and adolescents may interact with their peers, this chapter is centered on those youth who, for whatever reason, engage in comparatively little peer interaction. As noted throughout this Handbook, children who are socially engaging and competent interact with peers in ways that allow the establishment and maintenance of positive relationships. Such children fare well in their social and academic lives. However, their socially unskilled counterparts often suffer from peer rejection, friendlessness, and loneliness; furthermore, they are thought to be at risk for a wide range of socioemotional and academic difficulties (see Rubin, Bukowski, &amp; Bowker, 2015 for a review). In this chapter, we focus on children who avoid and rarely interact with their peers and who may suffer deeply for their withdrawal.
-    
-  </div>
-
-  <div class="pub-authors" itemprop="author">
-    
-    KH Rubin, JC Bowker, MG Barstead, RJ Coplan
-    
-  </div>
-
-  <div class="pub-publication">
-    
-    In the <em>Handbook of Peer Interactions, Relationships, and Groups</em>,
-    
-    2018
-  </div>
-
-  <div class="pub-links">
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.guilford.com/books/Handbook-of-Peer-Interactions-Relationships-and-Groups/Bukowski-Laursen-Rubin/9781462525010" target="_blank" rel="noopener">
-  Book Site
-</a>
-
-
-  </div>
-
-</div>
-
-      
-    
-
-  </div>
-</div>
-
-    </div>
-  </section>
-  
-
-  
-  
-  
-  <section id="publications" class="home-section">
-    <div class="container">
-      
-
-
-
-
-<div class="row">
-  <div class="col-xs-12 col-md-4 section-heading">
-    <h1>Recent Publications</h1>
-    
-    
-  </div>
-  <div class="col-xs-12 col-md-8">
-    
-
-    
-      
-    
-
-    
-
-    
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    MG Barstead, CM Danko, A Chronis-Tuscano, KA O&rsquo;Brien, RJ Coplan, KH Rubin</span>.
-  <a href="/publication/barstead_etal_2018_jcfs/" itemprop="name">Generalization of an early intervention for inhibited preschoolers to the classroom setting</a>.
-  <em>Journal of Child and Family Studies</em>,
-  2018.
-  <p>
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.researchgate.net/publication/325226718_Generalization_of_an_early_intervention_for_inhibited_preschoolers_to_the_classroom_setting" target="_blank" rel="noopener">
-  Preprint
-</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</p>
-</div>
-
-      
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    KH Rubin, JC Bowker, MG Barstead, RJ Coplan</span>.
-  <a href="/publication/rubin_etal_2018_handbook/" itemprop="name">Withdrawing from the peer group</a>.
-  In the <em>Handbook of Peer Interactions, Relationships, and Groups</em>,
-  2018.
-  <p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.guilford.com/books/Handbook-of-Peer-Interactions-Relationships-and-Groups/Bukowski-Laursen-Rubin/9781462525010" target="_blank" rel="noopener">
-  Book Site
-</a>
-
-</p>
-</div>
-
-      
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    AJ Shackman, JS Weinstein, SN Hudja, CD Bloomer, MG Barstead, AS Fox, EP Lemay</span>.
-  <a href="/publication/shackman_etal_2017_emotion/" itemprop="name">Dispositional negativity in the wild: Social environment governs momentary emotional experience</a>.
-  <em>Emotion</em>,
-  2017.
-  <p>
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.researchgate.net/publication/317554345_Dispositional_Negativity_in_the_Wild_Social_Environment_Governs_Momentary_Emotional_Experience" target="_blank" rel="noopener">
-  Preprint
-</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.ncbi.nlm.nih.gov/pubmed/28604044" target="_blank" rel="noopener">
-  PubMed
-</a>
-
-</p>
-</div>
-
-      
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    JH Shih, MG Barstead, N Dianno</span>.
-  <a href="/publication/shih_etal_2017_bjop/" itemprop="name">Interpersonal predictors of stress generation: Is there a super factor?</a>.
-  <em>British Journal of Psychology</em>,
-  2017.
-  <p>
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.researchgate.net/publication/321210476_Interpersonal_Predictors_of_Stress_Generation_Is_there_a_super_factor" target="_blank" rel="noopener">
-  Preprint
-</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://onlinelibrary.wiley.com/doi/abs/10.1111/bjop.12278" target="_blank" rel="noopener">
-  Journal Site
-</a>
-
-</p>
-</div>
-
-      
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    KA Smith, MG Barstead, KH Rubin</span>.
-  <a href="/publication/smith_etal_2017_joya/" itemprop="name">Neuroticism and conscientiousness as moderators of the relation between social withdrawal and internalizing problems in adolescence</a>.
-  <em>Journal of Youth and Adolescence</em>,
-  2017.
-  <p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://link.springer.com/article/10.1007/s10964-016-0594-z" target="_blank" rel="noopener">
-  PubMed
-</a>
-
-</p>
-</div>
-
-      
-    
-      
-        <div class="pub-list-item" style="margin-bottom: 1rem" itemscope itemtype="http://schema.org/CreativeWork">
-  <i class="fa fa-file-text-o pub-icon" aria-hidden="true"></i>
-  <span itemprop="author">
-    MG Barstead, KA Smith, B Laursen, C Booth-LaForce, S King, KH Rubin</span>.
-  <a href="/publication/barstead_etal_2017_jora/" itemprop="name">Shyness, preference for solitude and adolescent internalizing: The roles of maternal, paternal, and best-friend support</a>.
-  <em>Journal of Research on Adolescence</em>,
-  2017.
-  <p>
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://www.researchgate.net/publication/319987584_Shyness_Preference_for_Solitude_and_Adolescent_Internalizing_The_Roles_of_Maternal_Paternal_and_Best-Friend_Support" target="_blank" rel="noopener">
-  Preprint
-</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<a class="btn btn-primary btn-outline btn-xs" href="https://onlinelibrary.wiley.com/doi/full/10.1111/jora.12350" target="_blank" rel="noopener">
-  Journal Site
-</a>
-
-</p>
-</div>
-
-      
-    
-
-  </div>
-</div>
-
-    </div>
-  </section>
-  
-
-  
-  
-  
-  <section id="contact" class="home-section">
-    <div class="container">
-      
-
-
-
-
-<div class="row">
-  <div class="col-xs-12 col-md-4 section-heading">
-    <h1>Contact</h1>
-    
-  </div>
-  <div class="col-xs-12 col-md-8">
-    
-
-    <ul class="fa-ul" itemscope>
-
-      
-      <li>
-        <i class="fa-li fa fa-envelope fa-2x" aria-hidden="true"></i>
-        <span id="person-email" itemprop="email"><a href="mailto:barstead@umd.edu">barstead@umd.edu</a></span>
-      </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-      <li>
-        <i class="fa-li fa fa-map-marker fa-2x" aria-hidden="true"></i>
-        <span id="person-address" itemprop="address">3304 Benjamin Building, College Park, MD 20742, USA</span>
-      </li>
-      
-
-      
-
-    </ul>
-
-    
-
-  </div>
-</div>
-
-    </div>
-  </section>
-  
-
-
-
-<footer class="site-footer">
-  <div class="container">
-    <p class="powered-by">
-
-      &copy; 2018 Matthew Barstead &middot; 
-
-      Powered by the
-      <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
-      <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
-
-      <span class="pull-right" aria-hidden="true">
-        <a href="#" id="back_to_top">
-          <span class="button_icon">
-            <i class="fa fa-chevron-up fa-2x"></i>
-          </span>
-        </a>
-      </span>
-
-    </p>
-  </div>
 </footer>
 
 
-<div id="modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close btn-large" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Cite</h4>
-      </div>
-      <div>
-        <pre><code class="modal-body tex"></code></pre>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-primary btn-outline js-copy-cite" href="#" target="_blank">
-          <i class="fa fa-copy"></i> Copy
-        </a>
-        <a class="btn btn-primary btn-outline js-download-cite" href="#" target="_blank">
-          <i class="fa fa-download"></i> Download
-        </a>
-        <div id="modal-error"></div>
-      </div>
+
+
+
+
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            
+            <p class="pull-left">Copyright (c) 2020, Dead Reckoning Analytics & Consulting, LLC; all rights reserved.</p>
+            
+            <p class="pull-right">
+              Template by <a href="https://bootstrapious.com/p/universal-business-e-commerce-template">Bootstrapious</a>.
+              
+
+              Ported to Hugo by <a href="https://github.com/devcows/hugo-universal-theme">DevCows</a>.
+            </p>
+        </div>
     </div>
-  </div>
 </div>
 
+
+
+
+
+    </div>
     
 
     
-    
+<script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0/jquery.counterup.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax.js"></script>
 
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.3/imagesloaded.pkgd.min.js" integrity="sha512-umsR78NN0D23AzgoZ11K7raBD+R6hqKojyBZs1w8WvYlsI+QuKRGBx3LFCwhatzBunCjDuJpDHwxD13sLMbpRA==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha512-iztkobsvnjKfAtTNdHkGVjAYTrrtlC7mGp/54c40wowO7LhURYl3gVzzcEqGl/qKXQltJ2HwMrdLcNUdo+N/RQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.4/isotope.pkgd.min.js" integrity="sha512-VDBOIlDbuC4VWxGJNmuFRQ0Li0SKkDpmGyuhAG5LTDLd/dJ/S0WMVxriR2Y+CyPL5gzjpN4f/6iqWVBJlht0tQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
-    
-    
-    <script src="/js/hugo-academic.js"></script>
-    
+<script src="//maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
-    
-    
-      
-      
-      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-      
+<script src="/js/hpneo.gmaps.js"></script>
+<script src="/js/gmaps.init.js"></script>
+<script src="/js/front.js"></script>
 
-      
-      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
-      
-      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
-      
 
-      
+<script src="/js/owl.carousel.min.js"></script>
 
-      <script>hljs.initHighlightingOnLoad();</script>
-    
 
-    
-    
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
-    </script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML" integrity="sha512-tOav5w1OjvsSJzePRtt2uQPFwBoHt1VZcUq8l8nm5284LEKE9FSJBQryzMBzHxY5P0zRdNqEcpLIRVYFNgu1jw==" crossorigin="anonymous"></script>
-    
-    
 
   </body>
 </html>
-
-

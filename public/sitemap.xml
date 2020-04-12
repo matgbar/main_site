@@ -1,559 +1,134 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
-    
-    
-    <url>
-    
-      <loc>/post/visualizing-variance-in-multilevel-models-using-the-riverplot-package/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/bayesian/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/a-rose-by-any-other-name-statistics-machine-learning-and-ai/</loc>
-      <lastmod>2018-11-29T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/blog/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</loc>
-      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/it-s-alive-first-evidence-that-ibi-vizedit-works/</loc>
-      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/rmarkdown-is-the-most-powerful-codebook-maker-you-can-find-for-your-datasets/</loc>
-      <lastmod>2018-08-07T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/missing-data/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/interaction-plots-with-continuous-moderators-in-r/</loc>
-      <lastmod>2018-07-11T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/mixed-effects/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/</loc>
-      <lastmod>2018-07-05T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/categories/modeling/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/barstead_etal_2018_jcfs/</loc>
-      <lastmod>2018-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/rubin_etal_2018_handbook/</loc>
-      <lastmod>2018-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/r-bloggers/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/power-analyses-for-an-unconditional-growth-model-using-lmer/</loc>
-      <lastmod>2018-06-07T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/stan/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/gaussian-process-imputation-models/</loc>
-      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/shackman_etal_2017_emotion/</loc>
-      <lastmod>2017-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/power/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/shih_etal_2017_bjop/</loc>
-      <lastmod>2017-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/smith_etal_2017_joya/</loc>
-      <lastmod>2017-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/categories/sample-size/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/barstead_etal_2017_jora/</loc>
-      <lastmod>2017-07-01T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/simulation/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/post/</loc>
-      <lastmod>2017-01-01T00:00:00-05:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/categories/simulation/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/publication/</loc>
-      <lastmod>2017-01-01T00:00:00-05:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/forecasting/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/cu-meta/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/gaussian-process/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/gp/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/ibi-vizedit/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/tags/predictive-modeling/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/dn_research/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/contact/</loc>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/turtlemd/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/dashboards/</loc>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/project/sw-meta/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-    </url>
-    
+  <url>
+    <loc>/pipelines/</loc>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/tags/ai/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
+  <url>
+    <loc>/faq/</loc>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/tags/bayesian/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
+  <url>
+    <loc>/background/</loc>
+  </url>
   
-    
-    
-    <url>
-    
-      <loc>/tags/bayesian-models/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/</loc>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/data-processing/</loc>
-      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/data-visualization/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/forecasting/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/gaussian-process/</loc>
-      <lastmod>2018-05-21T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/ibi-vizedit/</loc>
-      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/individual-risk/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/lavaan/</loc>
-      <lastmod>2018-07-11T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/ml/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/machine-learning/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/</loc>
-      <lastmod>2016-04-20T00:00:00-04:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/meta-analysis/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/methods/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/missing-data/</loc>
-      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/mixed-effects/</loc>
-      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/modeling/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/multilevel-modeling/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/multiple-imputation/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/plotting/</loc>
-      <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/power/</loc>
-      <lastmod>2018-06-07T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/predictive-modeling/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/project/</loc>
-      <lastmod>2016-04-27T00:00:00-04:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/r/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/r-bloggers/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/sample-size/</loc>
-      <lastmod>2018-06-07T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/simulation/</loc>
-      <lastmod>2018-06-07T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/categories/simulation/</loc>
-      <lastmod>2018-06-07T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/stan/</loc>
-      <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/statistics/</loc>
-      <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/structural-equation-modeling/</loc>
-      <lastmod>2018-07-11T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
-  
-    
-    
-    <url>
-    
-      <loc>/tags/</loc>
-      <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-      <priority>0</priority>
-    </url>
-    
+  <url>
+    <loc>/predictive-analytics/</loc>
+  </url>
   
 </urlset>

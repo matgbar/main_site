@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>
+  <meta name="author" content="Matthew Barstead, Ph.D." />
+  
+  
+  
+  
+  <meta name="keywords" content="R, R programming, Data Science, Statistics, Bayesian, Mixed-Effects, Stan, Missing Data, R-bloggers">
+  
+  
+  <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
+
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  
+  <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,500,700,800' rel='stylesheet' type='text/css'>
+
+  
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  
+  <link href="/css/animate.css" rel="stylesheet">
+
+  
+  
+    <link href="/css/style.blue.css" rel="stylesheet" id="theme-stylesheet">
+  
+
+  
+  <link href="/css/custom.css" rel="stylesheet">
+
+  
+  
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+
+  
+  <link href="/css/owl.carousel.css" rel="stylesheet">
+  <link href="/css/owl.theme.css" rel="stylesheet">
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
+
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
+  <meta property="og:title" content="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/" />
+  <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
+  <meta property="og:image" content="/img/banners/bayesian-missing-data-pt1.png">
+  <meta property="og:image:type" content="image/png">
+  
+  
+  
+    <meta property="og:image:width" content="1344">
+    <meta property="og:image:height" content="960">
+  
+  
+  <meta property="og:updated_time" content="2018-07-05T00:00:00Z">
+  
+    
+    
+    <meta property="article:section" content="Modeling">
+    <meta property="article:tag" content="Bayesian">
+    <meta property="article:tag" content="Mixed-Effects">
+    <meta property="article:tag" content="R">
+    <meta property="article:tag" content="Stan">
+    <meta property="article:tag" content="Missing Data">
+    <meta property="article:tag" content="R-bloggers">
+    
+    
+    <meta property="article:published_time" content="2018-07-05T00:00:00Z">
+    <meta property="article:modified_time" content="2018-07-05T00:00:00Z">
+  
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dead_reck">
+  <meta name="twitter:title" content="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part …">
+  
+  <meta name="twitter:image" content="/img/banners/bayesian-missing-data-pt1.png">
+  
+  <meta name="twitter:description" content="Musings on R, Statistics, Data Science, and Programming">
+  
+  
+  
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX&#45;AMS&#45;MML_HTMLorMML" type="text/javascript"></script>
+  <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}}); </script>
+
+</head>
+
+
+  <body>
+
+    <div id="all">
+
+        <header>
+
+          <div class="navbar-affixed-top" data-spy="affix" data-offset-top="200">
+
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="/">
+                    <img src="/img/logo-dead-8_20.png" alt="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3 logo" class="hidden-xs hidden-sm">
+                    <img src="/img/logo-dead-8_20.png" alt="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3 logo" class="visible-xs visible-sm">
+                    <span class="sr-only">Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3 - go to homepage</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/">Home</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown active">
+                    
+                    <a href="/blog/">Blog</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/contact/">Contact</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
+            
+
+            <div class="collapse clearfix" id="search">
+
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+
+                </span>
+                    </div>
+                </form>
+
+            </div>
+            
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        <div id="heading-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="content">
+            <div class="container">
+
+                <div class="row">
+
+                    
+
+                    <div class="col-md-9" id="blog-post">
+
+                        
+                          <p class="text-muted text-uppercase mb-small text-right">
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                             | 
+                            July 5, 2018
+                          </p>
+                        
+
+                        <div id="post-content">
+                          
+
+
+<div id="overview" class="section level1">
+<h1>Overview:</h1>
+<p>This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random).</p>
+<div id="data-brief-description" class="section level2">
+<h2>Data Brief Description:</h2>
+<p>The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (<em>N</em>=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found <a href="https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/">here</a>.</p>
+<p>As might be expected, some prompts were not responded to or were responded to outside the response time window (which was 30 minutes in this case). In the present data set, what I cared about was predicting global mood using a measure of trait negativity (sometimes referred to as neuroticism, negative emotionality, or dispositional negativity).</p>
+<p>The problem is that I believe that there are certain factors about individuals that make them less likely to complete all of their surveys. Technically speaking, I believe that the data are likely missing at random (that is that missingness is conditional on some set of predictors/covariates but not on the outcome measure).</p>
+<p>There is a debate over whether researchers should impute or simply use full information maximum likelihood to address missingness in cases like the one represented by this current set of data. All things being equal, properly specified models using either approach will result in essentially the same result. Full information maximum likelihood (FIML) estimation is convenient, when it can be used, as it is often seamlessly intergrated into the modeling sofware.</p>
+<p>The seamlessness of its integration can, however, sometimes lead to bad modeling practices. Being a little out of sight and a little out of mind, relying on FIML to resolve the effects of missing data on biasing estimates can be just a hair too easy. On the user side it is: set up the model, click run, and wait, filled with the confidence that comes from being repeatedly told that FIML can be used to deal with missing data, so long as the technical condition of missingness at random is met.</p>
+<p>When imputing, probing for predictors of missingness is built into the process. It is a step that cannot be skipped as you are essentially building a model with other variables in your data set to predict missing scores. For my money, imputation makes you consider more thoughtful choices regarding modeling missingness. With FIML, it can be a little too easy to perform an analysis with little to no examination of the reasons for missingness.</p>
+</div>
+<div id="step-1---understanding-and-exploring-missingness" class="section level2">
+<h2>Step 1 - Understanding and Exploring Missingness</h2>
+<p>Before anything else we need to understand a little about the missingness in the data. For starters, how much missingness are we talking about here? That is relatively simple to answer. But even before that, a few pieces of information that may help readers understand this data set a bit better in the form of some variable names and definitions:</p>
+<p><code>ID</code>: ID variable</p>
+<p><strong>EMA Variables</strong><br />
+<code>c.Worst</code>: Individually mean-centered ratings of how <em>unpleasant</em> the worst event was that occurred in the past hour</p>
+<p><code>c.Best</code>: Individually mean-centered ratings of how <em>pleasant</em> the best event was that occurred in the past hour</p>
+<p><code>NegAff</code>: Three-item composite (scores can range from 1 to 5) assessing momentary negative affect - mostly anxious affect (i.e., <em>anxious</em>, <em>worried</em>, <em>nervous</em>)</p>
+<p><code>PosAff</code>: Three-item composite (scores can range from 1 to 5) assessing momentary positive affect - mostly cheerful affect (i.e., <em>cheerful</em>, <em>happy</em>, <em>joyful</em>)</p>
+<p><strong>Individual Variables:</strong><br />
+<code>c.DN</code>: Mean-centered dispositional negativity scores (combination of Neuroticism from Big Five and additional items that tap the anxious facet of neuroticism)</p>
+<p><code>BFI_O</code>: Big Five Openness Factor</p>
+<p><code>BFI_C</code>: Big Five Conscientiousness Factor</p>
+<p><code>BFI_E</code>: Big Five Extraversion Factor</p>
+<p><code>Dep</code>: IDAS general depression score</p>
+<p><strong>Miscellaneous:</strong><br />
+<code>IMP</code>: 0 is used to mark these data as “original” (will be useful after imputation)</p>
+<p><code>miss</code>: 1 if missing EMA measures, 0 if not (more on this later)</p>
+<p>In this study design, missingness is possible in any one of the EMA variables, though in practice if one of the four scores in question were missing, all scores for that period were typically missing (only 2 instances when this was not the case - see figure below). To understand missingness in this data set a little better, let’s take a closer look, now that we have a better understanding of what every variable represents.</p>
+<pre class="r"><code>mice::md.pattern(dat.study1)</code></pre>
+<p><img src="/blog/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/missing-1.png" width="672" /></p>
+<pre><code>##      ID c.DN BFI_O BFI_C BFI_E BFI_A Dep Gender IMP c.Worst c.Best NegAff
+## 7003  1    1     1     1     1     1   1      1   1       1      1      1
+## 2     1    1     1     1     1     1   1      1   1       1      1      1
+## 2     1    1     1     1     1     1   1      1   1       1      1      0
+## 1883  1    1     1     1     1     1   1      1   1       0      0      0
+##       0    0     0     0     0     0   0      0   0    1883   1883   1885
+##      PosAff     
+## 7003      1    0
+## 2         0    1
+## 2         1    1
+## 1883      0    4
+##        1885 7536</code></pre>
+<p>An alternative way to look at these data is to use the <code>VIM</code> package in R</p>
+<pre class="r"><code>VIM::aggr(
+  dat.study1[
+    c(
+      &#39;c.Worst&#39;, 
+      &#39;c.Best&#39;,
+      &#39;NegAff&#39;,
+      &#39;PosAff&#39;
+      )
+    ]
+  )</code></pre>
+<p><img src="/blog/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/VIM-1.png" width="672" /></p>
+<p>So now I can see that I am missing about 20% of data related to momentary events and mood. The next question is whether any of the individual-level variables available to me are related to missingness. First, I am going to need a indicator of missingness.</p>
+<p>Let’s begin by getting a missingness variable in a new missing data set. Grabbing just the comlumns that I need from the original:</p>
+<pre class="r"><code>dat.miss&lt;-data.frame(
+  dat.study1[,c(1,4,7:12)], 
+  miss = ifelse(!is.na(dat.study1$PosAff), &quot;Complete&quot;, &quot;Missing&quot;)
+)
+
+table(dat.miss$miss)</code></pre>
+<pre><code>## 
+## Complete  Missing 
+##     7005     1885</code></pre>
+<p>With a proportion of .212 (i.e., <span class="math inline">\(\frac{1885}{8890} = .212\)</span>), it looks as if I have successfully created my missingness variable. Now, it is time to plot. Let`s start with the 4 BFI factors.</p>
+<pre class="r"><code>g1&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=BFI_O, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;BFI Openess Scores (1-5)&#39;)
+
+g2&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=BFI_C, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;BFI Conscientiousness Scores (1-5)&#39;)
+
+g3&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=BFI_E, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;BFI Extraversion Scores (1-5)&#39;)
+
+
+g4&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=BFI_A, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;BFI Agreeableness Scores (1-5)&#39;)
+
+gridExtra::grid.arrange(g1, g2, g3, g4,
+                        nrow=2)</code></pre>
+<p><img src="/blog/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss-1.png" width="672" /></p>
+<p>There is not much here that would suggest that missingness was related to these personality scores. The distributions look pretty similar. This is an empirical question, though and it is possible, therefore, to determine if any of these measures predict the likelihood of missingness. I am also not considering the nested nature of the data here, just plotting in an absolute sense. To address the issue on more empirical grounds then, I can use the <code>lmer</code> package.</p>
+<pre class="r"><code>fit.miss&lt;-glmer(
+  miss~1+BFI_O+BFI_C+BFI_E+BFI_A+(1|ID), 
+  data=dat.miss, 
+  family = &#39;binomial&#39;
+  )
+
+fit.boot&lt;-bootMer(fit.miss, 
+                  FUN = fixef, 
+                  nsim=5000, 
+                  parallel=&#39;multicore&#39;, 
+                  ncpus = 10
+                  )</code></pre>
+<pre class="r"><code>confint(fit.boot, type=&#39;perc&#39;)</code></pre>
+<pre><code>## Bootstrap percent confidence intervals
+## 
+##                   2.5 %      97.5 %
+## (Intercept) -1.94877015  0.19115816
+## BFI_O        0.01754566  0.37859218
+## BFI_C       -0.39542260 -0.01822857
+## BFI_E       -0.05313720  0.18344948
+## BFI_A       -0.37821070  0.01239628</code></pre>
+<p>According to this model, it seems as though the BFI Openness factor and the BFI Conscientiousness factor both predict the likelihood of failing to complete an assessment (i.e., 0 not included in the interval).</p>
+<p>Let’s also look at our measures of dispositional negativity and general depression scores as potential variables of interest for the imputation model.</p>
+<pre class="r"><code>g5&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=c.DN, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;Centered DN Scores&#39;)
+
+g6&lt;-ggplot(
+  data = dat.miss, 
+  aes(x=Dep, group=miss, color=miss)
+  )+
+  geom_freqpoly(stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ylab(&#39;&#39;)+
+  xlab(&#39;IDAS Depression Scores&#39;)
+
+gridExtra::grid.arrange(g5, g6,
+                        nrow=1)</code></pre>
+<p><img src="/blog/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow_files/figure-html/plotmiss2-1.png" width="672" /></p>
+<p>There is a little bit of a right shift in the distribution of DN scores when split by missing vs. complete. Since the two variables (depression and dispostional negativity scores) are also pretty strongly correlated (introducing a good deal of multicollinearity in the model), I am just going to use the dispositional negativity variable as it is most similar to the other personality variables examined above (also it is going in my model anyway). I also want to check to make sure that gender is not a factor in completion rates.</p>
+<pre class="r"><code>fit.miss2&lt;-glmer(
+  miss~1+c.DN+Gender+(1|ID), 
+  data=dat.miss, 
+  family = &#39;binomial&#39;, 
+  )
+
+fit.boot2&lt;-bootMer(fit.miss2, 
+                   FUN = fixef, 
+                   nsim=5000, 
+                   parallel=&#39;multicore&#39;, 
+                   ncpus = 10
+                   )</code></pre>
+<pre class="r"><code>confint(fit.boot2, type = &#39;perc&#39;)</code></pre>
+<pre><code>## Bootstrap percent confidence intervals
+## 
+##                  2.5 %      97.5 %
+## (Intercept) -1.5177761 -1.16884330
+## c.DN        -0.1188116  0.14345555
+## Gender      -0.4123946  0.08398782</code></pre>
+<p>That is a no to DN and a no to Gender. At this stage, assuming these are the only relevant variables I have access to (in actuality there are more to consider in the complete data set - this is just a toy problem), I have identified the variables I will need to include when creating my imputation model.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>Okay to wrap it up for post 1 of 3… Missing data is a problem when analyzing data sets, even relatively large ones. We know from decades of research that missingness can bias both estimates and their standard errors (depending on the reasons for missingness). Two techniques, FIML and multiple imputation have been used over the years to address the problems caused by missing data, when the technical condition of “missing at random” is met.</p>
+<p>FIML is great and wonderful, but it can lead to bad practices owing to its ease of use (and often seamless integration with certain software tools). Multiple imputation can take longer and is a more invovled technique, but it forces you to think about the missingness more directly. An additional benefit is that multiple imputation will work with generally any type of statistical model, FIML by comparison requires maximum likelihood - an estimation that works for many but not all models.</p>
+</div>
+</div>
+
+                        </div>
+                        
+                        
+
+                    </div>
+                    
+
+                    
+
+                    
+
+                    <div class="col-md-3">
+
+                        
+
+                        
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">Search</h3>
+    </div>
+
+    <div class="panel-body">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" role="search">
+            <div class="input-group">
+                <input type="search" name="q" class="form-control" placeholder="Search">
+                <input type="hidden" name="sitesearch" value="/">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Categories</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked">
+            
+            
+            <li>
+                <a href="/categories/modeling">modeling (3)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/sample-size">sample-size (1)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/simulation">simulation (1)</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="panel sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Tags</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="tag-cloud">
+            
+            
+            <li>
+                <a href="/tags/bayesian"><i class="fas fa-tags"></i> bayesian</a>
+            </li>
+            
+            <li>
+                <a href="/tags/forecasting"><i class="fas fa-tags"></i> forecasting</a>
+            </li>
+            
+            <li>
+                <a href="/tags/gaussian-process"><i class="fas fa-tags"></i> gaussian-process</a>
+            </li>
+            
+            <li>
+                <a href="/tags/missing-data"><i class="fas fa-tags"></i> missing-data</a>
+            </li>
+            
+            <li>
+                <a href="/tags/mixed-effects"><i class="fas fa-tags"></i> mixed-effects</a>
+            </li>
+            
+            <li>
+                <a href="/tags/power"><i class="fas fa-tags"></i> power</a>
+            </li>
+            
+            <li>
+                <a href="/tags/predictive-modeling"><i class="fas fa-tags"></i> predictive-modeling</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r"><i class="fas fa-tags"></i> r</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r-bloggers"><i class="fas fa-tags"></i> r-bloggers</a>
+            </li>
+            
+            <li>
+                <a href="/tags/simulation"><i class="fas fa-tags"></i> simulation</a>
+            </li>
+            
+            <li>
+                <a href="/tags/stan"><i class="fas fa-tags"></i> stan</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+                        
+
+                    </div>
+                    
+
+                    
+
+                </div>
+                
+
+            </div>
+            
+        </div>
+        
+
+        <footer id="footer">
+    <div class="container">
+
+        
+        <div class="col-md-4 col-sm-6">
+            <h4>About us</h4>
+
+            <p>Consulting company specializing in the design of open source data processing and analytics pipelines.</p>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+        <div class="col-md-4 col-sm-6">
+
+             
+            <h4>Recent posts</h4>
+
+            <div class="blog-entries">
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">
+                          
+                            <img src="/img/banners/bayesian-missing-data-pt1.png" class="img-responsive" alt="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">
+                          
+                            <img src="/img/banners/power-analysis-growth-model-banner.png" class="img-responsive" alt="Power Analyses for an Unconditional Growth Model using {lmer}">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">
+                          
+                            <img src="/img/banners/gp-forecast-banner.png" class="img-responsive" alt="Gaussian Process Imputation/Forecast Models">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">Gaussian Process Imputation/Forecast Models</a></h5>
+                    </div>
+                </div>
+                
+            </div>
+
+            <hr class="hidden-md hidden-lg">
+             
+
+        </div>
+        
+
+        
+        <div class="col-md-4 col-sm-6">
+
+          <h4>Contact</h4>
+
+            <p class="text-uppercase"><strong>Dead Reckoning Analytics & Consulting</strong>
+        <br>PO Box 194
+        <br>College Park, MD 20740
+        <strong>United States</strong>
+      </p>
+      
+
+            <a href="/contact" class="btn btn-small btn-template-main">Go to contact page</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+    </div>
+    
+</footer>
+
+
+
+
+
+
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            
+            <p class="pull-left">Copyright (c) 2020, Dead Reckoning Analytics & Consulting, LLC; all rights reserved.</p>
+            
+            <p class="pull-right">
+              Template by <a href="https://bootstrapious.com/p/universal-business-e-commerce-template">Bootstrapious</a>.
+              
+
+              Ported to Hugo by <a href="https://github.com/devcows/hugo-universal-theme">DevCows</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    </div>
+    
+
+    
+<script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0/jquery.counterup.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax.js"></script>
+
+<script src="//maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script src="/js/hpneo.gmaps.js"></script>
+<script src="/js/gmaps.init.js"></script>
+<script src="/js/front.js"></script>
+
+
+<script src="/js/owl.carousel.min.js"></script>
+
+
+
+  </body>
+</html>

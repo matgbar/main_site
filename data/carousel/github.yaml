@@ -1,0 +1,11 @@
+weight: 3
+title: "GitHub Repos"
+description: >
+  <ul class="list-style-none">
+     <li></li>
+     <li>Controllable access to codebase</li>
+     <li>Transferable ownership</li>
+     <li>Transparent code changes</li>
+     <li>Complete version history</li>
+   </ul>
+image: "img/carousel/github-repo.png"

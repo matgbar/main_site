@@ -1,320 +1,168 @@
-# Configuration of Academic
-# Documentation: https://sourcethemes.com/academic/
-
-# The URL of your website.
-# End your URL with a `/` trailing slash, e.g. `https://example.com/`.
 baseurl = "https://mgb-research.netlify.com/"
-#relativeurls = true
-
-# Title of your site
-title = "Matthew Barstead, Ph.D.: Research, Repository, & Blog"
-
-# Your copyright notice - appears in site footer.
-# To display a copyright symbol, type `&copy;`.
-copyright = "&copy; 2018 Matthew Barstead"
-
-theme = "hugo-academic"
-enableEmoji = true
-footnotereturnlinkcontents = "<sup>^</sup>"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
-preserveTaxonomyNames = true
-paginate = 10
-
+title = "Dead Reckoning Analytics and Consulting"
+theme = "hugo-universal-theme"
+languageCode = "en-us"
+# Site language. Available translations in the theme's `/i18n` directory.
+defaultContentLanguage = "en"
 # Enable comments by entering your Disqus shortname
 disqusShortname = ""
+# Enable Google Analytics by entering your tracking code
+googleAnalytics = ""
 
-# Enable analytics by entering your Google Analytics tracking ID
-googleAnalytics = "UA-130198222-1"
+# Define the number of posts per page
+paginate = 10
 
-# Twitter username (without @). Used when a vistor shares your site on Twitter.
-twitter = "MGB_Research"
+[menu]
 
-# Default language to use (if you setup multilingual support)
-defaultContentLanguage = "en"
-hasCJKLanguage = false  # Set `true` for Chinese/Japanese/Korean languages.
-defaultContentLanguageInSubdir = false
+# Main menu
 
-# Get last modified date for content from Git?
-enableGitInfo = false
+[[menu.main]]
+    identifier="home"
+    name = "Home"
+    url  = "/"
+    weight = 1
 
-# Not sure why this is needed
-[taxonomies]
-  tag = "tags"
-  category = "categories"
+[[menu.main]]
+    identifier="blog"
+    name = "Blog"
+    url  = "/blog/"
+    weight = 2
 
-[outputs]
-  home = [ "HTML", "CSS", "RSS" ]
-  section = [ "HTML", "RSS" ]
+# may re-enable later, but for now let's take this out.
+# [[menu.main]]
+#    identifier = "faq"
+#    name = "FAQ"
+#    url  = "/faq/"
+#    weight = 3
 
-# Configure BlackFriday Markdown rendering.
-#   See: https://gohugo.io/readfiles/bfconfig/
-[blackfriday]
-  hrefTargetBlank = true  # `true` opens external links in a new tab.
-  fractions = true  # `false` disables smart fractions (e.g. 5/12 formatted as a fraction).
-  smartypants = true  # `false` disables all smart punctuation substitutions (e.g. smart quotes, dashes, fractions).
+[[menu.main]]
+    identifier = "contact"
+    name = "Contact"
+    url  = "/contact/"
+    weight = 3
+
+# Top bar social links menu
+
+[[menu.topbar]]
+    weight = 1
+    name = "GitHub"
+    url = "https://github.com/dr-consulting"
+    pre = "<i class='fab fa-2x fa-github'></i>"
+
+[[menu.topbar]]
+    weight = 2
+    name = "Twitter"
+    url = "https://twitter.com/dead_reck"
+    pre = "<i class='fab fa-2x fa-twitter'></i>"
+
+[[menu.topbar]]
+    weight = 3
+    name = "Email"
+    url = "mailto:info@deadreckoning.consulting"
+    pre = "<i class='fas fa-2x fa-envelope'></i>"
 
 [params]
-  # Color theme.
-  #   Choose from `default`, `ocean`, `forest`, `coffee`, `dark`, or `1950s`.
-  color_theme = "ocean"
+    viewMorePostLink = "/blog/"
+    author = "Matthew Barstead, Ph.D."
+    defaultKeywords = ["R", "R programming", "Data Science", "Statistics"]
+    mainSections = ["blog"]
+    defaultDescription = "Musings on R, Statistics, Data Science, and Programming"
 
-  # Font style.
-  #   Choose from `default`, `classic`, or `playfair`.
-  font = "default"
+    # Social media
+    facebook_site = "" # the Facebook handle of your site ('https://www.facebook.com/HANDLE')
+    twitter_site = "dead_reck" # the Twitter handle of your site (without the '@')
+    default_sharing_image = "img/favicon-dead-1_thumb_20.png"
 
-  # Your details.
-  name = "Matthew Barstead"
-  role = "Ph.D. (Human Development & Quantitative Methodology)"
+    # Google Maps API key (if not set will default to not passing a key.)
+    googleMapsApiKey = ""
 
-  # Organizations/Affiliations.
-  #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-  organizations = [ { name = "University of Maryland", url = "" } ]
+    # Style options: default (light-blue), blue, green, marsala, pink, red, turquoise, violet
+    style = "blue"
 
-  gravatar = false  # Get your avatar from Gravatar.com? (true/false)
-  avatar = "portrait.jpg"  # Specify an avatar image (in `static/img/` folder) or delete value to disable avatar.
-  email = "barstead@umd.edu"
-  address = "3304 Benjamin Building, College Park, MD 20742, USA"
+    # Since this template is static, the contact form uses www.formspree.io as a
+    # proxy. The form makes a POST request to their servers to send the actual
+    # email. Visitors can send up to a 1000 emails each month for free.
+    #
+    # What you need to do for the setup?
+    #
+    # - set your email address under 'email' below
+    # - upload the generated site to your server
+    # - send a dummy email yourself to confirm your account
+    # - click the confirm link in the email from www.formspree.io
+    # - you're done. Happy mailing!
+    #
+    # Enable the contact form by entering your Formspree.io email
+    email = "info@deadreckoning.consulting"
+    contact_form_ajax = false
 
-  # Enable Keybase in Contact widget by entering your keybase.io username.
-  keybase = ""
+    about_us = "<p>Consulting company specializing in the design of open source data processing and analytics pipelines.</p>"
+    copyright = "Copyright (c) 2020, Dead Reckoning Analytics & Consulting, LLC; all rights reserved."
 
-  # Discussion link (e.g. link to a forum, mailing list, or chat).
-  #   Uncomment line below to use.
-  #   discussion = { name = "Discuss", url = "https://discourse.gohugo.io" }
+    # Format dates with Go's time formatting
+    date_format = "January 2, 2006"
 
-  # Diplay a logo in navigation bar rather than title (optional).
-  #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
-  logo = ""
+    logo = "img/logo-dead-8_20.png"
+    logo_small = "img/logo-dead-8_20.png"
+    address = """<p class="text-uppercase"><strong>Dead Reckoning Analytics & Consulting</strong>
+        <br>PO Box 194
+        <br>College Park, MD 20740
+        <strong>United States</strong>
+      </p>
+      """
+    latitude = "38.988569"
+    longitude = "-76.935237"
 
-  # Enable/disable map in Contact widget.
-  # To show your address on a map in the contact widget, you need to enter your latitude, longitude and choose
-  # a map provider below.
-  # To use Google Maps, set `map = 1` and enter your API key that can be obtained here:
-  #   https://developers.google.com/maps/documentation/javascript/get-api-key
-  # To use OpenStreetMap tiles, set `map = 2`.
-  # To use OpenStreetMap on a high traffic site, set `map = 3` and enter your API key that can be obtained here:
-  #   https://www.mapbox.com/studio/account/tokens
-  # To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.
-  #
-  # Map provider:
-  #   0: No map
-  #   1: Google Maps
-  #   2: OpenStreetMap (Mapnik)
-  #   3: OpenStreetMap (Mapbox)
-  map = 0
-  map_api_key = ""
-  latitude = "37.4275"
-  longitude = "-122.1697"
-  zoom = 15
+[Permalinks]
+    blog = "/blog/:year/:month/:day/:filename/"
 
-  # Date and time format (refer to Go's date format: http://fuckinggodateformat.com )
-  #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
-  date_format = "Jan 2, 2006"
-  #   Examples: "3:04 pm" or "15:04"
-  time_format = "3:04 PM"
+# Enable or disable top bar with social icons
+[params.topbar]
+    enable = true
+    text = ""
 
-  # Show estimated reading time for posts?
-  reading_time = true
+# Enable and disable widgets for the right sidebar
+[params.widgets]
+    categories = true
+    tags = true
+    search = true
 
-  # Display comment count? Requires commenting to be enabled.
-  comment_count = true
+[params.carousel]
+    enable = true
+    # All carousel items are defined in their own files. You can find example items
+    # at 'exampleSite/data/carousel'.
+    # For more informtion take a look at the README.
 
-  # Display next/previous section pager?
-  section_pager = false
+[params.features]
+    enable = true
+    # All features are defined in their own files. You can find example items
+    # at 'exampleSite/data/features'.
+    # For more informtion take a look at the README.
 
-  # Enable global LaTeX math rendering?
-  #   If false, you can enable it locally on a per page basis.
-  math = true
+[params.testimonials]
+    enable = false
+    # All testimonials are defined in their own files. You can find example items
+    # at 'exampleSite/data/testimonials'.
+    # For more informtion take a look at the README.
+    title = "Testimonials"
+    subtitle = "We have worked with many clients and we always like to hear they come out from the cooperation happy and satisfied. Have a look what our clients said about us."
 
-  # Highlight.js options
-  #   highlight
-  #     Enable global source code highlighting?  If false, you can
-  #     override it for a particular page in that page's preamble.
-  #
-  #     Example: highlight = true
-  #
-  #   highlight_languages
-  #     Add support for highlighting additional languages. Support for
-  #     languages mentioned here will be included in all pages. You
-  #     can also set this variable for a particular page in that
-  #     page's preamble.
-  #
-  #     Example: highlight_languages = ["go", "lisp", "ocaml"]
-  #
-  #   highlight_style
-  #     Choose a different CSS style for highlighting source
-  #     code. Setting this option in a page's preamble has no
-  #     effect.
-  #
-  #     Example: highlight_style = "github-gist"
-  #
-  #   For the list of supported languages and styles, see:
-  #   https://cdnjs.com/libraries/highlight.js/
-  #
-  #   For more info on the highlighting options, see:
-  #   https://sourcethemes.com/academic/post/writing-markdown-latex/#highlighting-options
-  highlight = true
-  highlightjsVersion = "9.11.0"
-  highlightjsCDN = "//cdn.bootcss.com"
-  highlight_languages = ["r", "yaml"]
-  highlightjsTheme = "github"
-  MathJaxCDN = "//cdn.bootcss.com"
-  MathJaxVersion = "2.7.1"
-  # highlight_style = "github"
+[params.see_more]
+    enable = true
+    icon = "far fa-drafting-compass"
+    title = "Do you want to learn more?"
+    subtitle = "Learn more about Dead Reckoning as an approach to navigating data science challenges and opportunities"
+    link_url = "background"
+    link_text = "The Reason for the Name"
 
-  # Enable native social sharing buttons?
-  sharing = true
+[params.clients]
+    enable = false
+    # All clients are defined in their own files. You can find example items
+    # at 'exampleSite/data/clients'.
+    # For more informtion take a look at the README.
+    title = "Our Clients"
+    subtitle = ""
 
-  # Privacy pack
-  #   Show a cookie consent message to visitors
-  #   Anonymize IP in Google Analytics (if enabled)
-  privacy_pack = false
-
-  # Link custom CSS and JS assets
-  #   (relative to /static/css and /static/js respectively)
-  custom_css = []
-  custom_js  = []
-
-  # Publication types.
-  #   Used to categorize publications.
-  #   The index of the publication type in the list is used as its unique numerical identifier.
-  #   The numeric ID is used in a publication's frontmatter to categorize it.
-  #   The language can be edited below.
-  #   For multilingual sites, `publication_types` can be copied to each language section at the end of this file and
-  #   translated.
-  publication_types = [
-    'Uncategorized',  # 0
-    'Conference paper',  # 1
-    'Journal article',  # 2
-    'Manuscript',  # 3
-    'Report',  # 4
-    'Book',  # 5
-    'Book section'  # 6
-  ]
-
-  # Configuration of publication pages.
-  [params.publications]
-    # Date format (refer to Go's date format: http://fuckinggodateformat.com )
-    #   Examples: "Mon, Jan 2, 2006" or "2006-01-02"
-    date_format = "January, 2006"
-
-  # Configuration of project pages.
-  [params.projects]
-    # List publications and talks related to the project?
-    list_children = true
-
-    # Publication list format.
-    #   0 = Simple
-    #   1 = Detailed
-    #   2 = APA
-    #   3 = MLA
-    publication_format = 3
-
-  # Social/Academic Networking
-  #
-  # Icon pack "fa" includes the following social network icons:
-  #
-  #   twitter, weibo, linkedin, github, facebook, pinterest, google-plus,
-  #   youtube, instagram, soundcloud
-  #
-  #   For email icon, use "fa" icon pack, "envelope" icon, and
-  #   "mailto:your@email.com" as the link.
-  #
-  #   Full list: https://fortawesome.github.io/Font-Awesome/icons/
-  #
-  # Icon pack "ai" includes the following academic network icons:
-  #
-  #   google-scholar, arxiv, orcid, researchgate, mendeley
-  #
-  #   Full list: https://jpswalsh.github.io/academicons/
-
-  [[params.social]]
-    icon = "envelope"
-    icon_pack = "fa"
-    link = "mailto:mbarstead@gmail.com"
-
-  [[params.social]]
-    icon = "twitter"
-    icon_pack = "fa"
-    link = "//twitter.com/MGB_Research"
-
-  [[params.social]]
-    icon = "google-scholar"
-    icon_pack = "ai"
-    link = "https://scholar.google.com/citations?user=BPm5ErAAAAAJ&hl=en"
-
-  [[params.social]]
-    icon = "researchgate"
-    icon_pack = "ai"
-    link = "https://www.researchgate.net/profile/Matthew_Barstead"
-    
-  [[params.social]]
-    icon = "mendeley"
-    icon_pack = "ai"
-    link = "https://www.mendeley.com/profiles/matthew-barstead/"
-    
-  [[params.social]]
-    icon = "github"
-    icon_pack = "fa"
-    link = "//github.com/matgbar"
-    
-  [[params.social]]
-    icon = "linkedin"
-    icon_pack = "fa"
-    link = "https://www.linkedin.com/in/mbarstead/"
-    
-  [[params.social]]
-    icon = "stack-exchange"
-    icon_pack = "fa"
-    link = "https://stackexchange.com/users/9987725/matt-barstead?tab=accounts"
-
-
-# Navigation Links
-#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
-#     desired widget in your `content/home/` folder.
-#   The weight parameter defines the order that the links will appear in.
-[params.menus]
-  # Align the main menu to the right of the page? (true/false)
-  align_right = true
-
-[[menu.main]]
-  name = "Home"
-  url = "#about"
-  weight = 1
-
-[[menu.main]]
-  name = "Projects"
-  url = "#projects"
-  weight = 2
-  
-[[menu.main]]
-  name = "Blog"
-  url = "#posts"
-  weight = 3
-
-[[menu.main]]
-  name = "Publications"
-  url = "#publications_selected"
-  weight = 4
-
-[[menu.main]]
-  name = "CV"
-  url = "/pdf/Barstead_CV.pdf"
-  weight = 5
-
-[[menu.main]]
-  name = "Contact"
-  url = "#contact"
-  weight = 6
-  
-[[menu.main]]
-  name = "R-Bloggers"
-  url = "https://www.r-bloggers.com/"
-  weight = 7
-  
-# Languages
-#   Create a [languages.X] block for each language you want, where X is the language ID.
-
-# Configure the English version of the website.
-[Languages.en]
-  languageCode = "en-us"
+[params.recent_posts]
+    enable = true
+    title = "From the blog"
+    subtitle = "Recent posts"
