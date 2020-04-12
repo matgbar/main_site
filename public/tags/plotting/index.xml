@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Plotting on Dead Reckoning Analytics and Consulting</title>
+    <link>/tags/plotting/</link>
+    <description>Recent content in Plotting on Dead Reckoning Analytics and Consulting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/plotting/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
+      <link>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
+    </item>
+    
+    <item>
+      <title>Interaction Plots with Continuous Moderators in R</title>
+      <link>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</guid>
+      <description>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</description>
+    </item>
+    
+  </channel>
+</rss>

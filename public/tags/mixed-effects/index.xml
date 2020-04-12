@@ -6,10 +6,30 @@
     <description>Recent content in Mixed-Effects on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/mixed-effects/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
+      <link>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
+      <description>Overview: This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
+Data Brief Description: The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
+    </item>
+    
+    <item>
+      <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
+      <link>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
+    </item>
     
     <item>
       <title>Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</title>

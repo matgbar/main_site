@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,34 +14,34 @@
     <item>
       <title>Bayesian</title>
       <link>/tags/bayesian/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/bayesian/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Missing Data</title>
-      <link>/tags/missing-data/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <title>Bayesian Models</title>
+      <link>/tags/bayesian-models/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/missing-data/</guid>
+      <guid>/tags/bayesian-models/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Mixed-Effects</title>
-      <link>/tags/mixed-effects/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <title>Multiple Imputation</title>
+      <link>/tags/multiple-imputation/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/tags/mixed-effects/</guid>
+      <guid>/tags/multiple-imputation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
       <link>/tags/r/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/r/</guid>
       <description></description>
@@ -50,18 +50,117 @@
     <item>
       <title>R-bloggers</title>
       <link>/tags/r-bloggers/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>/tags/r-bloggers/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Statistics</title>
+      <link>/tags/statistics/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/statistics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AI</title>
+      <link>/tags/ai/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Forecasting</title>
+      <link>/tags/forecasting/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/forecasting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ML</title>
+      <link>/tags/ml/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ml/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Predictive Modeling</title>
+      <link>/tags/predictive-modeling/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/predictive-modeling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Missing Data</title>
+      <link>/tags/missing-data/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/missing-data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mixed-Effects</title>
+      <link>/tags/mixed-effects/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/mixed-effects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Stan</title>
       <link>/tags/stan/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/stan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Processing</title>
+      <link>/tags/data-processing/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/data-processing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Plotting</title>
+      <link>/tags/plotting/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/plotting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lavaan</title>
+      <link>/tags/lavaan/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lavaan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Structural Equation Modeling</title>
+      <link>/tags/structural-equation-modeling/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/structural-equation-modeling/</guid>
       <description></description>
     </item>
     
@@ -84,29 +183,11 @@
     </item>
     
     <item>
-      <title>Forecasting</title>
-      <link>/tags/forecasting/</link>
-      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/forecasting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Gaussian Process</title>
       <link>/tags/gaussian-process/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/gaussian-process/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Predictive Modeling</title>
-      <link>/tags/predictive-modeling/</link>
-      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/predictive-modeling/</guid>
       <description></description>
     </item>
     

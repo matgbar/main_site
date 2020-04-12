@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
+  <meta name="author" content="Matthew Barstead, Ph.D." />
+  
+  
+  
+  
+  <meta name="keywords" content="R, R programming, Data Science, Statistics, Bayesian, Missing Data, Mixed-Effects, Stan, R-bloggers">
+  
+  
+  <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
+
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  
+  <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,500,700,800' rel='stylesheet' type='text/css'>
+
+  
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  
+  <link href="/css/animate.css" rel="stylesheet">
+
+  
+  
+    <link href="/css/style.blue.css" rel="stylesheet" id="theme-stylesheet">
+  
+
+  
+  <link href="/css/custom.css" rel="stylesheet">
+
+  
+  
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+
+  
+  <link href="/css/owl.carousel.css" rel="stylesheet">
+  <link href="/css/owl.theme.css" rel="stylesheet">
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
+
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
+  <meta property="og:title" content="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/" />
+  <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
+  <meta property="og:image" content="/img/banners/bayesian-missing-data-pt2.png">
+  <meta property="og:image:type" content="image/png">
+  
+  
+  
+    <meta property="og:image:width" content="1344">
+    <meta property="og:image:height" content="960">
+  
+  
+  <meta property="og:updated_time" content="2018-09-03T00:00:00Z">
+  
+    
+    
+    <meta property="article:section" content="Modeling">
+    <meta property="article:tag" content="Bayesian">
+    <meta property="article:tag" content="Missing Data">
+    <meta property="article:tag" content="Mixed-Effects">
+    <meta property="article:tag" content="Stan">
+    <meta property="article:tag" content="R-bloggers">
+    
+    
+    <meta property="article:published_time" content="2018-09-03T00:00:00Z">
+    <meta property="article:modified_time" content="2018-09-03T00:00:00Z">
+  
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dead_reck">
+  <meta name="twitter:title" content="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 …">
+  
+  <meta name="twitter:image" content="/img/banners/bayesian-missing-data-pt2.png">
+  
+  <meta name="twitter:description" content="Musings on R, Statistics, Data Science, and Programming">
+  
+  
+  
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX&#45;AMS&#45;MML_HTMLorMML" type="text/javascript"></script>
+  <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}}); </script>
+
+</head>
+
+
+  <body>
+
+    <div id="all">
+
+        <header>
+
+          <div class="navbar-affixed-top" data-spy="affix" data-offset-top="200">
+
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="/">
+                    <img src="/img/logo-dead-8_20.png" alt="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3) logo" class="hidden-xs hidden-sm">
+                    <img src="/img/logo-dead-8_20.png" alt="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3) logo" class="visible-xs visible-sm">
+                    <span class="sr-only">Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3) - go to homepage</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/">Home</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown active">
+                    
+                    <a href="/blog/">Blog</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/contact/">Contact</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
+            
+
+            <div class="collapse clearfix" id="search">
+
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+
+                </span>
+                    </div>
+                </form>
+
+            </div>
+            
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        <div id="heading-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="content">
+            <div class="container">
+
+                <div class="row">
+
+                    
+
+                    <div class="col-md-9" id="blog-post">
+
+                        
+                          <p class="text-muted text-uppercase mb-small text-right">
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                             | 
+                            September 3, 2018
+                          </p>
+                        
+
+                        <div id="post-content">
+                          
+
+
+<div id="overview" class="section level1">
+<h1>Overview:</h1>
+<p>This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and <a href="https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/">check it out</a>. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.</p>
+<div id="data-brief-description" class="section level2">
+<h2>Data Brief Description:</h2>
+<p>The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (<em>N</em>=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found <a href="https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/">here</a>.</p>
+</div>
+<div id="imputation-options" class="section level2">
+<h2>Imputation Options</h2>
+<p>There are several imputation packages available that aid researchers imputing data in R. Perhaps the two most popular are the <code>mice</code> package <span class="citation">(van Buuren and Groothuis-Oudshoorn 2011)</span> and the <code>Amelia</code> package <span class="citation">(Honaker, King, and Blackwell 2011)</span>. When the data in question has a nested structure (e.g., students nested within classrooms, patients nested within clinics, observations nested within individuals, etc.), the <code>pan</code> package <span class="citation">(Zhao and Schafer 2018)</span> can be used.</p>
+<p>In this case, I will be using the <code>mitml</code> package <span class="citation">(Grund, Robitzsch, and Luedtke 2018)</span>, which is a wraparound package that depends on the <code>pan</code> package. Alternative approaches using the <code>pan</code> algorithm via <code>mice</code> can be found <a href="http://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html">here</a>.</p>
+</div>
+<div id="imputation-model" class="section level2">
+<h2>Imputation Model</h2>
+<p>To setup the imputation model, I need to specify the variables that need to be imputed (in front of the <code>~</code>) and the complete variables, along with the random effects (after the <code>~</code>). Exploratory analyses covered in the <a href="https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/">first post</a> indicated that BFI Openess scores and BFI Conscientiousness scores both predicted missingness. As is common practice, I will also include dispositional negativity scores, which serve as the primary individual-level predictor in my final model.</p>
+<pre class="r"><code>fml&lt;- c.Worst + c.Best + NegAff + PosAff  ~ 
+  1 + c.DN + BFI_C + BFI_O + (1|ID)</code></pre>
+<p>With the formula setup, I can now impute the data. There have been a number of recommendations out there regarding how many datasets you need to impute to ensure that you get stable results. I recommend reading a pair of papers out there to those who think you can always get away with around 10 datasets when imputing <span class="citation">(Bodner 2008; Graham, Olchowski, and Gilreath 2007)</span>.</p>
+<p>Based on the structure of my data and the total missingness and recommendations made by <span class="citation">Graham, Olchowski, and Gilreath (2007)</span>, I chose to impute 20 data sets. I also have a relatively lengthy burn-in period so I can ensure convergence of the posterior distributions from which values are drawn. In setting <code>n.iter = 50</code> I have further made the choice to separate my draws from the MCMC chains to help mitigate any autocorrelation that could arise in imputed data sets.</p>
+<pre class="r"><code>imp&lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=100, 
+               n.iter = 50, 
+               m=20, 
+               seed = 0716)</code></pre>
+</div>
+<div id="extracting-datasets" class="section level2">
+<h2>Extracting Datasets</h2>
+<p>The next step is to pull out the imputed data and start examining whether or not the imputed data sets make sense. First, we can examine convergence of the imputation model. If you were to run <code>plot(imp, print='beta')</code> you would be able review convergence for all aspects of the imputation model. Doing so would also reveal that some parameters did not fully converge and the number of iterations between draws likely needs to be increased. To address these problems, I begin by re-running the imputation model with a longer burn-in phase and greater distance between draws.</p>
+<pre class="r"><code>imp&lt;-panImpute(dat.study1, 
+               formula=fml, 
+               n.burn=10000, 
+               n.iter = 5000, 
+               m=20, 
+               seed = 0716)</code></pre>
+<p>Having satisfied myself that there are no lingering convergence issues I can create some initial plots. First, I need to re-structure the data to make it a bit easier to plot.</p>
+<pre class="r"><code>dat&lt;-mitmlComplete(imp)
+
+dat.long&lt;-data.frame()
+for(i in 1:20){
+  dat.temp&lt;-dat[[i]]
+  dat.temp$IMP&lt;-rep(i, length(dat.temp[,1]))
+  dat.long&lt;-rbind(dat.long, dat.temp)
+}
+
+dat.study1$IMP&lt;-rep(0, length(dat.study1[,1]))
+dat.long&lt;-rbind(dat.study1, dat.long)
+dat.long$Orig&lt;-ifelse(dat.long$IMP&lt;1, &#39;Original&#39;, &#39;Imputed&#39;)</code></pre>
+<p>Okay now we can plot the results.</p>
+<pre class="r"><code>g1&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=NegAff, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Momentary Negative Affect&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g2&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=PosAff, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Momentary Positive Affect&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g3&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Worst, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Worst Event&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+g4&lt;-ggplot()+
+  geom_freqpoly(data = dat.long, aes(x=c.Best, group=IMP, color=Orig), stat = &#39;density&#39;)+
+  theme(legend.title = element_blank())+
+  ggtitle(&#39;Best Event&#39;)+
+  ylab(&#39;Density&#39;)+
+  xlab(&#39;&#39;)
+
+print(cowplot::plot_grid(g1, g2, g3, g4))</code></pre>
+<p><img src="/blog/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The good news is that the imputed values largely follow the same distribution as the original values. Having assessed convergence and now the actual imputation results, I feel pretty good about the results. I am now ready to move on to the actual analysis, which will be reviewed in the final post in this series.</p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-Bodner2008">
+<p>Bodner, Todd E. 2008. “What improves with increased missing data imputations?” <em>Structural Equation Modeling</em> 15 (4): 651–75. <a href="https://doi.org/10.1080/10705510802339072">https://doi.org/10.1080/10705510802339072</a>.</p>
+</div>
+<div id="ref-Graham2007">
+<p>Graham, John W., Allison E. Olchowski, and Tamika D. Gilreath. 2007. “How many imputations are really needed? Some practical clarifications of multiple imputation theory.” <em>Prevention Science</em> 8 (3): 206–13. <a href="https://doi.org/10.1007/s11121-007-0070-9">https://doi.org/10.1007/s11121-007-0070-9</a>.</p>
+</div>
+<div id="ref-mitml_2018">
+<p>Grund, Simon, Alexander Robitzsch, and Oliver Luedtke. 2018. <em>Mitml: Tools for Multiple Imputation in Multilevel Modeling</em>. <a href="https://CRAN.R-project.org/package=mitml">https://CRAN.R-project.org/package=mitml</a>.</p>
+</div>
+<div id="ref-Amelia_2011">
+<p>Honaker, James, Gary King, and Matthew Blackwell. 2011. “Amelia II: A Program for Missing Data.” <em>Journal of Statistical Software</em> 45 (7): 1–47. <a href="http://www.jstatsoft.org/v45/i07/">http://www.jstatsoft.org/v45/i07/</a>.</p>
+</div>
+<div id="ref-mice_2011">
+<p>van Buuren, Stef, and Karin Groothuis-Oudshoorn. 2011. “mice: Multivariate Imputation by Chained Equations in R.” <em>Journal of Statistical Software</em> 45 (3): 1–67. <a href="https://www.jstatsoft.org/v45/i03/">https://www.jstatsoft.org/v45/i03/</a>.</p>
+</div>
+<div id="ref-pan_2018">
+<p>Zhao, Jing Hua, and Joseph L. Schafer. 2018. <em>Pan: Multiple Imputation for Multivariate Panel or Clustered Data</em>.</p>
+</div>
+</div>
+</div>
+</div>
+
+                        </div>
+                        
+                        
+
+                    </div>
+                    
+
+                    
+
+                    
+
+                    <div class="col-md-3">
+
+                        
+
+                        
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">Search</h3>
+    </div>
+
+    <div class="panel-body">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" role="search">
+            <div class="input-group">
+                <input type="search" name="q" class="form-control" placeholder="Search">
+                <input type="hidden" name="sitesearch" value="/">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Categories</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked">
+            
+            
+            <li>
+                <a href="/categories/data-visualization">data-visualization (3)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/ibi-vizedit">ibi-vizedit (1)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/machine-learning">machine-learning (2)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/modeling">modeling (7)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/sample-size">sample-size (1)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/simulation">simulation (1)</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="panel sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Tags</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="tag-cloud">
+            
+            
+            <li>
+                <a href="/tags/ai"><i class="fas fa-tags"></i> ai</a>
+            </li>
+            
+            <li>
+                <a href="/tags/bayesian"><i class="fas fa-tags"></i> bayesian</a>
+            </li>
+            
+            <li>
+                <a href="/tags/bayesian-models"><i class="fas fa-tags"></i> bayesian-models</a>
+            </li>
+            
+            <li>
+                <a href="/tags/data-processing"><i class="fas fa-tags"></i> data-processing</a>
+            </li>
+            
+            <li>
+                <a href="/tags/forecasting"><i class="fas fa-tags"></i> forecasting</a>
+            </li>
+            
+            <li>
+                <a href="/tags/gaussian-process"><i class="fas fa-tags"></i> gaussian-process</a>
+            </li>
+            
+            <li>
+                <a href="/tags/lavaan"><i class="fas fa-tags"></i> lavaan</a>
+            </li>
+            
+            <li>
+                <a href="/tags/missing-data"><i class="fas fa-tags"></i> missing-data</a>
+            </li>
+            
+            <li>
+                <a href="/tags/mixed-effects"><i class="fas fa-tags"></i> mixed-effects</a>
+            </li>
+            
+            <li>
+                <a href="/tags/ml"><i class="fas fa-tags"></i> ml</a>
+            </li>
+            
+            <li>
+                <a href="/tags/multiple-imputation"><i class="fas fa-tags"></i> multiple-imputation</a>
+            </li>
+            
+            <li>
+                <a href="/tags/plotting"><i class="fas fa-tags"></i> plotting</a>
+            </li>
+            
+            <li>
+                <a href="/tags/power"><i class="fas fa-tags"></i> power</a>
+            </li>
+            
+            <li>
+                <a href="/tags/predictive-modeling"><i class="fas fa-tags"></i> predictive-modeling</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r"><i class="fas fa-tags"></i> r</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r-bloggers"><i class="fas fa-tags"></i> r-bloggers</a>
+            </li>
+            
+            <li>
+                <a href="/tags/simulation"><i class="fas fa-tags"></i> simulation</a>
+            </li>
+            
+            <li>
+                <a href="/tags/stan"><i class="fas fa-tags"></i> stan</a>
+            </li>
+            
+            <li>
+                <a href="/tags/statistics"><i class="fas fa-tags"></i> statistics</a>
+            </li>
+            
+            <li>
+                <a href="/tags/structural-equation-modeling"><i class="fas fa-tags"></i> structural-equation-modeling</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+                        
+
+                    </div>
+                    
+
+                    
+
+                </div>
+                
+
+            </div>
+            
+        </div>
+        
+
+        <footer id="footer">
+    <div class="container">
+
+        
+        <div class="col-md-4 col-sm-6">
+            <h4>About us</h4>
+
+            <p>Consulting company specializing in the design of open source data processing and analytics pipelines.</p>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+        <div class="col-md-4 col-sm-6">
+
+             
+            <h4>Recent posts</h4>
+
+            <div class="blog-entries">
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">
+                          
+                            <img src="/img/banners/riverplot.png" class="img-responsive" alt="Visualizing Variance in Multilevel Models Using the Riverplot Package">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">Visualizing Variance in Multilevel Models Using the Riverplot Package</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/">
+                          
+                            <img src="/img/banners/ml-vs-stats-pt2.png" class="img-responsive" alt="A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/">A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/">
+                          
+                            <img src="/img/banners/ml-vs-stats-pt1.png" class="img-responsive" alt="A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/">A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</a></h5>
+                    </div>
+                </div>
+                
+            </div>
+
+            <hr class="hidden-md hidden-lg">
+             
+
+        </div>
+        
+
+        
+        <div class="col-md-4 col-sm-6">
+
+          <h4>Contact</h4>
+
+            <p class="text-uppercase"><strong>Dead Reckoning Analytics & Consulting</strong>
+        <br>PO Box 194
+        <br>College Park, MD 20740
+        <strong>United States</strong>
+      </p>
+      
+
+            <a href="/contact" class="btn btn-small btn-template-main">Go to contact page</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+    </div>
+    
+</footer>
+
+
+
+
+
+
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            
+            <p class="pull-left">Copyright (c) 2020, Dead Reckoning Analytics & Consulting, LLC; all rights reserved.</p>
+            
+            <p class="pull-right">
+              Template by <a href="https://bootstrapious.com/p/universal-business-e-commerce-template">Bootstrapious</a>.
+              
+
+              Ported to Hugo by <a href="https://github.com/devcows/hugo-universal-theme">DevCows</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    </div>
+    
+
+    
+<script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0/jquery.counterup.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax.js"></script>
+
+<script src="//maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script src="/js/hpneo.gmaps.js"></script>
+<script src="/js/gmaps.init.js"></script>
+<script src="/js/front.js"></script>
+
+
+<script src="/js/owl.carousel.min.js"></script>
+
+
+
+  </body>
+</html>

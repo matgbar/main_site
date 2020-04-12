@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine Learning on Dead Reckoning Analytics and Consulting</title>
+    <link>/categories/machine-learning/</link>
+    <description>Recent content in Machine Learning on Dead Reckoning Analytics and Consulting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 2 of 3)</title>
+      <link>/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</link>
+      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</guid>
+      <description>In the first post in this series, I described the impetus for this trek through statistical modeling, machine learning and artificial intelligence. I also provided an initial set of comparisons for three different approaches to classification: k-means, k-nearest neighbor, and latent profile analysis (model-based clustering). If you want to check those mini-walkthroughs out click here.
+As a reminder, my goal here is to compare and contrast different approaches to data analysis and predictive modeling that are, in my mind, arbitrarily lumped into statistical modeling and machine learing/artificial intelligence categories.</description>
+    </item>
+    
+    <item>
+      <title>A Rose by Any Other Name: Statistics, Machine Learning, and AI (Part 1 of 3)</title>
+      <link>/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/</link>
+      <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
+      <description>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.</description>
+    </item>
+    
+  </channel>
+</rss>
