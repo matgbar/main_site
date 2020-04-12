@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RShiny on Dead Reckoning Analytics and Consulting</title>
+    <link>/categories/rshiny/</link>
+    <description>Recent content in RShiny on Dead Reckoning Analytics and Consulting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/rshiny/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Introducing IBI VizEdit: An RShiny Application</title>
+      <link>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
+      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
+      <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help the Laboratory for the Study of Child and Family Relationships process and edit heart rate data.</description>
+    </item>
+    
+  </channel>
+</rss>

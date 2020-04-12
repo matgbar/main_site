@@ -25,17 +25,17 @@ library(cluster)
 library(caret)
 library(e1071)
 library(mclust)
+library(plotly)
 ```
 
 I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.D. could bring to bear in a social exchange. Not a good look when you are hunting for a job.  
 
 I bristle at the distinction between statistics and machine learning, in part, because, *statistical modeling* **is** on my resume. Links to statistical programs that I have created and to this very site are on there as well. References to published work with statistical models I have built and iterated through can also be found on the document. But, I make no overt statements about machine learning algorithms or their use in my work. I would be less annoyed if it were not the case that machine learning is just plain sexier than statistics these days. Machine learning is a buzz word that encapsulates all the amazing possibilities that exist for implementing cutting-edge, data-driven solutions to real-world problems. Statistics is the ugly cousin of machine learning that just so happens to make machine learning possible in the first place!
 
-Some might argue that the [Gaussian process models](https://mgb-research.netlify.com/post/gaussian-process-imputation-models/) I work with are machine learning models [@RasmussenWilliams2006]. To me, they are mathematical expressions (i.e., models) that are used to explain a covariance matrix (sounds pretty statistics-y right?). I use a Bayesian estimation approach, in which a program, guided by certain rejection rules explores values of parameters until it converges on a likely distribution given the data and prior assumptions about the distribution of the parameters (sounds sort of machine learning-y right?). I could have just as easily specified the same model in a maximum likelihood estimation framework, in which, the most likely estimates for the population values of the parameters would be determined given the data by minimizing the loglikelihood using a different sort of algorithm. 
-
+Some might argue that the [Gaussian process models](../../../../../blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/) I work with are machine learning models [@RasmussenWilliams2006]. To me, they are mathematical expressions (i.e., models) that are used to explain a covariance matrix (sounds pretty statistics-y right?). I use a Bayesian estimation approach, in which a program, guided by certain rejection rules explores values of parameters until it converges on a likely distribution given the data and prior assumptions about the parameters (sounds sort of machine learning-y right?). I could have just as easily specified the same model in a maximum likelihood estimation framework, in which, the most likely estimates for the population values of the parameters would be determined given the data by minimizing the loglikelihood using a different sort of algorithm. 
 If you fell asleep a little bit when reading those last two sentences, I don’t blame you. The point is that these models are statistical models *and* they are machine learning models. In the end, all statistical models have some sort of algorithm that guides decisions about parameter estimates and/or predicted values. The data go into the model, the machine (i.e., computer) identifies some set of likely parameter or predicted values based on the rules for the given model, and the end user gets a bunch of output they can use to make sense of the raw data fed into the program in the first place. 
 
-I am not the first person to struggle with the relevance of distinguishing between statistical models and machine learning models [@Bzdoketal2018; @ONeilSchutt2014]. Honestly, it seems to come down to a distinction between the terms commonly employed in a given field, with computer science and data science folks often preferring machine learning over statistical modeling [@ONeilSchutt2014]. I do want to avoid being too glib, though, in my blurring of the lines between these two categories of data analysis, as there may be some value in separating the development of models to explain phenomena (statistical models) and the creation of data-based predictions about phenomena while remaining relatively agnostic about the underlying data-generating process (machine learning models). 
+I am not the first person to struggle with the relevance of distinguishing between statistical models and machine learning models [@Bzdoketal2018; @ONeilSchutt2014]. Honestly, it seems to come down to a distinction between the terms commonly employed in a given field, with computer science and data science folks often preferring machine learning over statistical modeling [@ONeilSchutt2014]. I do want to avoid being too glib, though, in my blurring of the lines between these two categories of data analysis, as there may be some value in separating the development of models to explain phenomena (statistical models) and the creation of data-based predictions about phenomena while remaining relatively agnostic about the underlying data-generating process (machine learning models). Statistical models, in theory, are more concerned with explaining the associations among the variables. Machine learning models just want to come as close as possible to accurately predicting an outcome. 
 
 So with this bubbling annoyance as my backdrop, I decided I should go ahead and apply different machine learning and statistical modeling approaches to a similar set of data problems. With the remainder of this post I plan to use publicly available data sets to walk through a few different implementations of statistical and machine learning models, comparing their outputs and touching briefly on meaningful differences and potential applications. I'll briefly review implementations of *k*-means, *k* nearest neighbor, mixture modeling (latent profile analysis), discriminant analysis, naive Bayes classification, logistic regression, random forest, and a simple neural network. 
 
@@ -43,13 +43,13 @@ I'll be tackling the first three models/techniques in this post with future post
 
 ## *K*-Means 
 
-The *k*-means algorithm is often referred to as an unsupervised learning model. The algorithm allows users to specify *k* number of groups that maximally separate continuous data into groups in (multi)dimensional space by minimizing within-cluster variance. Another way of thinking about this technique is that it classifies each case based on its total distance from a group mean or centroid (a multivariate mean). Like a lot of modeling approaches, *k*-means is finding a solution that minimizes an error term, in this case the within-group distance from a prototypical point (i.e., the mean). 
+The *k*-means algorithm is often referred to as an unsupervised learning model. The algorithm allows users to specify *k* number of groups that maximally separate continuous data in (multi)dimensional space by minimizing within-cluster variance. Another way of thinking about this technique is that it classifies each case based on its total distance from a group mean or centroid (a multivariate mean). Like a lot of modeling approaches, *k*-means is finding a solution that minimizes an error term, in this case the within-group distance from a prototypical point (i.e., the mean). 
 
 Specifying the number of clusters, *k*, can be a little tricky, but there are some reasonable ways to do so. One is to use the "elbow" in a plot of the within-cluster sum of squares (WSS; a measure of within-cluster variance). At a certain number of clusters, the reduction in WSS begins to level out, suggesting you start to get lower explanatory returns for increased cluster complexity. 
 
 Using the `iris` data set, we'll work through an example. The data set contains four measurements of plant anatomy: petal length, petal width, sepal length, and sepal width. These measures were collected on 50 specimens from three species for a total of 150 observations. 
 
-First we are going to load in the data and then we will standardize the measures of plant anatomy so that all measures are on the same scale. I'll be using a distribution with a mean of 0 and unit variance (i.e., $\bar{y}=0, sd_y=1$). 
+First we are going to load in the data, and then we will standardize the measures of plant anatomy so that all measures are on the same scale. I'll be using a distribution with a mean of 0 and unit variance (i.e., $\bar{y}=0, sd_y=1$). 
 
 ```{r Z_iris}
 data("iris")
@@ -143,7 +143,6 @@ The *k* nearest neighbor (often abbreviated as knn) algorithm is conceptually si
 
 As opposed to *k*-means, knn can be used to predict classification based on new data, by finding *k* neighbors and using the nearest neighbor to classify the new case. The trick here is finding the optimal *k* for classification, which is going to vary from data set to data set. We can use a cross-validation approach though to identify the optimal *k*. I am using the `train` function from the `caret` package in R to perform this analysis. So for those following along at home, you'll have to make sure you have `caret` and its dependencies installed. 
 
-
 ```{r knn}
 fit_knn<-train(Species~., 
                data = iris, 
@@ -159,8 +158,7 @@ plot(fit_knn)
 ```
 
 So if we look at this plot, we see that the area under the curve (AUC) is highest at *k*=9 (values for AUC closer to 1 represent a better performing knn model). Other relevant performance statistics can be viewed by simply running `fit_knn` in your console.   
-
-Next, we will want to see how the model performed in predicting the data. As an aside, with larger datasets it is possible to mitigate against overfitting by holding out a proportion of the data for testing model performance. My goal in this post is to compare the performance of statistical vs. machine learning techniques in correctly identifying patterns in the underlying data. As such, I will be keeping the entire `iris` data set in tact so that supervised and unsupervised models can be evaluated on similar grounds. 
+Next, we will want to see how the model performed in predicting the data. As an aside, with larger datasets it is possible to mitigate against overfitting by holding out a proportion of the data for testing model performance. My goal in this post is to compare the performance of statistical vs. machine learning techniques in correctly identifying patterns in the underlying data. As such, I will be keeping the entire `iris` data set intact so that supervised and unsupervised models can be evaluated on similar grounds. 
 
 ```{r knn2}
 pred<-predict(fit_knn)
@@ -196,11 +194,11 @@ pred_new
 
 Our departure into mixture modeling represents the first "full-blown" foray into a statistical model. I'll start with the univariate case, as that tends to help people make sense of what a mixture model is trying to do. Taking a step back before displaying the univariate example it is worth asking, what value these models hold? Well, sometimes when researchers obtain a sample of observations, it is possible that they may have sampled multiple, separate populations. These populations in turn, have their own univariate (or multivariate) distributions on target scores of interest. Mixture models offer a means of both a) identifying the maximally likely number of populations (i.e., separate distributions that were sampled) and b) probabilistically determining each case's membership in the sampled, but potentially unmeasured latent populations. 
 
-With that, welcome to the world of maximum likelihood estimation!! For you stats folks out there, you will recognize the approach I am using here is frequentist (the package I use relies on the EM algorithm). That is not to say that there are not Bayesian extensions of these sorts of models, though. 
+With that, welcome to the world of maximum likelihood estimation!! For you stats folks out there, you will recognize the approach I am using here is frequentist (the package I use relies on the Expectation-Maximization or EM algorithm). That is not to say that there are not Bayesian extensions of these sorts of models, though. 
 
 In a practical sense, there are two problems that a mixture modeling approach has to solve. The first is, estimating the appropriate number of latent classes or subgroups that best account for the observed distribution(s) of scores. This dilemma is similar to the problem facing an analyst using *k*-means to identify subgroups. However, there are a number of additional tools, beyond simply examining reductions in within-group sums of squares (WSS) the analyst can use to identify the optimal number of classes in a mixture modeling framework. 
 
-After negotiating this first step, the next challenge is to estimate the probability that a given case belongs to one class or the other. In a mixture model, the mean and the variances (and covariances in a multivariate classification problem) are used to create a posterior probability for each observed data point, and each case is then classified based on its highest posterior probability. 
+After negotiating this first step, the next challenge is to estimate the probability that a given case belongs to one class or the other. In a mixture model, the mean and the variances (and covariances in a multivariate classification problem) are used to create a posterior probability for each observed data point, and each case is then classified based on the highest probability observed for a particular group. So if there were three latent groups identified by the model, and the probabilities for a given case where .20, .38, and .42, the model would assign that case to group 3. 
 
 Below, as promised, is a simple demonstration of a "mixed" univariate distribution. Imagine that I measured a random sample of men and women on height. Let's say that men in the population I sampled had an average height of 70 inches with a standard deviation of 4 inches (i.e., $N\sim(\mu_M=70, \sigma_M=4)$). By comparison, women in the population sampled had a mean height of 65 inches with a standard deviation of 3.5 inches (i.e., $N\sim(\mu_F=65, \sigma_F=3.5)$).
 
@@ -229,7 +227,7 @@ Still working with the `iris` data set, I'll walk through a model-based clusteri
 
 The `mclust` package provides some nice built-in features for a problem like this, though as with many things in R, it is far from the only way to perform an analysis like this. First, I need to figure out the optimal number of latent classes I should extract in my final classification model. The `mclust` package allows the user to constrain certain properties of the multivariate distributions across groups to be equal in the model. Or alternatively, the analyst can choose to let these vary freely across possible groupings. Unless I have strong practical or theoretical reasons for assuming equivalency on these properties, I tend to the let all vary (i.e., I include `'VVV'` in the model names). For illustrative purposes, I will have `mclust` default to showing model fit under all possible patterns of distributional constraints. 
 
-For step 1, I need a way to evaluate model fit somehow. Employing this modeling approach, I will actually end up weighing multiple sources of information in determining the optimal number of clusters, starting with Bayesian Information Criteria (BIC), which is a statsitic that can be used to compare multiple models. The BIC score penalizes models for added complexity that results in little improvement in the data-model fit. This feature helps ensure that more parsimonious models that perform well are chosen over more complex models with similar data-model fit. In the `mclust` formulation of BIC, values closer to 0 indicate better fit (*Note* this is not always the case across modeling approaches inside or outside R). 
+For step 1, I need a way to evaluate model fit somehow. Employing this modeling approach, I will actually end up weighing multiple sources of information in determining the optimal number of clusters, starting with Bayesian Information Criteria (BIC), which is a statsitic that can be used to compare multiple models. The BIC score penalizes models for added complexity that results in little improvement in the data-model fit. This feature helps ensure that more parsimonious models that perform well are chosen over more complex models with similar data-model fit. In the `mclust` formulation of BIC, values closer to 0 indicate better fit. 
 
 ```{r LPA2}
 BIC<-mclust::mclustBIC(iris[,1:4])
@@ -278,6 +276,18 @@ iris_mix$Classification<-as.character(iris_mix$Classification)
 table(iris_mix$Classification, iris_mix$Species)
 ```
 The model is slightly better in its overall classification than the knn approach (only 5 errors vs 6), and both performed better than the *k*-means algorithm. 
+
+To get a sense of why this approach is performing better it is helpful to visualize the data in multidimensional space. Click and manipulate the plot below to see how viewing the data in multiple dimensions makes it easier to detect the distinctions between groups. 
+
+```{r plotly_graph}
+plot_ly(data = iris,
+        x = ~Sepal.Width, 
+        y = ~Sepal.Length, 
+        z = ~Petal.Length, 
+        type = "scatter3d", 
+        mode = "markers", 
+        color = ~Species)
+```
 
 This concludes the exploratory approach to classifying with this data set. However, the `mclust` package also allows for a more predictive modeling approach when there is a known class (as is the case in the present data set). You can even include priors (they have to be conjugate priors, which means that there are mathematical solutions to the resulting integrations - ignore if this makes no sense to you and stick with the defaults). 
 

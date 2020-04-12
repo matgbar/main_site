@@ -38,7 +38,7 @@ As a reminder, my goal here is to compare and contrast different approaches to d
       <pubDate>Thu, 29 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/</guid>
-      <description>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit. The modal outcome would have been me sounding as if I was speaking with all of the arrogance, jackassery, and superiority that a recently minted Ph.</description>
+      <description>I was recently interviewing for a job and a recruiter asked me if I wanted to enhance aspects of my machine learning background on my resume before she passed it on for the next round of reviews. I resisted the urge to chide her in the moment by pointing out the flawed distinction between statistics and machine learning, an unnecessary admonishment that would have been to no one’s benefit.</description>
     </item>
     
     <item>
@@ -52,13 +52,13 @@ Data Brief Description:The data in question come from a study that involved a o
     </item>
     
     <item>
-      <title>It&#39;s Alive! First Evidence that IBI VizEdit Works</title>
+      <title>Introducing IBI VizEdit: An RShiny Application</title>
       <link>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</link>
       <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</guid>
       <description>It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
-Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data.</description>
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help the Laboratory for the Study of Child and Family Relationships process and edit heart rate data.</description>
     </item>
     
     <item>
@@ -107,7 +107,7 @@ Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny appl
     </item>
     
     <item>
-      <title>Dashboards &amp; Reports</title>
+      <title>Dashboards and Reports</title>
       <link>/dashboards/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

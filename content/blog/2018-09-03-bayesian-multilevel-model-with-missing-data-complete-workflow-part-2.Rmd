@@ -32,10 +32,10 @@ load('~/GitHub/main_site/DFs/Impute_DF.RData')
 ```
 
 # Overview:
-This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and [check it out](https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/). In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post. 
+This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and [check it out](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/). In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post. 
 
 ## Data Brief Description:  
-The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (*N*=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found [here](https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/). 
+The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (*N*=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found [here](https://psycnet.apa.org/doiLanding?doi=10.1037%2Femo0000339). 
 
 ## Imputation Options
 There are several imputation packages available that aid researchers imputing data in R. Perhaps the two most popular are the `mice` package [@mice_2011] and the `Amelia` package [@Amelia_2011]. When the data in question has a nested structure (e.g., students nested within classrooms, patients nested within clinics, observations nested within individuals, etc.), the `pan` package [@pan_2018] can be used. 
@@ -43,16 +43,16 @@ There are several imputation packages available that aid researchers imputing da
 In this case, I will be using the `mitml` package [@mitml_2018], which is a wraparound package that depends on the `pan` package. Alternative approaches using the `pan` algorithm via `mice` can be found [here](http://www.gerkovink.com/miceVignettes/Multi_level/Multi_level_data.html). 
 
 ## Imputation Model
-To setup the imputation model, I need to specify the variables that need to be imputed (in front of the `~`) and the complete variables, along with the random effects (after the `~`). Exploratory analyses covered in the [first post](https://mgb-research.netlify.com/post/bayesian-multilevel-model-with-missing-data-complete-work-flow/) indicated that BFI Openess scores and BFI Conscientiousness scores both predicted missingness. As is common practice, I will also include dispositional negativity scores, which serve as the primary individual-level predictor in my final model. 
+To setup the imputation model, I need to specify the variables that need to be imputed (in front of the `~`) and the complete variables, along with the random effects (after the `~`). Exploratory analyses covered in the [first post](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/) indicated that BFI Openess scores and BFI Conscientiousness scores both predicted missingness. As is common practice, I will also include dispositional negativity scores, which serve as the primary individual-level predictor in my final model. 
 
 ```{r}
 fml<- c.Worst + c.Best + NegAff + PosAff  ~ 
   1 + c.DN + BFI_C + BFI_O + (1|ID)
 ```
 
-With the formula setup, I can now impute the data. There have been a number of recommendations out there regarding how many datasets you need to impute to ensure that you get stable results. I recommend reading a pair of papers out there to those who think you can always get away with around 10 datasets when imputing [@Bodner2008; @Graham2007]. 
+With the formula setup, I can now impute the data. There have been a number of recommendations out there regarding how many datasets you need to impute to ensure that you get stable results. I recommend reading a pair of papers out there if you are convinced that you can *always* get away with using 10 datasets when imputing [@Bodner2008; @Graham2007]. 
 
-Based on the structure of my data and the total missingness and recommendations made by @Graham2007, I chose to impute 20 data sets. I also have a relatively lengthy burn-in period so I can ensure convergence of the posterior distributions from which values are drawn. In setting `n.iter = 50` I have further made the choice to separate my draws from the MCMC chains to help mitigate any autocorrelation that could arise in imputed data sets. 
+Based on the structure of my data and the total missingness and recommendations made by @Graham2007, I chose to impute 20 data sets. I also have a relatively lengthy burn-in period so I can ensure convergence of the posterior distributions from which values are drawn. In setting `n.iter = 50` I have further made the choice to separate my draws from the MCMC chains to help mitigate any autocorrelation that could arise in imputed data sets. These are all settings that can be played around with and using diagnostic plots along the way is the main tool for checking the imputation was successful and did not introduce its own artifacts into the analysis. 
 
 ```{r}
 imp<-panImpute(dat.study1, 
@@ -65,7 +65,7 @@ imp<-panImpute(dat.study1,
 
 ## Extracting Datasets
 
-The next step is to pull out the imputed data and start examining whether or not the imputed data sets make sense. First, we can examine convergence of the imputation model. If you were to run `plot(imp, print='beta')` you would be able review convergence for all aspects of the imputation model. Doing so would also reveal that some parameters did not fully converge and the number of iterations between draws likely needs to be increased. To address these problems, I begin by re-running the imputation model with a longer burn-in phase and greater distance between draws. 
+The next step is to pull out the imputed data and start examining whether or not the imputed data sets make sense. First, we can examine convergence of the imputation model. To give a concrete example of using diagnostic plots if you run `plot(imp, print='beta')` you would be able review convergence for the $\beta$ parameters (the regression coefficients) in the model. Doing so would also reveal that some parameters did not fully converge and the number of iterations between draws likely needs to be increased. To address these problems, I begin by re-running the imputation model with a longer burn-in phase and greater distance between draws. 
 
 ```{r}
 imp<-panImpute(dat.study1, 

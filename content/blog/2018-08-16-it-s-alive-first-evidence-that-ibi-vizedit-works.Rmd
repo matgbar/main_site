@@ -1,11 +1,11 @@
 ---
-title: "It's Alive! First Evidence that IBI VizEdit Works"
+title: "Introducing IBI VizEdit: An RShiny Application"
 author: 'Matthew Barstead'
 date: '2018-08-16'
 baseurl: "https://mgb-research.netlify.com/"
 slug: it-s-alive-first-evidence-that-ibi-vizedit-works
 categories:
-  - Data Visualization
+  - RShiny
   - IBI VizEdit
 tags:
   - Data Processing
@@ -18,11 +18,11 @@ banner: img/banners/ibi-vizedit.png
 
 It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations. 
 
-Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help our lab process and edit heart rate data. We used a photoplethysmogram to measure changes in light absorption in a local capillary bed, in this case the child's fingertip. As blood flows through the capillary bed in sync with the beating heart, the amount of light absorbed by the underlying tissue varies, particularly within certain wavelengths. With this knowledge and a sufficiently high sampling rate (we used 2000 Hz), you can readily record heart beats using a relatively low-cost sensor. 
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help the [Laboratory for the Study of Child and Family Relationships](https://www.umdrubinlab.com/) process and edit heart rate data. We used a photoplethysmogram to measure changes in light absorption in a local capillary bed, in this case the child's fingertip. As blood flows through the capillary bed in sync with the beating heart, the amount of light absorbed by the underlying tissue varies, particularly within certain wavelengths. With this knowledge and a sufficiently high sampling rate (we used 2000 Hz), you can readily record heart beats using a relatively low-cost sensor. 
 
 Individual heart rate data contains a surprising amount of information that can be used to predict an individual's cognitive and affective states as well as predict global mental and physical health outcomes. Paired with specific tasks, we can get a sense of how effective the autonomic nervous system is at regulating internal states that are designed to potentiate certain response patterns (i.e., fleeing, fighting, freezing, behaviors). 
 
-Currently, there are no open-source tools available to researchers interested in measures of heart-rate variability obtained via photoplethysmography. That is why I created IBI VizEdit. It is still very much in its first lifespan, and it is primarily designed to work with our lab's files in ways that optimize output for what we plan to do with our data. I eventually plan to adapt the program to be more general in its input to allow researchers to upload files of just about any basic data format (e.g., .dat, .txt, csv, etc.). 
+Currently, there are no open-source tools available to researchers interested in measures of heart-rate variability obtained via photoplethysmography. That is why I created IBI VizEdit. It is still very much in its early in its lifecycle and it will be re-factored considerably in the coming months. The pogram is primarily designed to work with our Laboratory for the Study of Child and Family Relationship's files in ways that optimize output for what we plan to do with the data. I eventually plan to adapt the program to be more general in its input to allow researchers to upload files of just about any basic data format (e.g., .dat, .txt, csv, etc.). 
 
 For now, I am just happy to be getting off on the right foot. And here are (again to be stressed) the *preliminary* results of an analysis of 22 edited cases. Participants in the study experienced three conditions during a baseline laboratory visit. The first is a child-appropriate Sesame Street video, which the child sees three times. In addition to the videos children also experienced two stressors: the appearance of a clown and the recording of an introduction video. The sixth task (fourth in its presentation) was a social attention task in which children learned about fictitious children and their interests. 
 
@@ -126,7 +126,7 @@ g1<-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
 g1
 ```
 
-So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention taks (Kids) are higher than the median RSA values for the two distressing tasks. 
+So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention tasks (Kids) are higher than the median RSA values for the two distressing tasks. 
 
 I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats) to show a similar pattern.
 
@@ -151,7 +151,7 @@ g2<-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
 g2
 ```
 
-Lo and behold largely the same pattern. This is good for me so far. So let's see if it passes a strict inferential test. Do the two distressing tasks each reliably depress heart rate variability (in the form of respiratory sinus arrhythmia) and average heart period? 
+Lo and behold largely the same pattern. This is good for me so far. So let's see if it passes an inferential test. Do the two distressing tasks each reliably depress heart rate variability (in the form of respiratory sinus arrhythmia) and average heart period? 
 
 ```{r, warning=FALSE, message=FALSE}
 #--

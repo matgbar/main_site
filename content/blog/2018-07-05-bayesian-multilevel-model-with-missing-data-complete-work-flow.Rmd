@@ -20,7 +20,7 @@ banner: img/banners/bayesian-missing-data-pt1.png
 This is the first post in a three-part blog series I am putting together. The focus of this initial post is effective exploration of the reasons for missingness in a particular set of data. The second post in the series will focus on running and evaluating the imputation model itself after having identified the appropriate covariates that help account for missingness. The third and final post will be a walkthrough of the final models and their interpretation - including a comparison of the same models using listwise deletion (which is bad unless missingness is small or definitely, 100% completely at random). 
 
 ## Data Brief Description:  
-The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (*N*=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found [here](https://mgb-research.netlify.com/publication/shackman_etal_2017_emotion/). 
+The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol. For seven consecutive days, participants (*N*=127) responded to 10 prompts delivered at pseudo-random times. The timing of EMA probes was built around class schedules during the day (hence pseudo-random). More detail about the sample and procedures can be found [here](https://psycnet.apa.org/doiLanding?doi=10.1037%2Femo0000339). 
 
 ```{r setup, echo=TRUE, message=FALSE, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, eval = FALSE)
@@ -37,15 +37,15 @@ library(lme4)
 load('~/GitHub/main_site/DFs/Impute_DF.RData')
 ```
 
-As might be expected, some prompts were not responded to or were responded to outside the response time window (which was 30 minutes in this case). In the present data set, what I cared about was predicting global mood using a measure of trait negativity (sometimes referred to as neuroticism, negative emotionality, or dispositional negativity). 
+As might be expected, some prompts were not responded to or were responded to outside the response time window (which was 30 minutes in this case). In the present data set, what I cared about was predicting momentary mood using a measure of trait negativity (sometimes referred to as neuroticism, negative emotionality, or dispositional negativity). 
 
 The problem is that I believe that there are certain factors about individuals that make them less likely to complete all of their surveys. Technically speaking, I believe that the data are likely missing at random (that is that missingness is conditional on some set of predictors/covariates but not on the outcome measure). 
 
 There is a debate over whether researchers should impute or simply use full information maximum likelihood to address missingness in cases like the one represented by this current set of data. All things being equal, properly specified models using either approach will result in essentially the same result. Full information maximum likelihood (FIML) estimation is convenient, when it can be used, as it is often seamlessly intergrated into the modeling sofware. 
 
-The seamlessness of its integration can, however, sometimes lead to bad modeling practices. Being a little out of sight and a little out of mind, relying on FIML to resolve the effects of missing data on biasing estimates can be just a hair too easy. On the user side it is: set up the model, click run, and wait, filled with the confidence that comes from being repeatedly told that FIML can be used to deal with missing data, so long as the technical condition of missingness at random is met. 
+The seamlessness of its integration can, however, sometimes lead to bad modeling practices. Being a little out of sight and a little out of mind, relying on FIML to resolve the effects of missing data on biasing estimates can be just a hair too easy. On the user side it is: set up the model, click run, and wait, filled with the confidence that comes from being repeatedly told that FIML can be used to deal with missing data, often forgetting the caveat that this is only true so long as the technical condition of missingness at random is met. 
 
-When imputing, probing for predictors of missingness is built into the process. It is a step that cannot be skipped as you are essentially building a model with other variables in your data set to predict missing scores. For my money, imputation makes you consider more thoughtful choices regarding modeling missingness. With FIML, it can be a little too easy to perform an analysis with little to no examination of the reasons for missingness.
+When imputing, probing for predictors of missingness is built into the process. It is a step that cannot be skipped as you are essentially building a model with other variables in your data set to predict missing scores. For my money, imputation forces you to be more thoughtful in dealing with missingness. With FIML, it can be a little too easy to perform an analysis with little to no examination of the reasons for missingness.
 
 ## Step 1 - Understanding and Exploring Missingness
 

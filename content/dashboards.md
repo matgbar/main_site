@@ -1,6 +1,6 @@
 ---
 id: dashboards
-title: "Dashboards & Reports"
+title: Dashboards and Reports
 type: pages
 keywords: 
 - Services
