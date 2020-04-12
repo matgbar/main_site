@@ -2,4 +2,4 @@ weight: 1
 name: "Data Pipelines"
 icon: "fas fa-code"
 url: "pipelines"
-description: "The most challenging aspect of effective data analysis is often getting your data into a useable format. We use open-source software to get your data into a stable, usable format empowering you to draw insights with confidence"
+description: "The most challenging aspect of effective data analysis is often getting your data into a usable structure. We use open-source software to transform data into a stable format empowering you to draw insights with confidence"

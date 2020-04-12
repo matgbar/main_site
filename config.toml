@@ -149,8 +149,8 @@ paginate = 10
 
 [params.see_more]
     enable = true
-    icon = "far fa-drafting-compass"
-    title = "Do you want to learn more?"
+    icon = "fa fa-drafting-compass"
+    title = "From Sailor to Data Scientist"
     subtitle = "Learn more about Dead Reckoning as an approach to navigating data science challenges and opportunities"
     link_url = "background"
     link_text = "The Reason for the Name"
