@@ -75,7 +75,7 @@ paginate = 10
     default_sharing_image = "img/favicon-dead-1_thumb_20.png"
 
     # Google Maps API key (if not set will default to not passing a key.)
-    googleMapsApiKey = "AIzaSyAkl9K_UTKI8TUttWTFK8A4_fc3s0zJbYM"
+    googleMapsApiKey = ""
 
     # Style options: default (light-blue), blue, green, marsala, pink, red, turquoise, violet
     style = "blue"
