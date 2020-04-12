@@ -1,0 +1,5 @@
+weight: 3
+name: "Customized Dashboards & Reports"
+icon: "fas fa-tachometer-alt"
+url: "dashboards"
+description: "Leverage your data processing and modeling pipelines to generate dashboards and reports that transform your data into actionable insigths and communicate key information to key stakeholders"

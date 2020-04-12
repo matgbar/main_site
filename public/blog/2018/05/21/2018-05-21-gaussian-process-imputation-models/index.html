@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Gaussian Process Imputation/Forecast Models</title>
+  <meta name="author" content="Matthew Barstead, Ph.D." />
+  
+  
+  
+  
+  <meta name="keywords" content="R, R programming, Data Science, Statistics, Bayesian, Stan, Gaussian Process, Forecasting, Predictive Modeling, R-bloggers">
+  
+  
+  <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
+
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  
+  <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,500,700,800' rel='stylesheet' type='text/css'>
+
+  
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  
+  <link href="/css/animate.css" rel="stylesheet">
+
+  
+  
+    <link href="/css/style.blue.css" rel="stylesheet" id="theme-stylesheet">
+  
+
+  
+  <link href="/css/custom.css" rel="stylesheet">
+
+  
+  
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+
+  
+  <link href="/css/owl.carousel.css" rel="stylesheet">
+  <link href="/css/owl.theme.css" rel="stylesheet">
+
+  
+  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
+
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
+  <meta property="og:title" content="Gaussian Process Imputation/Forecast Models">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/" />
+  <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
+  <meta property="og:image" content="/img/banners/gp-forecast-banner.png">
+  <meta property="og:image:type" content="image/png">
+  
+  
+  
+    <meta property="og:image:width" content="1344">
+    <meta property="og:image:height" content="960">
+  
+  
+  <meta property="og:updated_time" content="2018-05-21T00:00:00Z">
+  
+    
+    
+    <meta property="article:section" content="Modeling">
+    <meta property="article:tag" content="Bayesian">
+    <meta property="article:tag" content="Stan">
+    <meta property="article:tag" content="R">
+    <meta property="article:tag" content="Gaussian Process">
+    <meta property="article:tag" content="Forecasting">
+    <meta property="article:tag" content="Predictive Modeling">
+    <meta property="article:tag" content="R-bloggers">
+    
+    
+    <meta property="article:published_time" content="2018-05-21T00:00:00Z">
+    <meta property="article:modified_time" content="2018-05-21T00:00:00Z">
+  
+
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dead_reck">
+  <meta name="twitter:title" content="Gaussian Process Imputation/Forecast Models">
+  
+  <meta name="twitter:image" content="/img/banners/gp-forecast-banner.png">
+  
+  <meta name="twitter:description" content="Musings on R, Statistics, Data Science, and Programming">
+  
+  
+  
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX&#45;AMS&#45;MML_HTMLorMML" type="text/javascript"></script>
+  <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}}); </script>
+
+</head>
+
+
+  <body>
+
+    <div id="all">
+
+        <header>
+
+          <div class="navbar-affixed-top" data-spy="affix" data-offset-top="200">
+
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="/">
+                    <img src="/img/logo-dead-8_20.png" alt="Gaussian Process Imputation/Forecast Models logo" class="hidden-xs hidden-sm">
+                    <img src="/img/logo-dead-8_20.png" alt="Gaussian Process Imputation/Forecast Models logo" class="visible-xs visible-sm">
+                    <span class="sr-only">Gaussian Process Imputation/Forecast Models - go to homepage</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/">Home</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown active">
+                    
+                    <a href="/blog/">Blog</a>
+                    
+                  </li>
+                  
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/contact/">Contact</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
+            
+
+            <div class="collapse clearfix" id="search">
+
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <span class="input-group-btn">
+
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+
+                </span>
+                    </div>
+                </form>
+
+            </div>
+            
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        <div id="heading-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Gaussian Process Imputation/Forecast Models</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="content">
+            <div class="container">
+
+                <div class="row">
+
+                    
+
+                    <div class="col-md-9" id="blog-post">
+
+                        
+                          <p class="text-muted text-uppercase mb-small text-right">
+                            By <a href="#">Matthew Barstead, Ph.D.</a>
+                             | 
+                            May 21, 2018
+                          </p>
+                        
+
+                        <div id="post-content">
+                          
+
+
+<p>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</p>
+<p>The models below will make use of the preloaded <code>AirPassengers</code> data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.</p>
+<pre class="r"><code>data(&#39;AirPassengers&#39;)
+plot(AirPassengers)</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png" width="672" /></p>
+<p>As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data.</p>
+<p>A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few <code>R</code> and <code>Python</code> packages that allow researchers to use this modeling approach. I have become something of a <a href="http://mc-stan.org/">Stan</a> convert recently, but it is not the only option out there.</p>
+<p>The authoritative text on Gaussian process models was arguably published by <a href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Rasumssen &amp; Williams in 2006</a>, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp; Williams (2006) text as a starting point.</p>
+<p>It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">page on the Stan GitHub repo</a> provides a brief, but reasonable overview as a starting point.</p>
+<p>First, the data need a bit of prepping to be fed into a Stan program.</p>
+<pre class="r"><code>#Obtaining a numeric vector for time. Maintaining the units of measure at 1 = 1 year
+Year&lt;-seq(1949, 1960+11/12, by=1/12)
+
+#converting time-series to a vector
+Pass&lt;-as.vector(AirPassengers)
+
+#identifiying number of data points for the &quot;training&quot; data
+N1&lt;-length(Year)
+
+#specifying 2-year prediction window. 
+year.fore2&lt;-seq(1961, 1962+11/12, by=1/12)
+N2&lt;-length(year.fore2)</code></pre>
+<p>With the data prepped, I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:</p>
+<p><span class="math display">\[k(t,t&#39;) = \sigma^2 exp\Big(-\frac{(t-t&#39;)^2}{2l_1^2}\Big)\]</span></p>
+<p>where <span class="math inline">\(\sigma^2\)</span> is the estimated variance accounted for by the function <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is a length scale parameter that governs the decay rate. Smaller estimated values for <span class="math inline">\(l\)</span> indicate a faster decay rate in the covariance between two points as a function of time.</p>
+<p>This model, along with its forecasting function are defined in <code>Stan</code> code below (Adapted from <a href="http://natelemoine.com/fast-gaussian-process-models-in-stan/">Nate Lemoine’s code</a>):</p>
+<pre class="stan"><code>functions{
+    //covariance function for main portion of the model
+    matrix main_GP(
+        int Nx,
+        vector x,
+        int Ny,
+        vector y, 
+        real alpha1,
+        real rho1){
+                    matrix[Nx, Ny] Sigma;
+    
+                    //specifying random Gaussian process that governs covariance matrix
+                    for(i in 1:Nx){
+                        for (j in 1:Ny){
+                            Sigma[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+                        }
+                    }
+                    
+                    return Sigma;
+                }
+    //function for posterior calculations
+    vector post_pred_rng(
+        real a1,
+        real r1, 
+        real sn,
+        int No,
+        vector xo,
+        int Np, 
+        vector xp,
+        vector yobs){
+                matrix[No,No] Ko;
+                matrix[Np,Np] Kp;
+                matrix[No,Np] Kop;
+                matrix[Np,No] Ko_inv_t;
+                vector[Np] mu_p;
+                matrix[Np,Np] Tau;
+                matrix[Np,Np] L2;
+                vector[Np] yp;
+    
+    //--------------------------------------------------------------------
+    //Kernel Multiple GPs for observed data
+    Ko = main_GP(No, xo, No, xo, a1, r1);
+    for(n in 1:No) Ko[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for predicted data
+    Kp = main_GP(Np, xp, Np, xp,  a1, r1);
+    for(n in 1:Np) Kp[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for observed and predicted cross 
+    Kop = main_GP(No, xo, Np, xp,  a1, r1);
+    
+    //--------------------------------------------------------------------
+    //Algorithm 2.1 of Rassmussen and Williams... 
+    Ko_inv_t = Kop&#39;/Ko;
+    mu_p = Ko_inv_t*yobs;
+    Tau=Kp-Ko_inv_t*Kop;
+    L2 = cholesky_decompose(Tau);
+    yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+    return yp;
+    }
+}
+
+data { 
+    int&lt;lower=1&gt; N1;
+    int&lt;lower=1&gt; N2;
+    vector[N1] X; 
+    vector[N1] Y;
+    vector[N2] Xp;
+}
+
+transformed data { 
+    vector[N1] mu;
+    for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+    real&lt;lower=0&gt; a1;
+    real&lt;lower=0&gt; r1;
+    real&lt;lower=0&gt; sigma_sq;
+}
+
+model{ 
+    matrix[N1,N1] Sigma;
+    matrix[N1,N1] L_S;
+    
+    //using GP function from above 
+    Sigma = main_GP(N1, X, N1, X,  a1, r1);
+    for(n in 1:N1) Sigma[n,n] += sigma_sq;
+    
+    L_S = cholesky_decompose(Sigma);
+    Y ~ multi_normal_cholesky(mu, L_S);
+    
+    //priors for parameters
+    a1 ~ student_t(3,0,1);
+    //incorporate minimum and maximum distances - use invgamma
+    r1 ~ student_t(3,0,1);
+    sigma_sq ~ student_t(3,0,1);
+}
+
+generated quantities {
+    vector[N2] Ypred = post_pred_rng(a1, r1, sigma_sq, N1, X, N2, Xp, Y);
+}</code></pre>
+<p>The model takes just over a minute to run. For those of you who are computational gearheads, here is the hardware I am working with (with a total of 64GB of RAM):</p>
+<pre class="r"><code>benchmarkme::get_cpu()</code></pre>
+<pre><code>## $vendor_id
+## [1] &quot;GenuineIntel&quot;
+## 
+## $model_name
+## [1] &quot;Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz&quot;
+## 
+## $no_of_cores
+## [1] 12</code></pre>
+<p>A quick view of summary stats good convergence of estimates across the 6 chains.</p>
+<pre class="r"><code>pars.to.monitor&lt;-c(&#39;a1&#39;,&#39;r1&#39;,&#39;sigma_sq&#39;, &#39;Ypred&#39;)
+summary(fit.stan1, pars=pars.to.monitor[-4])$summary</code></pre>
+<pre><code>##                  mean      se_mean           sd        2.5%          25%
+## a1        2.064974195 2.117451e-02 1.2312158202 0.739681295  1.272435874
+## r1       22.681133287 1.252456e-01 9.0005034579 9.102436133 16.045254783
+## sigma_sq  0.003559372 5.819530e-06 0.0004251947 0.002818252  0.003254155
+##                   50%          75%        97.5%    n_eff      Rhat
+## a1        1.759559393  2.505894675  5.176821352 3380.974 1.0010353
+## r1       21.367822936 28.012894270 42.692355288 5164.270 0.9996089
+## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208</code></pre>
+<p>… and traceplots demonstrate good mixing.</p>
+<pre class="r"><code>traceplot(fit.stan1, pars=c(&#39;a1&#39;, &#39;r1&#39;, &#39;sigma_sq&#39;))</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>So the real question is how did the model do?</p>
+<pre class="r"><code>Ypred&lt;-10^colMeans(extract(fit.stan1, pars=&#39;Ypred&#39;)$Ypred)
+
+Ypred.DF&lt;-extract(fit.stan1, pars=&#39;Ypred&#39;)$Ypred
+UB&lt;-vector()
+LB&lt;-vector()
+
+for(i in 1:N2){
+  UB[i]&lt;-10^quantile(Ypred.DF[,i], .975)
+  LB[i]&lt;-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig&lt;-data.frame(Year=Year, Passengers=Pass)
+DF.fore2&lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1&lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.</p>
+<p>The new periodic covariance function is:</p>
+<p><span class="math display">\[k(t,t&#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&#39;)^2}{2l_3^2}\Big)\]</span></p>
+<p>The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the <code>Stan</code> code.</p>
+<pre class="stan"><code>functions{
+    //covariance function for main portion of the model
+    matrix main_GP(
+        int Nx,
+        vector x,
+        int Ny,
+        vector y, 
+        real alpha1,
+        real alpha2,
+        real rho1,
+        real rho2,
+        real rho3){
+                    matrix[Nx, Ny] K1;
+                    matrix[Nx, Ny] K2;
+                    matrix[Nx, Ny] Sigma;
+    
+                    //specifying random Gaussian process that governs covariance matrix
+                    for(i in 1:Nx){
+                        for (j in 1:Ny){
+                            K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
+                        }
+                    }
+                    
+                    //specifying random Gaussian process incorporates heart rate
+                    for(i in 1:Nx){
+                        for(j in 1:Ny){
+                            K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*1))/square(rho2))*
+                            exp(-square(x[i]-y[j])/2/square(rho3));
+                        }
+                    }
+                        
+                    Sigma = K1+K2;
+                    return Sigma;
+                }
+    //function for posterior calculations
+    vector post_pred_rng(
+        real a1,
+        real a2,
+        real r1, 
+        real r2,
+        real r3,
+        real sn,
+        int No,
+        vector xo,
+        int Np, 
+        vector xp,
+        vector yobs){
+                matrix[No,No] Ko;
+                matrix[Np,Np] Kp;
+                matrix[No,Np] Kop;
+                matrix[Np,No] Ko_inv_t;
+                vector[Np] mu_p;
+                matrix[Np,Np] Tau;
+                matrix[Np,Np] L2;
+                vector[Np] yp;
+    
+    //--------------------------------------------------------------------
+    //Kernel Multiple GPs for observed data
+    Ko = main_GP(No, xo, No, xo, a1, a2, r1, r2, r3);
+    for(n in 1:No) Ko[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for predicted data
+    Kp = main_GP(Np, xp, Np, xp,  a1, a2, r1, r2,  r3);
+    for(n in 1:Np) Kp[n,n] += sn;
+        
+    //--------------------------------------------------------------------
+    //kernel for observed and predicted cross 
+    Kop = main_GP(No, xo, Np, xp,  a1, a2, r1, r2, r3);
+    
+    //--------------------------------------------------------------------
+    //Algorithm 2.1 of Rassmussen and Williams... 
+    Ko_inv_t = Kop&#39;/Ko;
+    mu_p = Ko_inv_t*yobs;
+    Tau=Kp-Ko_inv_t*Kop;
+    L2 = cholesky_decompose(Tau);
+    yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
+    return yp;
+    }
+}
+
+data { 
+    int&lt;lower=1&gt; N1;
+    int&lt;lower=1&gt; N2;
+    vector[N1] X; 
+    vector[N1] Y;
+    vector[N2] Xp;
+}
+
+transformed data { 
+    vector[N1] mu;
+    for(n in 1:N1) mu[n] = 0;
+}
+
+parameters {
+    real&lt;lower=0&gt; a1;
+    real&lt;lower=0&gt; a2;
+    real&lt;lower=15&gt; r1;      //Set after some preliminary modeling
+    real&lt;lower=0&gt; r2;
+    real&lt;lower=0&gt; r3;
+    real&lt;lower=0&gt; sigma_sq;
+}
+
+model{ 
+    matrix[N1,N1] Sigma;
+    matrix[N1,N1] L_S;
+    
+    //using GP function from above 
+    Sigma = main_GP(N1, X, N1, X, a1, a2, r1, r2, r3);
+    for(n in 1:N1) Sigma[n,n] += sigma_sq;
+    
+    L_S = cholesky_decompose(Sigma);
+    Y ~ multi_normal_cholesky(mu, L_S);
+    
+    //priors for parameters
+    a1 ~ normal(2.06,1.23);     //Taken from the first model
+    a2 ~ student_t(3,0,1);
+    //incorporate minimum and maximum distances - use invgamma
+    r1 ~ normal(22.68,9.005);   //Taken from the first model
+    r2 ~ student_t(3,0,1);
+    r3 ~ student_t(3,0,1);  
+    sigma_sq ~ normal(0,1);
+}
+
+generated quantities {
+    vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
+}
+</code></pre>
+<p>This model took about 6 minutes to run.</p>
+<p>Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until <code>Stan</code> and <code>rstan</code> can run using graphics chips’ architecture (which has been buzzed about around the <a href="http://discourse.mc-stan.org/t/stan-on-the-gpu/326">Stan ether</a>), model run time is going to be the biggest downside. Still, 6 minutes is not that long to wait if the model performs well.</p>
+<pre class="r"><code>pars.to.monitor&lt;-c(paste0(&#39;a&#39;, 1:2), paste0(&#39;r&#39;, 1:3), &#39;Ypred&#39;)
+summary(fit.stan2, pars=pars.to.monitor[-6])$summary</code></pre>
+<pre><code>##           mean      se_mean          sd        2.5%          25%          50%
+## a1  2.54983942 0.0134372272  0.92993236  1.03551274  1.842231419  2.464693706
+## a2  0.01028192 0.0007652084  0.02499935  0.00195483  0.003809465  0.005887629
+## r1 29.72788580 0.0860626598  5.77288905 19.05829543 25.751944510 29.510979184
+## r2  0.71435573 0.0024883370  0.12979765  0.49982165  0.627554970  0.700328139
+## r3 21.16693790 0.7029880494 10.71983939  2.13531511 14.836950073 19.220095144
+##           75%       97.5%     n_eff     Rhat
+## a1  3.1470023  4.60109271 4789.4253 1.001067
+## a2  0.0100722  0.04229047 1067.3281 1.004514
+## r1 33.4589313 41.57756671 4499.4237 1.000575
+## r2  0.7850996  1.00378065 2720.9169 1.000556
+## r3 25.4484115 45.91201691  232.5309 1.026833</code></pre>
+<pre class="r"><code>traceplot(fit.stan2, pars=pars.to.monitor[-6])</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>Ypred&lt;-10^colMeans(extract(fit.stan2, pars=&#39;Ypred&#39;)$Ypred)
+
+Ypred.DF&lt;-extract(fit.stan2, pars=&#39;Ypred&#39;)$Ypred
+UB&lt;-vector()
+LB&lt;-vector()
+
+for(i in 1:N2){
+  UB[i]&lt;-10^quantile(Ypred.DF[,i], .975)
+  LB[i]&lt;-10^quantile(Ypred.DF[,i], .025)
+}
+
+library(ggplot2)
+DF.orig&lt;-data.frame(Year=Year, Passengers=Pass)
+DF.fore2&lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
+
+g1&lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
+g1</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).</p>
+<pre class="r"><code>(fit &lt;- arima(log10(AirPassengers), c(0, 1, 1),
+              seasonal = list(order = c(0, 1, 1), period = 12)))</code></pre>
+<pre><code>## 
+## Call:
+## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+##     1, 1), period = 12))
+## 
+## Coefficients:
+##           ma1     sma1
+##       -0.4018  -0.5569
+## s.e.   0.0896   0.0731
+## 
+## sigma^2 estimated as 0.0002543:  log likelihood = 353.96,  aic = -701.92</code></pre>
+<pre class="r"><code>update(fit, method = &quot;CSS&quot;)</code></pre>
+<pre><code>## 
+## Call:
+## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+##     1, 1), period = 12), method = &quot;CSS&quot;)
+## 
+## Coefficients:
+##           ma1     sma1
+##       -0.3772  -0.5724
+## s.e.   0.0883   0.0704
+## 
+## sigma^2 estimated as 0.0002619:  part log likelihood = 354.32</code></pre>
+<pre class="r"><code>pred &lt;- predict(fit, n.ahead = 24)
+tl &lt;- pred$pred - 1.96 * pred$se
+tu &lt;- pred$pred + 1.96 * pred$se
+
+ARIMA.for&lt;-data.frame(Year=year.fore2, Passengers=10^pred$pred, UB=10^as.numeric(tu), LB=10^as.numeric(tl))
+
+g1&lt;-ggplot()+
+  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
+  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&#39;blue&#39;)+
+  geom_ribbon(data=ARIMA.for, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&#39;red&#39;)+
+  geom_line(data=DF.fore2, aes(x=Year, y=Passengers, color=&#39;blue&#39;), lwd=1.25)+
+  geom_line(data=ARIMA.for, aes(x=Year, y=Passengers, color=&#39;red&#39;), lwd=1.25)+
+  coord_cartesian(xlim=c(1960, 1963.25), ylim= c(275,1000))+
+  scale_color_manual(name=&#39;Forecast Model&#39;,
+                     values = c(&#39;blue&#39;, &#39;red&#39;), 
+                     labels = c(&#39;Gaussian Process&#39;, &#39;ARIMA&#39;))
+g1</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
+<p>Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.</p>
+
+                        </div>
+                        
+                        
+
+                    </div>
+                    
+
+                    
+
+                    
+
+                    <div class="col-md-3">
+
+                        
+
+                        
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+      <h3 class="panel-title">Search</h3>
+    </div>
+
+    <div class="panel-body">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" role="search">
+            <div class="input-group">
+                <input type="search" name="q" class="form-control" placeholder="Search">
+                <input type="hidden" name="sitesearch" value="/">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="panel panel-default sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Categories</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="nav nav-pills nav-stacked">
+            
+            
+            <li>
+                <a href="/categories/modeling">modeling (3)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/sample-size">sample-size (1)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/simulation">simulation (1)</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="panel sidebar-menu">
+
+    <div class="panel-heading">
+        <h3 class="panel-title">Tags</h3>
+    </div>
+
+    <div class="panel-body">
+        <ul class="tag-cloud">
+            
+            
+            <li>
+                <a href="/tags/bayesian"><i class="fas fa-tags"></i> bayesian</a>
+            </li>
+            
+            <li>
+                <a href="/tags/forecasting"><i class="fas fa-tags"></i> forecasting</a>
+            </li>
+            
+            <li>
+                <a href="/tags/gaussian-process"><i class="fas fa-tags"></i> gaussian-process</a>
+            </li>
+            
+            <li>
+                <a href="/tags/missing-data"><i class="fas fa-tags"></i> missing-data</a>
+            </li>
+            
+            <li>
+                <a href="/tags/mixed-effects"><i class="fas fa-tags"></i> mixed-effects</a>
+            </li>
+            
+            <li>
+                <a href="/tags/power"><i class="fas fa-tags"></i> power</a>
+            </li>
+            
+            <li>
+                <a href="/tags/predictive-modeling"><i class="fas fa-tags"></i> predictive-modeling</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r"><i class="fas fa-tags"></i> r</a>
+            </li>
+            
+            <li>
+                <a href="/tags/r-bloggers"><i class="fas fa-tags"></i> r-bloggers</a>
+            </li>
+            
+            <li>
+                <a href="/tags/simulation"><i class="fas fa-tags"></i> simulation</a>
+            </li>
+            
+            <li>
+                <a href="/tags/stan"><i class="fas fa-tags"></i> stan</a>
+            </li>
+            
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+
+
+                        
+
+                    </div>
+                    
+
+                    
+
+                </div>
+                
+
+            </div>
+            
+        </div>
+        
+
+        <footer id="footer">
+    <div class="container">
+
+        
+        <div class="col-md-4 col-sm-6">
+            <h4>About us</h4>
+
+            <p>Consulting company specializing in the design of open source data processing and analytics pipelines.</p>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+        <div class="col-md-4 col-sm-6">
+
+             
+            <h4>Recent posts</h4>
+
+            <div class="blog-entries">
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">
+                          
+                            <img src="/img/banners/bayesian-missing-data-pt1.png" class="img-responsive" alt="Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">Bayesian Multilevel Model with Missing Data: Complete Work Flow - Part 1 of 3</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">
+                          
+                            <img src="/img/banners/power-analysis-growth-model-banner.png" class="img-responsive" alt="Power Analyses for an Unconditional Growth Model using {lmer}">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h5>
+                    </div>
+                </div>
+                
+                <div class="item same-height-row clearfix">
+                    <div class="image same-height-always">
+                        <a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">
+                          
+                            <img src="/img/banners/gp-forecast-banner.png" class="img-responsive" alt="Gaussian Process Imputation/Forecast Models">
+                          
+                        </a>
+                    </div>
+                    <div class="name same-height-always">
+                        <h5><a href="/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/">Gaussian Process Imputation/Forecast Models</a></h5>
+                    </div>
+                </div>
+                
+            </div>
+
+            <hr class="hidden-md hidden-lg">
+             
+
+        </div>
+        
+
+        
+        <div class="col-md-4 col-sm-6">
+
+          <h4>Contact</h4>
+
+            <p class="text-uppercase"><strong>Dead Reckoning Analytics & Consulting</strong>
+        <br>PO Box 194
+        <br>College Park, MD 20740
+        <strong>United States</strong>
+      </p>
+      
+
+            <a href="/contact" class="btn btn-small btn-template-main">Go to contact page</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+        
+        
+
+    </div>
+    
+</footer>
+
+
+
+
+
+
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            
+            <p class="pull-left">Copyright (c) 2020, Dead Reckoning Analytics & Consulting, LLC; all rights reserved.</p>
+            
+            <p class="pull-right">
+              Template by <a href="https://bootstrapious.com/p/universal-business-e-commerce-template">Bootstrapious</a>.
+              
+
+              Ported to Hugo by <a href="https://github.com/devcows/hugo-universal-theme">DevCows</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    </div>
+    
+
+    
+<script src="//code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0/jquery.counterup.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax.js"></script>
+
+<script src="//maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script src="/js/hpneo.gmaps.js"></script>
+<script src="/js/gmaps.init.js"></script>
+<script src="/js/front.js"></script>
+
+
+<script src="/js/owl.carousel.min.js"></script>
+
+
+
+  </body>
+</html>

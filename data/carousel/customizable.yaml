@@ -1,0 +1,9 @@
+weight: 1
+title: "Customizable GUIs"
+description: >
+  <ul class="list-style-none">
+    <li>Design your own graphic interface.</li>
+    <li>Manipulate data and customize outputs</li>
+    <li>Host your applications on servers or in the cloud</li>
+  </ul>
+image: "img/carousel/gui-example.png"

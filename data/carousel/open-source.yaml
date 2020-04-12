@@ -1,0 +1,10 @@
+weight: 2
+title: "Open Source Tools"
+description: >
+  <ul class="list-style-none">
+     <li>Customized programs made with open source languages</li>
+     <li>Control exactly what you tool is doing and how</li>
+     <li>Outputs are reproducible</li>
+     <li>Share with the world or keep to yourself</li>
+   </ul>
+image: "img/carousel/combined-logos-laptop.png"
