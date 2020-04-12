@@ -39,7 +39,7 @@ This knowledge provides useful information when considering population priors. F
 
 This is useful until I need to consider what I mean by "elevated," at least insofar as how I will define it numerically in the model. To address this definitional issue, it is helpful to adopt a scale (sometimes a standardized scale is a particularly good option given the easy and obvious interpretation of scores). 
 
-For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-*T*-score (i.e., $\mu \approx 50, \sigma \approx 10$), that is approximately normally distributed in the population (note that I am referring to a clinical *T*-score not a *t* distribution). In a Bayesian sense, I am setting a prior; namely that I believe the obtained sample was randomly drawn from a population of children with elevated scores on a measure of maladaptation. 
+For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-*T*-score (i.e., $\mu \approx 50, \sigma \approx 10$), that is approximately normally distributed in the population (note that I am referring to a clinical *T*-score not a *t* distribution). In a Bayesian sense, I am setting a prior regarding the distribution, and it is a convenient one in that it will allow me to define the sample using intercept and slope values that convey meaningful information about initial levels of the outcome variable and overall change. 
 
 So far I have only settled on a starting point (i.e., the intercept), but I have a number of parameters I need to consider specfying, and most importantly a number of parameters about which I am somewhat uncertain. To see what other parameters I need to consider, it is perhaps useful to review the simple linear growth model (specified below using [Raudenbush & Bryk's](https://books.google.com/books/about/Hierarchical_Linear_Models.html?id=uyCV0CNGDLQC&printsec=frontcover&source=kp_read_button#v=onepage&q&f=false) notation). 
 
@@ -48,7 +48,7 @@ $$
 Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 $$
 
-The level 1 equation includes the coefficient $\pi_{0i}$ which represents the average predicted value for $Y$ when $Time=0$. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses $Time$ will coded such that $T_1 = 0, T_2 = 1,$ and $T_3 = 2$. With this specification, the intercept ($\pi_{0i}$}) represents the predicted value for an outcome ($Y$) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below). 
+The level 1 equation includes the coefficient $\pi_{0i}$ which represents the average predicted value for $Y$ when $Time=0$. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses $Time$ is coded such that $T_1 = 0, T_2 = 1,$ and $T_3 = 2$. With this specification, the intercept ($\pi_{0i}$}) represents the predicted value for the outcome score ($Y$) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below). 
 
 Average change over time is represented in the model by $\pi_{1i}$. Any one case, however, likely deviates to some degree from the average model of change. These deviations are sometimes referred to as random effects. In the context of a growth model, they represent the degree to an individual case's slope (or intercept) deviates from the estimated average. Using Raudenbush & Bryk's (2002) notation, these random effects are defined below, where the $\beta$'s represent the fixed effects and the $r$'s represent individual deviations from the estimated fixed effects. 
 
@@ -60,7 +60,7 @@ $$
 \pi_{1i} = \beta_{10} + r_{1i}
 $$
 
-As a quick toy example, let's see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice. 
+As a quick toy example, let's see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negative change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice. 
 
 ```{r samp_growth}
 set.seed(5499)
@@ -99,9 +99,9 @@ g1<-ggplot(data=DF.temp)+
 g1
 ```
 
-Looking at the plot above, let's see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. Of course, I would need to inspect a larger number of randomly generated datasets (according to my population model) to know for sure. I recommend plotting 10-15 randomly generated data sets and ensuring that the average change and individual heterogeneity of change approximate your expectations. 
+Looking at the plot above, let's see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. 
 
-Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both. 
+Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions 40+you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both. 
 
 Though true, this framework encourages thinking at the level of the overall effect. We often turn to meta-analyses or other reviews that have attempt to describe or define the population-level effect. Less often do these sorts of reviews speak to individual variability from mean estimates. 
 

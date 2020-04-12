@@ -21,14 +21,12 @@ load('~/GitHub/main_site/DFs/Interaction_plot_data.RData')
 
 Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents' appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships. 
 
-It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper [here](https://mgb-research.netlify.com/publication/barstead_etal_2017_jora/). These data come from the *Friendship Project* and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose. 
+It is and was a modest study, with some flaws (notably the fact I only had self-report measures from the adolescents). If you want more context for the rest of this post, you can read the paper [here](https://onlinelibrary.wiley.com/doi/abs/10.1111/jora.12350). These data come from the *Friendship Project* and were collected in the early-to-mid 2000s, a fact that I wish I had included in the manuscript in retrospect. My blog is as good a place as any to call out my past transparency shortcomings I suppose. 
 
 To understand the data and models, here is some additional information:  
 
 1. I had grade 8 measures of relationship quality, shyness, preference for solitude, and anxiety/depression  
-
 2. I had grade 9 measures of anxiety and depression 
-
 3. The analyses were based on a saturated path model in `lavaan` - an R package for creating and testing structural equation models. 
 
 Using `lavaan` (**la**tent **va**riable **an**alysis), I created three latent variables that represented outcomes of interest in grade 9: anxiety, depression, and general negative affect (I refer to this as dispositional negativity in the manuscript). To start, here is the model: 
@@ -69,7 +67,7 @@ Now there is a whole script file of assumption checking and model evaluation tha
 
 One thing that frustrates me when we report on interactions between variables is that we often pick static, potentially arbitrary values to probe simple slopes. A common pair of values is +/- 1 *SD*. Sometimes researchers will also examine simple slopes at the mean of the sample as well. Probing simple slopes at static values also influences how researchers present their findings visually. Typically, we get either a pair of bars or lines to use to help us better evaluate the nature of the detected interaction.  
 
-Here is where my gripe starts to eek in. Why are we probing simple slopes at static (often arbitrary) values? When our moderators are continuous it seems to me the better approach is to evaluate and interpret the effect of the moderator on the association between `X` and `Y` along the entire continuum of plausible moderator values. 
+Here is where my gripe starts to eek in. Why are we probing simple slopes at static (often arbitrary) values? When our moderators are continuous? It seems to me the better approach is to evaluate and interpret the effect of the moderator on the association between `X` and `Y` along the entire continuum of plausible moderator values. 
 
 To do this, I need to extract some information from my model first. I'll need the point estimates and their variances invovled in defining the moderation (pro-tip, I am using the `parm[,1:3]` line to figure out the correct numbering for the parameters in the model): 
 

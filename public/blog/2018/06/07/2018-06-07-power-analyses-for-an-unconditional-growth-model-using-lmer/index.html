@@ -232,13 +232,13 @@
 <p>To create a reasonable population model, even for a relatively simple analysis (the present working example qualifies as such), I need to think through what I know about the treatment effects and the target population. For instance, we know that data in the present case were obatined from a selected sample of children, who were eligible to participate if their scores on a <a href="https://onlinelibrary.wiley.com/doi/full/10.1046/j.1467-8624.2003.00645.x">measure of early childhood anxiety risk</a> exceeded the 85th percentile.</p>
 <p>This knowledge provides useful information when considering population priors. For instance, I should expect the obtained sample to be drawn from a population elevated in anxiety and other, related, symptoms of emotional and/or behavioral maladaptation at time 1.</p>
 <p>This is useful until I need to consider what I mean by “elevated,” at least insofar as how I will define it numerically in the model. To address this definitional issue, it is helpful to adopt a scale (sometimes a standardized scale is a particularly good option given the easy and obvious interpretation of scores).</p>
-<p>For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-<em>T</em>-score (i.e., <span class="math inline">\(\mu \approx 50, \sigma \approx 10\)</span>), that is approximately normally distributed in the population (note that I am referring to a clinical <em>T</em>-score not a <em>t</em> distribution). In a Bayesian sense, I am setting a prior; namely that I believe the obtained sample was randomly drawn from a population of children with elevated scores on a measure of maladaptation.</p>
+<p>For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-<em>T</em>-score (i.e., <span class="math inline">\(\mu \approx 50, \sigma \approx 10\)</span>), that is approximately normally distributed in the population (note that I am referring to a clinical <em>T</em>-score not a <em>t</em> distribution). In a Bayesian sense, I am setting a prior regarding the distribution, and it is a convenient one in that it will allow me to define the sample using intercept and slope values that convey meaningful information about initial levels of the outcome variable and overall change.</p>
 <p>So far I have only settled on a starting point (i.e., the intercept), but I have a number of parameters I need to consider specfying, and most importantly a number of parameters about which I am somewhat uncertain. To see what other parameters I need to consider, it is perhaps useful to review the simple linear growth model (specified below using <a href="https://books.google.com/books/about/Hierarchical_Linear_Models.html?id=uyCV0CNGDLQC&amp;printsec=frontcover&amp;source=kp_read_button#v=onepage&amp;q&amp;f=false">Raudenbush &amp; Bryk’s</a> notation).</p>
 <p><strong>Level 1 Equation:</strong><br />
 <span class="math display">\[
 Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 \]</span></p>
-<p>The level 1 equation includes the coefficient <span class="math inline">\(\pi_{0i}\)</span> which represents the average predicted value for <span class="math inline">\(Y\)</span> when <span class="math inline">\(Time=0\)</span>. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses <span class="math inline">\(Time\)</span> will coded such that <span class="math inline">\(T_1 = 0, T_2 = 1,\)</span> and <span class="math inline">\(T_3 = 2\)</span>. With this specification, the intercept (<span class="math inline">\(\pi_{0i}\)</span>}) represents the predicted value for an outcome (<span class="math inline">\(Y\)</span>) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below).</p>
+<p>The level 1 equation includes the coefficient <span class="math inline">\(\pi_{0i}\)</span> which represents the average predicted value for <span class="math inline">\(Y\)</span> when <span class="math inline">\(Time=0\)</span>. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses <span class="math inline">\(Time\)</span> is coded such that <span class="math inline">\(T_1 = 0, T_2 = 1,\)</span> and <span class="math inline">\(T_3 = 2\)</span>. With this specification, the intercept (<span class="math inline">\(\pi_{0i}\)</span>}) represents the predicted value for the outcome score (<span class="math inline">\(Y\)</span>) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below).</p>
 <p>Average change over time is represented in the model by <span class="math inline">\(\pi_{1i}\)</span>. Any one case, however, likely deviates to some degree from the average model of change. These deviations are sometimes referred to as random effects. In the context of a growth model, they represent the degree to an individual case’s slope (or intercept) deviates from the estimated average. Using Raudenbush &amp; Bryk’s (2002) notation, these random effects are defined below, where the <span class="math inline">\(\beta\)</span>’s represent the fixed effects and the <span class="math inline">\(r\)</span>’s represent individual deviations from the estimated fixed effects.</p>
 <p><strong>Level 2 Equations:</strong><br />
 <span class="math display">\[
@@ -247,7 +247,7 @@ Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
 <span class="math display">\[
 \pi_{1i} = \beta_{10} + r_{1i}
 \]</span></p>
-<p>As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negaive change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.</p>
+<p>As a quick toy example, let’s see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negative change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice.</p>
 <pre class="r"><code>set.seed(5499)
 
 N&lt;-10
@@ -283,8 +283,8 @@ g1&lt;-ggplot(data=DF.temp)+
   geom_smooth(aes(x=Time.vals, y=pred.y, group=ID, color=ID), method = &#39;lm&#39;, se=F)
 g1</code></pre>
 <p><img src="/blog/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer_files/figure-html/samp_growth-1.png" width="672" /></p>
-<p>Looking at the plot above, let’s see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. Of course, I would need to inspect a larger number of randomly generated datasets (according to my population model) to know for sure. I recommend plotting 10-15 randomly generated data sets and ensuring that the average change and individual heterogeneity of change approximate your expectations.</p>
-<p>Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both.</p>
+<p>Looking at the plot above, let’s see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased.</p>
+<p>Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions 40+you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both.</p>
 <p>Though true, this framework encourages thinking at the level of the overall effect. We often turn to meta-analyses or other reviews that have attempt to describe or define the population-level effect. Less often do these sorts of reviews speak to individual variability from mean estimates.</p>
 <p>The net result is that we sometimes struggle to define our expectations about variability. This is where plotting the data is so valuable in my mind. I can quickly see whether or not individual trajectories are departing wildly from what is reasonable. If so, I can tweak certain aspects of the model and re-inspect until I am satisfied with the results.</p>
 <p>We always stress plotting your real data. Same goes for the made-up stuff too.</p>
@@ -474,7 +474,7 @@ mean(sig)</code></pre>
             
             
             <li>
-                <a href="/categories/data-visualization">data-visualization (3)</a>
+                <a href="/categories/data-visualization">data-visualization (2)</a>
             </li>
             
             <li>
@@ -487,6 +487,10 @@ mean(sig)</code></pre>
             
             <li>
                 <a href="/categories/modeling">modeling (7)</a>
+            </li>
+            
+            <li>
+                <a href="/categories/rshiny">rshiny (1)</a>
             </li>
             
             <li>

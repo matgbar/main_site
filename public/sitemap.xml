@@ -143,6 +143,11 @@
   </url>
   
   <url>
+    <loc>/categories/rshiny/</loc>
+    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
