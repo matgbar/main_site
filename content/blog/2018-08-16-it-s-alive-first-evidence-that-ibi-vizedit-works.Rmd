@@ -9,10 +9,8 @@ categories:
   - IBI VizEdit
 tags:
   - Data Processing
-  - Mixed-Effects
   - R
-  - Plotting
-  - R-bloggers
+  - Data Visualization
 banner: img/banners/ibi-vizedit.png
 ---
 

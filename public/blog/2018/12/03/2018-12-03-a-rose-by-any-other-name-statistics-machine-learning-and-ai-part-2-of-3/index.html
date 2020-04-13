@@ -13,7 +13,7 @@
   
   
   
-  <meta name="keywords" content="R, R programming, Data Science, Statistics, Predictive Modeling, Forecasting, ML, AI, R-bloggers, Bayesian">
+  <meta name="keywords" content="R, R programming, Data Science, Statistics, Predictive Modeling, Forecasting, ML, AI, Bayesian">
   
   
   <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
@@ -89,7 +89,6 @@
     <meta property="article:tag" content="Forecasting">
     <meta property="article:tag" content="ML">
     <meta property="article:tag" content="AI">
-    <meta property="article:tag" content="R-bloggers">
     <meta property="article:tag" content="Bayesian">
     
     
@@ -323,7 +322,7 @@ for(i in 1:k.fold){
   Pred_type&lt;-c(Pred_type, &#39;Testing Set&#39;)
 }
 round(Sys.time()-Start, digits = 2)</code></pre>
-<pre><code>## Time difference of 3.93 secs</code></pre>
+<pre><code>## Time difference of 1.53 secs</code></pre>
 <p>So not too long of a wait time to run through the cross-validation at 100 folds on my personal laptop.</p>
 <p>Now, for the overall results of the model in terms of accurate predictions. I always prefer to show, my data whenever possible.</p>
 <pre class="r"><code>NB_KFold&lt;-data.frame(Accuracy = Accuracy, 
@@ -405,7 +404,7 @@ for(i in 1:k.fold){
   Pred_type&lt;-c(Pred_type, &#39;Testing Set&#39;)
 }
 round(Sys.time()-Start, digits = 2)</code></pre>
-<pre><code>## Time difference of 0.7 secs</code></pre>
+<pre><code>## Time difference of 0.3 secs</code></pre>
 <p>Once again, the the total run-time is not that long for the 100 cross-validation runs. Now let’s plot the results.</p>
 <pre class="r"><code>LDA_KFold&lt;-data.frame(Accuracy = Accuracy, 
                       Model = Model, 
@@ -488,7 +487,7 @@ for(i in 1:k.fold){
   Pred_type&lt;-c(Pred_type, &#39;Testing Set&#39;)
 }
 round(Sys.time()-Start, digits = 2)</code></pre>
-<pre><code>## Time difference of 1.71 secs</code></pre>
+<pre><code>## Time difference of 0.57 secs</code></pre>
 <p>Once again a fairly quick run time (by the way I keep saying this because I am used to waiting a few hours for multilevel Bayesian regression models with correlated random effects to coverge. Waiting a second or two to get aggregated results is nothing).</p>
 <p>Let’s see the prediction results…</p>
 <pre class="r"><code>MLR_KFold&lt;-data.frame(Accuracy = Accuracy, 
@@ -586,10 +585,6 @@ g1&lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
             
             
             <li>
-                <a href="/categories/data-visualization">data-visualization (2)</a>
-            </li>
-            
-            <li>
                 <a href="/categories/ibi-vizedit">ibi-vizedit (1)</a>
             </li>
             
@@ -598,19 +593,11 @@ g1&lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
             </li>
             
             <li>
-                <a href="/categories/modeling">modeling (7)</a>
+                <a href="/categories/modeling">modeling (8)</a>
             </li>
             
             <li>
                 <a href="/categories/rshiny">rshiny (1)</a>
-            </li>
-            
-            <li>
-                <a href="/categories/sample-size">sample-size (1)</a>
-            </li>
-            
-            <li>
-                <a href="/categories/simulation">simulation (1)</a>
             </li>
             
         </ul>
@@ -644,11 +631,11 @@ g1&lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
             </li>
             
             <li>
-                <a href="/tags/bayesian-models"><i class="fas fa-tags"></i> bayesian-models</a>
+                <a href="/tags/data-processing"><i class="fas fa-tags"></i> data-processing</a>
             </li>
             
             <li>
-                <a href="/tags/data-processing"><i class="fas fa-tags"></i> data-processing</a>
+                <a href="/tags/data-visualization"><i class="fas fa-tags"></i> data-visualization</a>
             </li>
             
             <li>
@@ -668,23 +655,7 @@ g1&lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
             </li>
             
             <li>
-                <a href="/tags/mixed-effects"><i class="fas fa-tags"></i> mixed-effects</a>
-            </li>
-            
-            <li>
                 <a href="/tags/ml"><i class="fas fa-tags"></i> ml</a>
-            </li>
-            
-            <li>
-                <a href="/tags/multiple-imputation"><i class="fas fa-tags"></i> multiple-imputation</a>
-            </li>
-            
-            <li>
-                <a href="/tags/plotting"><i class="fas fa-tags"></i> plotting</a>
-            </li>
-            
-            <li>
-                <a href="/tags/power"><i class="fas fa-tags"></i> power</a>
             </li>
             
             <li>
@@ -696,23 +667,11 @@ g1&lt;-ggplot(data=MLR_KFold, aes(x=Pred_type, y=Accuracy))+
             </li>
             
             <li>
-                <a href="/tags/r-bloggers"><i class="fas fa-tags"></i> r-bloggers</a>
-            </li>
-            
-            <li>
                 <a href="/tags/simulation"><i class="fas fa-tags"></i> simulation</a>
             </li>
             
             <li>
                 <a href="/tags/stan"><i class="fas fa-tags"></i> stan</a>
-            </li>
-            
-            <li>
-                <a href="/tags/statistics"><i class="fas fa-tags"></i> statistics</a>
-            </li>
-            
-            <li>
-                <a href="/tags/structural-equation-modeling"><i class="fas fa-tags"></i> structural-equation-modeling</a>
             </li>
             
         </ul>

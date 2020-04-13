@@ -6,20 +6,10 @@
     <description>Recent content in Mixed-Effects on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/mixed-effects/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 2 of 3)</title>
-      <link>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</link>
-      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</guid>
-      <description>Overview: This is the second post in a three-part blog series I am putting together. If you have not read the first post in this series, you may want to go back and check it out. In this post, I will focus on running and evaluating the imputation model itself, having identified the appropriate covariates that help account for missingness in the first post.
-Data Brief Description: The data in question come from a study that involved a one-week ecological momentary assessment (EMA) protocol.</description>
-    </item>
     
     <item>
       <title>Introducing IBI VizEdit: An RShiny Application</title>

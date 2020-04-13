@@ -9,10 +9,8 @@ categories:
   - IBI VizEdit
 tags:
   - Data Processing
-  - Mixed-Effects
   - R
-  - Plotting
-  - R-bloggers
+  - Data Visualization
 banner: img/banners/ibi-vizedit.png
 ---
 
@@ -78,21 +76,21 @@ summary(fit.RSA)</code></pre>
 ## 
 ## Scaled residuals: 
 ##      Min       1Q   Median       3Q      Max 
-## -2.13204 -0.68778 -0.00622  0.52209  2.77991 
+## -2.13205 -0.68779 -0.00623  0.52208  2.77992 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  File     (Intercept) 0.4428   0.6655  
+##  File     (Intercept) 0.4429   0.6655  
 ##  Residual             0.1801   0.4244  
 ## Number of obs: 125, groups:  File, 22
 ## 
 ## Fixed effects:
 ##             Estimate Std. Error t value
-## (Intercept)  6.18134    0.17278  35.777
+## (Intercept)  6.18134    0.17278  35.776
 ## Clown       -0.30111    0.14211  -2.119
 ## Video2       0.03093    0.13383   0.231
 ## Kids        -0.10134    0.13383  -0.757
-## Intro       -0.38044    0.13383  -2.843
+## Intro       -0.38043    0.13383  -2.843
 ## Video3      -0.08134    0.13383  -0.608
 ## 
 ## Correlation of Fixed Effects:
@@ -106,12 +104,12 @@ summary(fit.RSA)</code></pre>
 boot.RSA&lt;-bootMer(fit.RSA, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.RSA))</code></pre>
 <pre><code>##           term   conf.low   conf.high
-## 1 X.Intercept.  5.8404623  6.52350582
-## 2        Clown -0.5798125 -0.02769696
-## 3       Video2 -0.2313834  0.29133186
-## 4         Kids -0.3619874  0.15847387
-## 5        Intro -0.6469880 -0.11565584
-## 6       Video3 -0.3485673  0.18690333</code></pre>
+## 1 X.Intercept.  5.8469298  6.51271477
+## 2        Clown -0.5802894 -0.02298513
+## 3       Video2 -0.2267125  0.29510555
+## 4         Kids -0.3658046  0.16269253
+## 5        Intro -0.6388097 -0.11533016
+## 6       Video3 -0.3395032  0.18322587</code></pre>
 <p>Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences).</p>
 <pre class="r"><code>#--
 fit.HP&lt;-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
@@ -153,11 +151,11 @@ summary(fit.HP)</code></pre>
 boot.HP&lt;-bootMer(fit.HP, fixef, nsim=5000)
 print(sjstats::boot_ci(boot.HP))</code></pre>
 <pre><code>##           term    conf.low    conf.high
-## 1 X.Intercept.  0.58278693  0.629634779
-## 2        Clown -0.03819950 -0.009652151
-## 3       Video2 -0.01937143  0.009378145
-## 4         Kids -0.01506448  0.013545670
-## 5        Intro -0.04399445 -0.015341829
-## 6       Video3 -0.02335920  0.005490909</code></pre>
+## 1 X.Intercept.  0.58266382  0.629469814
+## 2        Clown -0.03823164 -0.009566613
+## 3       Video2 -0.01921925  0.009463821
+## 4         Kids -0.01504550  0.013696701
+## 5        Intro -0.04381934 -0.015358019
+## 6       Video3 -0.02332425  0.005673628</code></pre>
 <p>And the pattern was replicated with heart period.</p>
 <p>I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features.</p>

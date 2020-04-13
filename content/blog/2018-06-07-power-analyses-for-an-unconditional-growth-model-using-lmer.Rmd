@@ -5,15 +5,10 @@ date: '2018-06-07'
 baseurl: "https://mgb-research.netlify.com/"
 slug: power-analyses-for-an-unconditional-growth-model-using-lmer
 categories:
-  - Sample Size
   - Modeling
-  - Simulation
 tags:
   - R
-  - Power
   - Simulation
-  - Mixed-Effects
-  - R-bloggers
 banner: img/banners/power-analysis-growth-model-banner.png
 ---
 

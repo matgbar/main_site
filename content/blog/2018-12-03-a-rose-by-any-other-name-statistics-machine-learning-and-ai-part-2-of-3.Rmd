@@ -13,7 +13,6 @@ tags:
   - Forecasting
   - ML
   - AI
-  - R-bloggers
   - Bayesian
 banner: img/banners/ml-vs-stats-pt2.png
 bibliography: Stats_vs_ML_2.bib

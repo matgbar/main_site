@@ -61,6 +61,18 @@ paginate = 10
     name = "Email"
     url = "mailto:info@deadreckoning.consulting"
     pre = "<i class='fas fa-2x fa-envelope'></i>"
+    
+[[menu.topbar]]
+    weight = 4
+    name = "Stack-Exchange"
+    url = "https://stats.stackexchange.com/users/144604/matt-barstead"
+    pre = "<i class='fab fa-2x fa-stack-exchange'></i>"
+    
+[[menu.topbar]]
+    weight = 5
+    name = "Stack-Overflow"
+    url = "https://stackoverflow.com/users/7480795/matt-barstead"
+    pre = "<i class='fab fa-2x fa-stack-overflow'></i>"
 
 [params]
     viewMorePostLink = "/blog/"

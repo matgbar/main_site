@@ -6,12 +6,10 @@ baseurl: "https://mgb-research.netlify.com/"
 slug: interaction-plots-with-continuous-moderators-in-r
 tags:
   - R
-  - Plotting
-  - Structural Equation Modeling
   - lavaan
-  - R-bloggers
-categories:
   - Data Visualization
+categories:
+  - Modeling
 banner: img/banners/continuous-interaction.png
 ---
 
