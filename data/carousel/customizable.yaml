@@ -2,8 +2,9 @@ weight: 1
 title: "Customizable GUIs"
 description: >
   <ul class="list-style-none">
-    <li>Design your own graphic interface.</li>
-    <li>Manipulate data and customize outputs</li>
-    <li>Host your applications on servers or in the cloud</li>
+    <li>Custom graphic interfaces</li>
+    <li>Process and manipulate data</li>
+    <li>Generate outputs and reports</li>
+    <li>Run locally or in the cloud</li>
   </ul>
 image: "img/carousel/gui-example.png"

@@ -2,9 +2,8 @@ weight: 2
 title: "Open Source Tools"
 description: >
   <ul class="list-style-none">
-     <li>Customized programs made with open source languages</li>
-     <li>Control exactly what your tool is doing and how</li>
-     <li>Outputs are reproducible</li>
-     <li>Share with the world or keep to yourself</li>
+     <li>Tailored to your needs</li>
+     <li>Testing and documentation</li>
+     <li>Reproducible outputs</li>
    </ul>
 image: "img/carousel/combined-logos-laptop.png"

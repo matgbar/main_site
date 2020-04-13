@@ -2,9 +2,8 @@ weight: 4
 title: "Project Management"
 description: >
   <ul class="list-style-none">
-     <li></li>
-     <li>Adherence to Agile principles</li>
-     <li>Work scoped and agreed to in advance</li>
+     <li>Agile principles</li>
+     <li>Work scoped and agreed upon</li>
      <li>Timeline management via ZenHub</li>
    </ul>
 image: "img/carousel/kanban_zenhub.png"
