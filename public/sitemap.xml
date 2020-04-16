@@ -4,17 +4,47 @@
   
   <url>
     <loc>/tags/bayesian/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/2020/04/15/2020-04-15-bayesian-multilevel-model-with-missing-data-complete-workflow-part-3-of-3/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/missing-data/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/modeling/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/stan/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-04-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -23,27 +53,7 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/missing-data/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/modeling/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/r/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
@@ -89,11 +99,6 @@
   
   <url>
     <loc>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</loc>
-    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/stan/</loc>
     <lastmod>2018-09-03T00:00:00+00:00</lastmod>
   </url>
   

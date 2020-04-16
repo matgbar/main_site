@@ -7,13 +7,13 @@
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <title>Data Visualization</title>
-  <meta name="author" content="Matthew Barstead, Ph.D." />
+  <title>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3)</title>
+  <meta name="author" content="" />
   
   
   
   
-  <meta name="keywords" content="R, R programming, Data Science, Statistics">
+  <meta name="keywords" content="R, R programming, Data Science, Statistics, Bayesian, Missing Data, Stan">
   
   
   <meta name="description" content="Musings on R, Statistics, Data Science, and Programming">
@@ -66,9 +66,9 @@
   
   <meta property="og:locale" content="en_us">
   <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
-  <meta property="og:title" content="Data Visualization">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="/tags/data-visualization/" />
+  <meta property="og:title" content="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3)">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/blog/2020/04/15/2020-04-15-bayesian-multilevel-model-with-missing-data-complete-workflow-part-3-of-3/" />
   <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
   <meta property="og:image" content="/img/favicon-dead-1_thumb_20.png">
   <meta property="og:image:type" content="image/png">
@@ -79,13 +79,24 @@
     <meta property="og:image:height" content="11">
   
   
-  <meta property="og:updated_time" content="2019-01-19T00:00:00Z">
+  <meta property="og:updated_time" content="2020-04-15T00:00:00Z">
+  
+    
+    
+    <meta property="article:section" content="Modeling">
+    <meta property="article:tag" content="Bayesian">
+    <meta property="article:tag" content="Missing Data">
+    <meta property="article:tag" content="Stan">
+    
+    
+    <meta property="article:published_time" content="2020-04-15T00:00:00Z">
+    <meta property="article:modified_time" content="2020-04-15T00:00:00Z">
   
 
   
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@dead_reck">
-  <meta name="twitter:title" content="Data Visualization">
+  <meta name="twitter:title" content="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 …">
   
   <meta name="twitter:image" content="/img/favicon-dead-1_thumb_20.png">
   
@@ -112,9 +123,9 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand home" href="/">
-                    <img src="/img/logo-dead-8.png" height="49" width="241" alt="Data Visualization logo" class="hidden-xs hidden-sm">
-                    <img src="/img/logo-dead-8.png" height="49" width="241" alt="Data Visualization logo" class="visible-xs visible-sm">
-                    <span class="sr-only">Data Visualization - go to homepage</span>
+                    <img src="/img/logo-dead-8.png" height="49" width="241" alt="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3) logo" class="hidden-xs hidden-sm">
+                    <img src="/img/logo-dead-8.png" height="49" width="241" alt="Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3) logo" class="visible-xs visible-sm">
+                    <span class="sr-only">Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3) - go to homepage</span>
                 </a>
                 <div class="navbar-buttons">
                     <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
@@ -185,7 +196,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Data Visualization</h1>
+                <h1>Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3)</h1>
             </div>
         </div>
     </div>
@@ -194,140 +205,49 @@
 
         <div id="content">
             <div class="container">
+
                 <div class="row">
+
                     
 
-                    <div class="col-md-9" id="blog-listing-medium">
+                    <div class="col-md-9" id="blog-post">
 
                         
-                        
-                        <section class="post">
-                            <div class="row">
-                                <div class="col-md-4">
-                                  <div class="image">
-                                      <a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">
-                                          
-                                          <img src="/img/banners/riverplot.png" class="img-responsive" alt="">
-                                          
-                                      </a>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h2><a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">Visualizing Variance in Multilevel Models Using the Riverplot Package</a></h2>
-                                    <div class="clearfix">
-                                        <p class="author-category">
-                                          
-                                          By <a href="#">Matthew Barstead, Ph.D.</a>
-                                          
-                                          
-                                          
-                                          in <a href="/categories/modeling">Modeling</a>
-                                          
-                                          
-
-                                        </p>
-                                        
-                                        <p class="date-comments">
-                                            <a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/"><i class="far fa-calendar"></i> January 19, 2019</a>
-                                        </p>
-                                        
-                                    </div>
-                                    <p class="intro">Spurred on by Alex Shackman, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.
-Figure 1. Stacked Barplot of Model Variance Decomposition
-Now, choosing a color scheme that screams “HI I’M A COLOR!</p>
-                                    <p class="read-more"><a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/" class="btn btn-template-main">Continue reading</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-                        
-                        <section class="post">
-                            <div class="row">
-                                <div class="col-md-4">
-                                  <div class="image">
-                                      <a href="/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/">
-                                          
-                                          <img src="/img/banners/ibi-vizedit.png" class="img-responsive" alt="">
-                                          
-                                      </a>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h2><a href="/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/">Introducing IBI VizEdit: An RShiny Application</a></h2>
-                                    <div class="clearfix">
-                                        <p class="author-category">
-                                          
-                                          By <a href="#">Matthew Barstead</a>
-                                          
-                                          
-                                          
-                                          in <a href="/categories/rshiny">RShiny</a>
-                                          
-                                          
-
-                                        </p>
-                                        
-                                        <p class="date-comments">
-                                            <a href="/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/"><i class="far fa-calendar"></i> August 16, 2018</a>
-                                        </p>
-                                        
-                                    </div>
-                                    <p class="intro">It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations.
-Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help the Laboratory for the Study of Child and Family Relationships process and edit heart rate data.</p>
-                                    <p class="read-more"><a href="/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/" class="btn btn-template-main">Continue reading</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-                        
-                        <section class="post">
-                            <div class="row">
-                                <div class="col-md-4">
-                                  <div class="image">
-                                      <a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">
-                                          
-                                          <img src="/img/banners/continuous-interaction.png" class="img-responsive" alt="">
-                                          
-                                      </a>
-                                  </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <h2><a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">Interaction Plots with Continuous Moderators in R</a></h2>
-                                    <div class="clearfix">
-                                        <p class="author-category">
-                                          
-                                          By <a href="#">Matthew Barstead, Ph.D.</a>
-                                          
-                                          
-                                          
-                                          in <a href="/categories/modeling">Modeling</a>
-                                          
-                                          
-
-                                        </p>
-                                        
-                                        <p class="date-comments">
-                                            <a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/"><i class="far fa-calendar"></i> July 11, 2018</a>
-                                        </p>
-                                        
-                                    </div>
-                                    <p class="intro">Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</p>
-                                    <p class="read-more"><a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/" class="btn btn-template-main">Continue reading</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </section>
-                        
-
-                        <ul class="pager">
+                          <p class="text-muted text-uppercase mb-small text-right">
                             
-                            <li class="previous disabled"><a href="#">&larr; Newer</a></li>
                             
+                            April 15, 2020
+                          </p>
+                        
 
-                            
-                            <li class="next disabled"><a href="#">Older &rarr;</a></li>
-                            
-                        </ul>
+                        <div id="post-content">
+                          <h1 id="overview">Overview:</h1>
+<p>This is the third post in a three-part blog series I put together. You can find part 1 <a href="../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">here</a> and part 2 is <a href="../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/">here</a>. Part 1 provies a quick overview of exploring missing data properties and sets the table for creating a simple missingness model. Part 2, covers the creation of an imputation model and explores the output of that model. This third post will walkthrough running the analysis using <code>brms</code> (CITE).</p>
+<p>Even for a toy problem, because I am using Bayesian estimation for the model parameters, the size of the output can get pretty large. Multiplied across 10 or 20 imputed datasets and you can see how the file sizes start to grow. In practice, I tend to save these outputs in a separate external hard drive, and load them when I need to do more extensive analyses.</p>
+<h2 id="setting-up-the-model">Setting up the model:</h2>
+<p>Here will run a simple model in which we predict the association between dispostional negativity and momentary positive affect, assuming a random intercept for individual&rsquo;s momentary positive mood ratings. For more context about the data and study design review the previous posts (linked above).</p>
+<p>First the basic model assuming a Gaussian prior for the outcome distribution.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">PosAff_DN_form <span style="color:#f92672">&lt;-</span> 
+  <span style="color:#a6e22e">brmsformula</span>(
+    PosAff <span style="color:#f92672">~</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> c.DN <span style="color:#f92672">+</span> c.Best <span style="color:#f92672">+</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> c.Best<span style="color:#f92672">|</span>ID)
+  ) <span style="color:#f92672">+</span> <span style="color:#a6e22e">gaussian</span>()
+</code></pre></div><p>If you are familiar with <code>lme4</code> syntax (CITE + and link), this should model formulation should be fairly recognizable. We can translate this back to the underlying mathematical formulation. But first a quick conceptual overview of the model. At the between-subjects level, we have an effect that captures the association between individual dispostional negativity scores and average levels of momentary positive effect. At the momentary level, there is a component of the model that characterizes the association between ratings of recent positive events and momentary positive mood.</p>
+<p>Now for the model.</p>
+<h2 id="within-subjects-portion-of-the-model">Within-Subjects Portion of the Model</h2>
+<p>$$
+PosAff_{ti} \sim Normal(\pi_{0i} + \pi_{1i}(PosEvnt_{ti}-\bar{PosEvnt_{i}}), \sigma_{ti})
+$$</p>
+<h2 id="between-subjects-portion-of-the-model">Between-Subjects Portion of the Model</h2>
+<p>$$
+<code>\begin{equation} \begin{bmatrix} \pi_{0i} \\ \pi_{1i} \end{bmatrix} \sim Normal \Big( \begin{bmatrix} \beta_{00} + \beta_{01}(DN_i) \\ \beta_{10} \end{bmatrix} , \Sigma \Big) \end{equation}</code>
+$$
+where the <code>\(\beta\)</code>s represent the &ldquo;fixed&rdquo; or population effects in the model.</p>
+<h2 id="references">References</h2>
+
+                        </div>
+                        
+                        
+
                     </div>
                     
 
@@ -426,7 +346,7 @@ Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny appl
                 <a href="/tags/data-processing"><i class="fas fa-tags"></i> data-processing</a>
             </li>
             
-            <li class="active">
+            <li>
                 <a href="/tags/data-visualization"><i class="fas fa-tags"></i> data-visualization</a>
             </li>
             
@@ -485,6 +405,7 @@ Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny appl
 
                 </div>
                 
+
             </div>
             
         </div>
