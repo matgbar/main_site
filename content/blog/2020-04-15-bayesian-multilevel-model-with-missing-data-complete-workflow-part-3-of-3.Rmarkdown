@@ -1,7 +1,7 @@
 ---
 title: Bayesian Multilevel Model with Missing Data Complete Workflow (Part 3 of 3)
 author: ''
-date: '2020-04-15'
+date: '2020-05-25'
 slug: bayesian-multilevel-model-with-missing-data-complete-workflow-part-3-of-3
 categories:
   - Modeling
@@ -9,6 +9,7 @@ tags:
   - Bayesian
   - Missing Data
   - Stan
+bibliography: miss_Bayes3.bib
 ---
 
 ```{r setup, echo=TRUE, message=FALSE, include=FALSE}
@@ -22,16 +23,17 @@ library(mice)
 library(pan)
 library(mitml)
 library(lme4)
+library(glue)
 
 load('~/GitHub/main_site/DFs/Impute_DF.RData')
 ```
 
 # Overview:
-This is the third post in a three-part blog series I put together. You can find part 1 [here](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/) and part 2 is [here](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/). Part 1 provies a quick overview of exploring missing data properties and sets the table for creating a simple missingness model. Part 2, covers the creation of an imputation model and explores the output of that model. This third post will walkthrough running the analysis using `brms` (CITE). 
+This is the third post in a three-part blog series I put together. You can find part 1 [here](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/) and part 2 is [here](../../../../../blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/). Part 1 provies a quick overview of exploring missing data properties and sets the table for creating a simple missingness model. Part 2, covers the creation of an imputation model and explores the output of that model. This third post will walkthrough running the analysis using `brms` [@Burkner2018]. 
 
 Even for a toy problem, because I am using Bayesian estimation for the model parameters, the size of the output can get pretty large. Multiplied across 10 or 20 imputed datasets and you can see how the file sizes start to grow. In practice, I tend to save these outputs in a separate external hard drive, and load them when I need to do more extensive analyses.
 
-## Setting up the model: 
+# Multiple Imputation for Missing Data
 Here will run a simple model in which we predict the association between dispostional negativity and momentary positive affect, assuming a random intercept for individual's momentary positive mood ratings. For more context about the data and study design review the previous posts (linked above).
 
 First the basic model assuming a Gaussian prior for the outcome distribution. 
@@ -42,7 +44,7 @@ PosAff_DN_form <-
   ) + gaussian()
 ```
 
-If you are familiar with `lme4` syntax (CITE + and link), this should model formulation should be fairly recognizable. We can translate this back to the underlying mathematical formulation. But first a quick conceptual overview of the model. At the between-subjects level, we have an effect that captures the association between individual dispostional negativity scores and average levels of momentary positive effect. At the momentary level, there is a component of the model that characterizes the association between ratings of recent positive events and momentary positive mood. 
+If you are familiar [with `lme4` syntax](https://cran.r-project.org/web/packages/lme4/lme4.pdf) [@Bates2015], thismodel formulation should be fairly recognizable. We can translate this back to the underlying mathematical formulation. But first a quick conceptual overview of the model. At the between-subjects level, we have an effect that captures the association between individual dispostional negativity scores and average levels of momentary positive effect. At the momentary level, there is a component of the model that characterizes the association between ratings of recent positive events and momentary positive mood. 
 
 Now for the model. 
 
@@ -69,4 +71,61 @@ $$
 $$
 where the $\beta$s represent the "fixed" or population effects in the model. 
 
+## Running the Analysis
+
+We'll add in a few weakly informative priors to help the model along here. For those of you who cut your Bayesian teeth on other software, there may be some resistance to this notion of setting a prior that adds any "information" to the posterior estimates. Taking a step back though, it is rare that you truly have *no* prior assumptions about your model variables and parameter distributions. At the very least, it is reasonable to set priors that limit the parameter space to a set of possible values.
+
+This is admittedly bordering on overegineering a solution here, but for the sake of a reproducible workflow *and* to highlight the flexibility (and possible automaticity if thinking about producitionizing a model), I wrote a pair of utility functions to extract the mean and standard deviation of a target variable. In this case I was interested in getting the mean and standard deviation for the outcome variable to set an intercept for the prior. 
+
+```{r weak_priors}
+get_imputed_mean <- function(data, variable){
+  M <- length(data) # data needs to be a list object
+  tmp_vec <- c()
+  for(m in 1:M){
+    var <- unlist(data[[m]][variable])
+    tmp_vec <- c(tmp_vec, mean(var))
+  }
+  return(mean(tmp_vec))
+}
+
+get_imputed_sd <- function(data, variable){
+  M <- length(data) # data needs to be a list object
+  tmp_vec <- c()
+  for(m in 1:M){
+    var <- unlist(data[[m]][variable])
+    tmp_vec <- c(tmp_vec, sd(var))
+  }
+  return(mean(tmp_vec))
+}
+
+```
+
+We these functions in hand, I am going to unpack the list of imputed `data.frames` and get my summary values for the intercept (using those handy, but probably not strictly necessary helper functions). 
+
+```{r unpack_list}
+dat_list <- list() 
+for(m in 1:20){
+  dat_list[[m]] <- dat[[m]]
+}
+
+mu <- get_imputed_mean(dat, "PosAff")
+sigma <- get_imputed_sd(dat, "PosAff")
+
+int_prior <- set_prior(glue("normal({mu}, {sigma})"), class = "Intercept")
+beta_prior <- set_prior("normal(0, 3)", class="b")
+cor_prior <- set_prior("lkj(2)", class="cor")
+```
+
+Finally we can run the model...
+```{r model_run}
+Pos_DN_fit <- brm_multiple(PosAff_DN_form,
+                           data = dat_list,
+                           chains = 3,
+                           prior = c(int_prior, beta_prior, cor_prior),
+                           iter = 10000,
+                           warmup = 9000,
+                           control = list(adapt_delta = .99,
+                                          max_treedepth = 15), 
+                           cores=3)
+```
 ## References
