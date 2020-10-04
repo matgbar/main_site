@@ -6,11 +6,7 @@
     <description>Recent content in RShiny on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/categories/rshiny/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 16 Aug 2018 00:00:00 +0000</lastBuildDate><atom:link href="/categories/rshiny/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introducing IBI VizEdit: An RShiny Application</title>
       <link>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</link>

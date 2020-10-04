@@ -84,7 +84,7 @@ paginate = 10
     # Social media
     facebook_site = "" # the Facebook handle of your site ('https://www.facebook.com/HANDLE')
     twitter_site = "dead_reck" # the Twitter handle of your site (without the '@')
-    default_sharing_image = "img/favicon-dead-1_thumb_20.png"
+    default_sharing_image = "img/favicon-dead-1.png"
 
     # Google Maps API key (if not set will default to not passing a key.)
     googleMapsApiKey = ""

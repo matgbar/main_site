@@ -6,11 +6,7 @@
     <description>Recent content in Gaussian Process on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/gaussian-process/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate><atom:link href="/tags/gaussian-process/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
       <link>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</link>
