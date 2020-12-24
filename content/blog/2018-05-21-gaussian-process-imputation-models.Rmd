@@ -23,7 +23,10 @@ library(tidybayes)
 library(tidyverse)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
+load('../../DFs/gp_forecast_blog.RData')
 ```
+
+(Updated: `r Sys.Date()`)
 
 When would it not be good to have a way to forecast the future? Honestly, I lack the imagination to provide an answer, though I'll admit there are likely edge cases I am not considering. But on average, all things being equal, it is better to know than to not know what is coming. For companies, the ability to accurately forecast events _is_ the business model. 
 
@@ -69,11 +72,15 @@ ggplot(data = air_pass_tbl,
 
 The linear model here alone is a not a particularly good fit, though there is clearly an average change over time. However, equally clear is that there is a seasonal pattern that is increasing in its magnitude over time. The linear model as defined in the plot above does not know how to handle such a pattern. 
 
-Let's say the prediction challenge here is to forecast airline passengers in 1960 using only airline passenger data from the preceding years. We know a simple linear change over time approach is not going to work or at least is probably not our best model - though it is better than no model since it would at least capture the upward trend. Since our only data here is a uni-dimensional time-series the question is how can we effectively model associations between monthly airline passengers across time. 
+Let's say the prediction challenge here is to forecast airline passengers in 1960 using only airline passenger data from the preceding years. We know a simple linear change over time approach is not going to work or at least is probably not our best model - though it is better than no model since it would at least capture the upward trend. Our only data here is a uni-dimensional time-series which means that our task is to effectively model associations between monthly airline passengers across time, using only what we can extract from existing patterns. 
 
-First, before we get started, let's split the data up into the training and test sets. 
+In an ideal world, we would want to take into account other properties that would affect air travel in a forecast model. Sometimes, the data are what they are and the single time series is all we have to work from. One thing I like about a Gaussian process approach is that, using fairly well-established covariance functions, we can take a layered approach. My general approach to model building is to move from the simple to complex. Because the sum of several Gaussian processes is itself a Gaussian process, we can simply add or remove any covariance functions that do not seem to useful in improving our forecast. 
 
-```{r}
+This is a hands-on approach. The model will learn the appropriate hyperparameters for the covariance function(s) from the data - provided the model is appropriate. So that part feels a little more like a machine learning model. However, which covariance functions to include, whether transformations of the data are beneficial, and how to define the covariance functions takes some trial an error. 
+
+So let's dig into that trial and error phase. First, before we get started with any modeling, let's split the data up into the training and test sets. 
+
+```{r, eval=FALSE}
 air_pass_train <- air_pass_tbl %>% 
   filter(year < 1960)
 
@@ -81,21 +88,21 @@ air_pass_test <- air_pass_tbl %>%
   filter(year >= 1960)
 ```
 
-I at least three, maybe even four properties of the raw data that I would like to capture in my model: 
+In viewing the data I see at least three, maybe even four properties of the time series that I would like to capture in my model: 
 
 1. Over time there is an average increase in the number of passengers.
 1. There is a seasonal trend on top of the average increase that appears to be annual in nature, which would make sense for the airline industry in then (and probably now - COVID crisis notwithstanding). 
 1. The effect of the seasonal trends is more pronounced over time
 1. There _may_, and I stress _may_ be a slight acceleration in the, long-term increase in monthly passengers
 
-So can I create a model that includes somehow accounts for all of these different features of the timeseries? Let's find out. I tend to like to start building simple models and move up from there. We'll start by simply creating a model based on the idea that time points closer together will have airline passenger values that are more similar than those that are farther apart? How close? How much of an effect? I'll use the squared exponential covariance kernel to help me derive these answers from the data. 
+So can I create a model that somehow accounts for all of these different features of the times series? To find out we start with the simplest model - one that can address the first point. This first model will use the squared exponential covariance function (below) to bake in the idea that time points closer together will have airline passenger values that are more similar than those that are farther apart. How close? How much of an effect of time will there be on the decay in covariance? That is where the modeling comes in. We use the data to tune the hyperparameters of the squared exponential covariance function. 
 
 $$k(t,t') = \sigma^2 exp\Big(-\frac{(t-t')^2}{2l_1^2}\Big)$$
 
-where $\sigma^2$ is the estimated variance accounted for by the function $k$ and $l$ is a length scale parameter that governs the decay rate. Smaller estimated values for $l$ indicate a faster decay rate in the covariance between two points as a function of time. 
+where $\sigma^2$ is the estimated variance accounted for by the function $k$ and $l$ is a length scale parameter that governs the decay rate. So here $\sigma^2$ governs how much variance the function accounts for in the observed data and $l$ is our parameter most closely connected with the decay in the covariance between two points as a function of time. 
 
 Let's get the data ready: 
-```{r}
+```{r, eval=FALSE}
 m1_data <- list(
   N1 = nrow(air_pass_train), 
   N2 = nrow(air_pass_test), 
@@ -112,7 +119,7 @@ The model variables are:
  - `Y`: passengers in a given month
  - `Xp`: the prediction window (which set of months/which time window to generate predicted passenger rates)
 
-Now for the `Stan` code: 
+Now for the `Stan` code that translates this. I was inspired and borrowed from Nate Lemoine's post on [Gaussian processes](https://natelemoine.com/even-faster-gaussian-processes-in-stan/) when setting this model up. I highly recommend if readers are interested in gain additional exposure to this modeling approach. 
 
 ```{stan, eval=FALSE, output.var='none'}
 functions{
@@ -223,7 +230,7 @@ generated quantities {
 
 And now for the actual model. 
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
 # Easier to note these upfront
 m1_pars.to.monitor<-c('a1','r1','sigma_sq', 'Ypred')
 
@@ -242,13 +249,13 @@ m1 <- stan(
 )
 ```
 
-The model will converge, and at least on my machine with that seed there is some evidence that it had a hard time getting started. The posterior distributions seem pretty good - for the most part there is evidence of good mixing of the chains. Note that I tend to use a higher number of chains for initial analyses to help diagnose convergence issues. 
+The model will converge, though there is some evidence that not all is well. Still, the traceplots below suggest the distributions of the model parameters converged reasonably well (a few spikes I don't love). I often use more chains when modeling building to help with diagnosis problems if they arise. Three chains should be sufficient for most models. 
 
 ```{r}
 traceplot(m1, pars=c('a1', 'r1', 'sigma_sq'))
 ```
 
-Predicted values are about as good as we saw with the linear regression model. 
+Predicted values are about as good as we saw with the linear regression model, and the credibility envelope misses the two highest values in 1960 altogether. 
 
 ```{r, message=FALSE, warning=FALSE}
 g_m1 <-
@@ -263,7 +270,7 @@ brms::posterior_samples(m1, 'Ypred') %>%
   geom_point(data = air_pass_test, aes(x = year, y = pass)) +
   geom_line(data = air_pass_test, aes(x = year, y = pass)) +
   labs(x = "Month in 1960", y = "Passengers (in thousands)", 
-       caption = 'Posterior forecasts for single squared exponential covariance GP') +
+       caption = 'Model 1. Single Gaussian process model on raw passenger totals.') +
     scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
                      labels = c('Jan', 'Apr', 'Jul', 'Oct')) +
   theme_bw()
@@ -271,7 +278,9 @@ brms::posterior_samples(m1, 'Ypred') %>%
 g_m1
 ```
 
-Before adding another function, we should consider the fact that the distribution we care most about modeling (number of monthly passengers) is not likely normally distributed. Currently the model makes the assumption that it is, which may have contributed to some of the initial warning messages the `Stan` model returned. There are a few options, but I think a simple log-transform should work here. A little tweak of the code adding to the transformed data block: 
+Before adding another function, we should consider the fact that the distribution we care most about modeling (number of monthly passengers) is not likely normally distributed. Currently the model makes the assumption that it is, which may have contributed to some of the initial warning messages the `Stan` model returned. Semi-related is that the mean and variance of the time-series are shifting dramatically over the period examined here. 
+
+There is more than one way to address the issues of changing scale/variance and non-normality. In this case, I am going to apply a simple log-transform on the airline passenger values. We can do this in the Stan code itself: 
 
 ```{stan, eval=FALSE, output.var='none'}
 transformed data { 
@@ -284,12 +293,12 @@ transformed data {
 }
 ```
 
+With the transform added we can re-run our model with the single sqaured exponential covariance function. 
 
-```{r, message=FALSE, warning=FALSE}
-# Easier to note these upfront
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+# Model is the same in terms of parameters - just transformed the variable to log space
 m2_pars.to.monitor <- m1_pars.to.monitor
 
-#Note that I have a machine at home with 12 logical cores and 64GB of RAM
 m2 <- stan(
   file = '../../blog_code/gp_m2.stan',
   data = m1_data, 
@@ -304,11 +313,15 @@ m2 <- stan(
 )
 ```
 
-```{r}
+There are no warnings, which is always a welcome sign, and the model seems to converge without much issue. (I am moving quickly through these modeling steps. You would definitely want to perform more posterior checks than what I am doing here.)
+
+```{r, echo=FALSE}
 traceplot(m2, pars=c('a1', 'r1', 'sigma_sq'))
 ```
 
-```{r}
+And now for our model comparison: raw vs. log-transformed.
+
+```{r, echo=FALSE}
 g_m2 <- 
 brms::posterior_samples(m2, 'Ypred') %>% 
   as.data.frame() %>% 
@@ -322,7 +335,7 @@ brms::posterior_samples(m2, 'Ypred') %>%
   geom_point(data = air_pass_test, aes(x = year, y = pass)) +
   geom_line(data = air_pass_test, aes(x = year, y = pass)) +
   labs(x = "Month in 1960", y = "Passengers (in thousands)", 
-       caption = 'Posterior forecasts for single squared exponential covariance GP with log-transformed inputs') +
+       caption = 'Model 2. A single Gaussian process on the log-transformed passenger totals.') +
   scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
                      labels = c('Jan', 'Apr', 'Jul', 'Oct')) +
   theme_bw()
@@ -334,18 +347,27 @@ cowplot::plot_grid(
   g_m2 + 
     scale_y_continuous(breaks = c(200, 400, 600, 800)) + 
     coord_cartesian(ylim = c(195, 805)), 
-  labels = paste0('m', 1:2), 
   nrow = 2
 )
 ```
 
-Despite the greater degree of uncertainty, visual inspection of the plots leads me to think that the log-transformed approach is a little better. The lack of warning messages is also a plus. Neither of these models is particularly good. Which is why we are going to add another GP that accounts for seasonality in the time series. 
+Despite the greater degree of uncertainty, visual inspection of the plots leads me to think that the log-transformed approach is a little better. The lack of warning messages is also a plus. Neither of these models is particularly good, and that is why we are going to add another GP that accounts for seasonality in the time series. Hopefully that can give us some curvier forecasts.
 
 $$k(t,t')=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t')*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t')^2}{2l_3^2}\Big)$$
-LESS HANDY-WAVY more details.... 
 
-```{r, message=FALSE, warning=FALSE}
-# Easier to note these upfront
+Here is what that looks like when added to the `main_GP` function in our evolving Stan code. Note that you'll also need to add the `rho` and `alpha` parameters in the appropriate locations. Raw code is available here. 
+
+```{stan, eval=FALSE, output.var='none'}
+for(i in 1:Nx){
+	for(j in 1:Ny){
+		K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*1))/square(rho2))*
+		exp(-square(x[i]-y[j])/2/square(rho3));
+	}
+}
+```
+
+```{r, message=FALSE, warning=FALSE, eval=FALSE}
+# Now more parameters to monitor
 m3_pars.to.monitor <- c(
   paste0('r', 1:3), 
   paste0('a', 1:2), 
@@ -353,7 +375,6 @@ m3_pars.to.monitor <- c(
   'Ypred'
 )
 
-#Note that I have a machine at home with 12 logical cores and 64GB of RAM
 m3 <- stan(
   file = '../../blog_code/gp_m3.stan',
   data = m1_data, 
@@ -368,7 +389,7 @@ m3 <- stan(
 )
 ```
 
-```{r}
+```{r, echo=FALSE}
 g_m3 <- 
 brms::posterior_samples(m3, 'Ypred') %>% 
   as.data.frame() %>% 
@@ -382,7 +403,7 @@ brms::posterior_samples(m3, 'Ypred') %>%
   geom_point(data = air_pass_test, aes(x = year, y = pass)) +
   geom_line(data = air_pass_test, aes(x = year, y = pass)) +
   labs(x = "Month in 1960", y = "Passengers (in thousands)", 
-       caption = 'Posterior forecasts for single squared exponential covariance GP with log-transformed inputs') +
+       caption = 'Model 3. The sum of two Gaussian process models.') +
   scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
                      labels = c('Jan', 'Apr', 'Jul', 'Oct')) +
   theme_bw()
@@ -390,9 +411,25 @@ brms::posterior_samples(m3, 'Ypred') %>%
 g_m3
 ```
 
-Well that is a huge improvement over the first few models. Adding in a term that addresses the obvious seasonal pattern improved model predictions immensely. My only gripe at this point is the fact that the "mean" posterior estimate tends to undershoot the observed data on average. It could just be the restricted range and the model would over predict the next few months.
+Well that is a huge improvement over the first few models. Adding in a term that addresses the obvious seasonal pattern improved model predictions immensely. My only gripe at this point is the fact that the "mean" posterior estimate tends to undershoot the observed data on average. It could just be the restricted range and the model would "over-predict" the next few months.
 
-```{r}
+Returning to the initial list let us see what is still missing from the model
+
+1. Over time there is an average increase in the number of passengers.
+
+The linear trend seems to be effectively captured by the first Gaussian process in the model - the squared exponential covariance kernel. An oversimplified description of that particular Gaussian process is that: _as the time between two points increases, the expected covariance in values decreases_. 
+
+1. There is a seasonal trend on top of the average increase that appears to be annual in nature, which would make sense for the airline industry in then (and probably now - COVID crisis notwithstanding).
+
+This was addressed in `m3` when we added a periodic kernel - notably one that has its own squared exponential covariance term attached to it. The concept here is that we are stating that there is some sort of seasonal trend and we can can model the periodicity as a function of the covariance matrix using the formula above _and_ that periodic function may change over time. Essentially, the squared exponential covariance term added on the end of the periodic kernel makes it locally periodic. 
+
+1. The effect of the seasonal trends is more pronounced over time. 
+Addressed in two ways. The first is through the log-transform. The second is through the local nature of the periodic kernel. 
+
+1. There _may_, and I stress _may_ be a slight acceleration in the, long-term increase in monthly passengers. 
+One way to think about this is that the decay in the association between two scores as a function of time is going to _accelerate_. At least that is my approach in `m4`. Below I add a third Gaussian process that enforces this concept. It is a squared exponential covariance kernel - our good old decay function - multiplied by a second squared exponential term. The idea here is that there is that the decay function is not constant. The further out we get in our forecasts, the less certain we should be about our predictions and observed data should be even less predictive of values in the increasingly distant future than the simple squared exponential kernel can account for on its own. 
+
+```{r, eval=FALSE}
 # Easier to note these upfront
 m4_pars.to.monitor <- c(
   paste0('r', 1:5), 
@@ -416,7 +453,7 @@ m4 <- stan(
 )
 ```
 
-```{r}
+```{r, echo=FALSE}
 g_m4.1 <- 
 brms::posterior_samples(m4, 'Ypred') %>% 
   as.data.frame() %>% 
@@ -430,7 +467,7 @@ brms::posterior_samples(m4, 'Ypred') %>%
   geom_point(data = air_pass_test, aes(x = year, y = pass)) +
   geom_line(data = air_pass_test, aes(x = year, y = pass)) +
   labs(x = "Month in 1960", y = "Passengers (in thousands)", 
-       caption = str_wrap('Forecasted using a squared exponential covariance kernel, and two additional kernels, one that addressed the seasonal component in the observed time series and one that I have no idea why it works but it sort of made intuitive sense, and now I need to back track the math to make sure I am not doing something bonkers here. The fit is better though - noticeably so. And, the uncertainty intervals behave in a more satisfying manner: the farther in the future from the most recent data point used to train the parameters, the more uncertainty the model should have about its predictions.')) +
+       caption = 'Model 4. The sum of three Gaussian process models.') +
   scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
                      labels = c('Jan', 'Apr', 'Jul', 'Oct')) +
   theme_bw()
@@ -460,7 +497,13 @@ brms::posterior_samples(m4, 'Ypred') %>%
 g_m4.2
 ```
 
-```{r}
+The predicted trend line has moved even closer to the observed, out-of-sample data with `m4`. Additionally, we see the expected behavior of our credibility interval. The farther out from the observed data we attempt to forecast, the more uncertain we are about the predictions. When thinking about models as engines that drive key decisions, being honest about how uncertain we are in forecasts is important, and too often overlooked. 
+
+At this point I am pretty satisfied with the Gaussian process model I have assembled here. As a point of comparison we can use an ARIMA model - a very common time-series model that can model seasonality and average trends over time as well. Hopefully, my approach will compare well against the more common technique. 
+
+Here is the model setup: 
+
+```{r, eval = FALSE}
 (arima_fit<- arima(log(AirPassengers[1:132]), c(0, 1, 1),
               seasonal = list(order = c(0, 1, 1), period = 12)))
 update(arima_fit, method = "CSS")
@@ -475,7 +518,11 @@ arima_forecast <-data.frame(
   UB=exp(as.numeric(tu)), 
   LB=exp(as.numeric(tl))
 )
+```
 
+And here are the results overlayed on top of the `m4` predictions and observed data.
+
+```{r, echo=FALSE, eval=FALSE}
 g_arima_m4 <- 
 brms::posterior_samples(m4, 'Ypred') %>% 
   as.data.frame() %>% 
@@ -485,18 +532,18 @@ brms::posterior_samples(m4, 'Ypred') %>%
     pass = exp(pass_log)
   ) %>%
   ggplot(aes(x = year, y = pass)) +
-  stat_lineribbon(color = "#08519C", fill = '#426EBD', lwd = .5, .width = .95, alpha = .25) +
+  stat_lineribbon(color = "#08519C", fill = '#426EBD', lwd = .5, .width = .95, alpha = .33) +
   geom_line(
     data = arima_forecast, 
     aes(x=year, y=pass), 
     color = RColorBrewer::brewer.pal(9, 'Reds')[7], 
-    alpha = .25
+    alpha = .33
     ) +
   geom_ribbon(
     data = arima_forecast, 
     aes(ymax=UB, ymin=LB), 
     fill = RColorBrewer::brewer.pal(9, 'Reds')[3], 
-    alpha = .25
+    alpha = .33
     ) +
   geom_point(data = air_pass_test, aes(x = year, y = pass)) +
   geom_line(data = air_pass_test, aes(x = year, y = pass)) +
@@ -506,12 +553,15 @@ brms::posterior_samples(m4, 'Ypred') %>%
                      labels = c('Jan', 'Apr', 'Jul', 'Oct')) +
   theme_bw()
 
+```
+
+Some key differences
+1. The ARIMA takes a lot less time to execute. Gaussian process models are unfortunately $O(N^3)$ which means that as the number of data points increase the computation burden increases at an exponential rate. 
+1. The ARIMA model's mean forecast is similar, but slightly worse than the Gaussian process model.
+1. The ARIMA model is more certain about its predictions and while uncertainty does increase over time, the increase is not as pronounced. 
+
+```{r, echo = FALSE}
 g_arima_m4
 ```
-Gaussian process models offer a flexible framework for detecting and stacking latent change processes and can be turned into forecast models on out-of-sample observations. The secret is that the sum of any set of Gaussian processes is itself a Gaussian process: 
 
--AND MOST SENSIBLE FORMULA HERE. 
-
-A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal's mean and/or variance changes over time). A common approach is to impose some stationarity on the data  (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.
-
-The models below will make use of the preloaded `AirPassengers` data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data. 
+Summary

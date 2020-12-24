@@ -14,7 +14,7 @@ banner: img/banners/power-analysis-growth-model-banner.png
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
-load('~/GitHub/main_site/DFs/Power_data.RData')
+load('../../DFs/Power_data.RData')
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(lme4)
 library(merTools)
