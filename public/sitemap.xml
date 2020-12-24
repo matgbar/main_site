@@ -53,71 +53,6 @@
   </url>
   
   <url>
-    <loc>/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/ai/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/forecasting/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/machine-learning/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/ml/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/predictive-modeling/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/</loc>
-    <lastmod>2018-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</loc>
-    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/stan/</loc>
-    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/data-processing/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/ibi-vizedit/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/rshiny/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
@@ -125,11 +60,6 @@
   <url>
     <loc>/tags/lavaan/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/</loc>
-    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -143,12 +73,27 @@
   </url>
   
   <url>
+    <loc>/tags/forecasting/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/gaussian-process/</loc>
     <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/predictive-modeling/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/stan/</loc>
     <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   

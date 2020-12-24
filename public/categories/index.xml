@@ -16,32 +16,5 @@
       <description></description>
     </item>
     
-    <item>
-      <title>Machine Learning</title>
-      <link>/categories/machine-learning/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IBI VizEdit</title>
-      <link>/categories/ibi-vizedit/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/ibi-vizedit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RShiny</title>
-      <link>/categories/rshiny/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/rshiny/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

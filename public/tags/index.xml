@@ -44,60 +44,6 @@
     </item>
     
     <item>
-      <title>AI</title>
-      <link>/tags/ai/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ai/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Forecasting</title>
-      <link>/tags/forecasting/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/forecasting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ML</title>
-      <link>/tags/ml/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ml/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Predictive Modeling</title>
-      <link>/tags/predictive-modeling/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/predictive-modeling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Stan</title>
-      <link>/tags/stan/</link>
-      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/stan/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Data Processing</title>
-      <link>/tags/data-processing/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/data-processing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>lavaan</title>
       <link>/tags/lavaan/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
@@ -116,11 +62,38 @@
     </item>
     
     <item>
+      <title>Forecasting</title>
+      <link>/tags/forecasting/</link>
+      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/forecasting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Gaussian Process</title>
       <link>/tags/gaussian-process/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/gaussian-process/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Predictive Modeling</title>
+      <link>/tags/predictive-modeling/</link>
+      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/predictive-modeling/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stan</title>
+      <link>/tags/stan/</link>
+      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/stan/</guid>
       <description></description>
     </item>
     

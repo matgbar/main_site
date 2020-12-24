@@ -1,49 +1,61 @@
 ---
-title: 'Gaussian Process Imputation/Forecast Models'
-author: 'Matthew Barstead, Ph.D.'
+title: "Gaussian Process Imputation/Forecast Models"
+author: "Matthew Barstead, Ph.D."
 date: '2018-05-21'
-baseurl: "https://mgb-research.netlify.com/"
+baseurl: https://mgb-research.netlify.com/
 slug: gaussian-process-imputation-models
-categories:
-  - Modeling
+categories: Modeling
 tags:
-  - Bayesian
-  - Stan
-  - R
-  - Gaussian Process
-  - Forecasting
-  - Predictive Modeling
+- Bayesian
+- Stan
+- R
+- Gaussian Process
+- Forecasting
+- Predictive Modeling
+- R-bloggers
 banner: img/banners/gp-forecast-banner.png
 ---
 
 
 
-<p>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data so that certain modeling techniques can provide allow a research to make some predictions (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</p>
-<p>The models below will make use of the preloaded <code>AirPassengers</code> data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.</p>
-<pre class="r"><code>data(&#39;AirPassengers&#39;)
-plot(AirPassengers)</code></pre>
-<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/AirPassengers-1.png" width="672" /></p>
-<p>As a toy problem, I am going to focus on the application of a Gaussian process model to forecasting future monthly passengers. This is not the only way one could try to solve this prediction problem. I offer it as a means of understanding the potential power that exists in using these sorts of models for prediction and imputation problems involving univariate time series data.</p>
-<p>A few notes about Gaussian process models. To start they are a class of Bayesian models. There are a few <code>R</code> and <code>Python</code> packages that allow researchers to use this modeling approach. I have become something of a <a href="http://mc-stan.org/">Stan</a> convert recently, but it is not the only option out there.</p>
-<p>The authoritative text on Gaussian process models was arguably published by <a href="http://www.gaussianprocess.org/gpml/chapters/RW.pdf">Rasumssen &amp; Williams in 2006</a>, but only recently have computing power and programming languages allowed for a deeper tapping of this methodology’s strengths. For anyone interested in learning more about these models I highly recommend the Rasmussen &amp; Williams (2006) text as a starting point.</p>
-<p>It is worth pointing out that, because Guassian process models rely on Bayesian estimation, parameters either need to be fixed or given a prior distribution. I like that Bayesian analyses really make you think about your priors. It is the statistical equivalent of eating your veggies. You may not always enjoy it, but it will do you good in the long run. Strategies for choosing priors are beyond the purpose of this post. If interested, the following <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">page on the Stan GitHub repo</a> provides a brief, but reasonable overview as a starting point.</p>
-<p>First, the data need a bit of prepping to be fed into a Stan program.</p>
-<pre class="r"><code>#Obtaining a numeric vector for time. Maintaining the units of measure at 1 = 1 year
-Year&lt;-seq(1949, 1960+11/12, by=1/12)
+<p>When would it not be good to have a way to forecast the future? Honestly, I lack the imagination to provide an answer, though I’ll admit there are likely edge cases I am not considering. But on average, all things being equal, it is better to know than to not know what is coming. For companies, the ability to accurately forecast events <em>is</em> the business model.</p>
+<p>The simplest forecast model is one in which we use trends over time to predict future events, the assumption being that the previous trend will continue essentially as is through the forecast window. That seem like a simple forecast model, but the trick is what a given model represents as the “trend.” For some data, a linear model is going to make perfect sense:</p>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>For others, such a simple model is not going to be very effective.</p>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The linear model here alone is a not a particularly good fit, though there is clearly an average change over time. However, equally clear is that there is a seasonal pattern that is increasing in its magnitude over time. The linear model as defined in the plot above does not know how to handle such a pattern.</p>
+<p>Let’s say the prediction challenge here is to forecast airline passengers in 1960 using only airline passenger data from the preceding years. We know a simple linear change over time approach is not going to work or at least is probably not our best model - though it is better than no model since it would at least capture the upward trend. Since our only data here is a uni-dimensional time-series the question is how can we effectively model associations between monthly airline passengers across time.</p>
+<p>First, before we get started, let’s split the data up into the training and test sets.</p>
+<pre class="r"><code>air_pass_train &lt;- air_pass_tbl %&gt;% 
+  filter(year &lt; 1960)
 
-#converting time-series to a vector
-Pass&lt;-as.vector(AirPassengers)
-
-#identifiying number of data points for the &quot;training&quot; data
-N1&lt;-length(Year)
-
-#specifying 2-year prediction window. 
-year.fore2&lt;-seq(1961, 1962+11/12, by=1/12)
-N2&lt;-length(year.fore2)</code></pre>
-<p>With the data prepped, I will run the first of two models. The first model relies solely on the squared exponential covariance function (plus error) to define the underlying Gaussian process. The squared exponential function takes the following form:</p>
+air_pass_test &lt;- air_pass_tbl %&gt;% 
+  filter(year &gt;= 1960)</code></pre>
+<p>I at least three, maybe even four properties of the raw data that I would like to capture in my model:</p>
+<ol style="list-style-type: decimal">
+<li>Over time there is an average increase in the number of passengers.</li>
+<li>There is a seasonal trend on top of the average increase that appears to be annual in nature, which would make sense for the airline industry in then (and probably now - COVID crisis notwithstanding).</li>
+<li>The effect of the seasonal trends is more pronounced over time</li>
+<li>There <em>may</em>, and I stress <em>may</em> be a slight acceleration in the, long-term increase in monthly passengers</li>
+</ol>
+<p>So can I create a model that includes somehow accounts for all of these different features of the timeseries? Let’s find out. I tend to like to start building simple models and move up from there. We’ll start by simply creating a model based on the idea that time points closer together will have airline passenger values that are more similar than those that are farther apart? How close? How much of an effect? I’ll use the squared exponential covariance kernel to help me derive these answers from the data.</p>
 <p><span class="math display">\[k(t,t&#39;) = \sigma^2 exp\Big(-\frac{(t-t&#39;)^2}{2l_1^2}\Big)\]</span></p>
 <p>where <span class="math inline">\(\sigma^2\)</span> is the estimated variance accounted for by the function <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is a length scale parameter that governs the decay rate. Smaller estimated values for <span class="math inline">\(l\)</span> indicate a faster decay rate in the covariance between two points as a function of time.</p>
-<p>This model, along with its forecasting function are defined in <code>Stan</code> code below (Adapted from <a href="http://natelemoine.com/fast-gaussian-process-models-in-stan/">Nate Lemoine’s code</a>):</p>
+<p>Let’s get the data ready:</p>
+<pre class="r"><code>m1_data &lt;- list(
+  N1 = nrow(air_pass_train), 
+  N2 = nrow(air_pass_test), 
+  X = air_pass_train[[&#39;year&#39;]], 
+  Y = air_pass_train[[&#39;pass&#39;]], 
+  Xp = air_pass_test[[&#39;year&#39;]]
+)</code></pre>
+<p>The model variables are:
+- <code>N1</code>: the number of observations in the prediction set
+- <code>N2</code>: the number of observation in the test set
+- <code>X</code>: evenly spaced interval - in this case time as measured in months
+- <code>Y</code>: passengers in a given month
+- <code>Xp</code>: the prediction window (which set of months/which time window to generate predicted passenger rates)</p>
+<p>Now for the <code>Stan</code> code:</p>
 <pre class="stan"><code>functions{
     //covariance function for main portion of the model
     matrix main_GP(
@@ -98,7 +110,7 @@ N2&lt;-length(year.fore2)</code></pre>
     Kop = main_GP(No, xo, Np, xp,  a1, r1);
     
     //--------------------------------------------------------------------
-    //Algorithm 2.1 of Rassmussen and Williams... 
+    //Algorithm 2.1 of Rassmussen and Williams 
     Ko_inv_t = Kop&#39;/Ko;
     mu_p = Ko_inv_t*yobs;
     Tau=Kp-Ko_inv_t*Kop;
@@ -122,6 +134,7 @@ transformed data {
 }
 
 parameters {
+  // a1, r1, and sigma_sq cannot be negative 
     real&lt;lower=0&gt; a1;
     real&lt;lower=0&gt; r1;
     real&lt;lower=0&gt; sigma_sq;
@@ -138,9 +151,8 @@ model{
     L_S = cholesky_decompose(Sigma);
     Y ~ multi_normal_cholesky(mu, L_S);
     
-    //priors for parameters
+    // priors for parameters - effecitvely the upper half of the students t-distribution
     a1 ~ student_t(3,0,1);
-    //incorporate minimum and maximum distances - use invgamma
     r1 ~ student_t(3,0,1);
     sigma_sq ~ student_t(3,0,1);
 }
@@ -148,266 +160,298 @@ model{
 generated quantities {
     vector[N2] Ypred = post_pred_rng(a1, r1, sigma_sq, N1, X, N2, Xp, Y);
 }</code></pre>
-<p>The model takes just over a minute to run. For those of you who are computational gearheads, here is the hardware I am working with (with a total of 64GB of RAM):</p>
-<pre class="r"><code>benchmarkme::get_cpu()</code></pre>
-<pre><code>## $vendor_id
-## [1] &quot;GenuineIntel&quot;
-## 
-## $model_name
-## [1] &quot;Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz&quot;
-## 
-## $no_of_cores
-## [1] 12</code></pre>
-<p>A quick view of summary stats good convergence of estimates across the 6 chains.</p>
-<pre class="r"><code>pars.to.monitor&lt;-c(&#39;a1&#39;,&#39;r1&#39;,&#39;sigma_sq&#39;, &#39;Ypred&#39;)
-summary(fit.stan1, pars=pars.to.monitor[-4])$summary</code></pre>
-<pre><code>##                  mean      se_mean           sd        2.5%          25%
-## a1        2.064974195 2.117451e-02 1.2312158202 0.739681295  1.272435874
-## r1       22.681133287 1.252456e-01 9.0005034579 9.102436133 16.045254783
-## sigma_sq  0.003559372 5.819530e-06 0.0004251947 0.002818252  0.003254155
-##                   50%          75%        97.5%    n_eff      Rhat
-## a1        1.759559393  2.505894675  5.176821352 3380.974 1.0010353
-## r1       21.367822936 28.012894270 42.692355288 5164.270 0.9996089
-## sigma_sq  0.003524852  0.003823097  0.004468209 5338.262 1.0002208</code></pre>
-<p>… and traceplots demonstrate good mixing.</p>
-<pre class="r"><code>traceplot(fit.stan1, pars=c(&#39;a1&#39;, &#39;r1&#39;, &#39;sigma_sq&#39;))</code></pre>
-<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>So the real question is how did the model do?</p>
-<pre class="r"><code>Ypred&lt;-10^colMeans(extract(fit.stan1, pars=&#39;Ypred&#39;)$Ypred)
+<p>And now for the actual model.</p>
+<pre class="r"><code># Easier to note these upfront
+m1_pars.to.monitor&lt;-c(&#39;a1&#39;,&#39;r1&#39;,&#39;sigma_sq&#39;, &#39;Ypred&#39;)
 
-Ypred.DF&lt;-extract(fit.stan1, pars=&#39;Ypred&#39;)$Ypred
-UB&lt;-vector()
-LB&lt;-vector()
-
-for(i in 1:N2){
-  UB[i]&lt;-10^quantile(Ypred.DF[,i], .975)
-  LB[i]&lt;-10^quantile(Ypred.DF[,i], .025)
-}
-
-library(ggplot2)
-DF.orig&lt;-data.frame(Year=Year, Passengers=Pass)
-DF.fore2&lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
-
-g1&lt;-ggplot()+
-  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
-  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
-  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
-g1</code></pre>
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+m1 &lt;- stan(
+  file = &#39;../../blog_code/gp_m1.stan&#39;,
+  data = m1_data, 
+  warmup = 1000,
+  iter = 2000,
+  refresh=1000,
+  chains = 6,
+  pars = m1_pars.to.monitor,
+  control = list(adapt_delta = .95, 
+                 max_treedepth = 10), 
+  seed = 20030414
+)</code></pre>
+<p>The model will converge, and at least on my machine with that seed there is some evidence that it had a hard time getting started. The posterior distributions seem pretty good - for the most part there is evidence of good mixing of the chains. Note that I tend to use a higher number of chains for initial analyses to help diagnose convergence issues.</p>
+<pre class="r"><code>traceplot(m1, pars=c(&#39;a1&#39;, &#39;r1&#39;, &#39;sigma_sq&#39;))</code></pre>
 <p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>Not all that great of a prediction to be honest. In this case, the function essentially reduces to a linear regression as there is no place for the periodic nature of the data to be explicitly modeled. This is where the flexibility of Gaussian process models starts to shine as any Gaussian process can be re-expressed as a the sum of an infinite number of Gaussian processes. Here we will add a covariance function that incorporates periodicity. In this case, a period is approximately one year.</p>
-<p>The new periodic covariance function is:</p>
-<p><span class="math display">\[k(t,t&#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&#39;)^2}{2l_3^2}\Big)\]</span></p>
-<p>The inclusion of the squared exponential function here simply reduces the ability of the annual features of the data to explain covariation as the interval between two points grows. Here is the <code>Stan</code> code.</p>
-<pre class="stan"><code>functions{
-    //covariance function for main portion of the model
-    matrix main_GP(
-        int Nx,
-        vector x,
-        int Ny,
-        vector y, 
-        real alpha1,
-        real alpha2,
-        real rho1,
-        real rho2,
-        real rho3){
-                    matrix[Nx, Ny] K1;
-                    matrix[Nx, Ny] K2;
-                    matrix[Nx, Ny] Sigma;
-    
-                    //specifying random Gaussian process that governs covariance matrix
-                    for(i in 1:Nx){
-                        for (j in 1:Ny){
-                            K1[i,j] = alpha1*exp(-square(x[i]-y[j])/2/square(rho1));
-                        }
-                    }
-                    
-                    //specifying random Gaussian process incorporates heart rate
-                    for(i in 1:Nx){
-                        for(j in 1:Ny){
-                            K2[i, j] = alpha2*exp(-2*square(sin(pi()*fabs(x[i]-y[j])*1))/square(rho2))*
-                            exp(-square(x[i]-y[j])/2/square(rho3));
-                        }
-                    }
-                        
-                    Sigma = K1+K2;
-                    return Sigma;
-                }
-    //function for posterior calculations
-    vector post_pred_rng(
-        real a1,
-        real a2,
-        real r1, 
-        real r2,
-        real r3,
-        real sn,
-        int No,
-        vector xo,
-        int Np, 
-        vector xp,
-        vector yobs){
-                matrix[No,No] Ko;
-                matrix[Np,Np] Kp;
-                matrix[No,Np] Kop;
-                matrix[Np,No] Ko_inv_t;
-                vector[Np] mu_p;
-                matrix[Np,Np] Tau;
-                matrix[Np,Np] L2;
-                vector[Np] yp;
-    
-    //--------------------------------------------------------------------
-    //Kernel Multiple GPs for observed data
-    Ko = main_GP(No, xo, No, xo, a1, a2, r1, r2, r3);
-    for(n in 1:No) Ko[n,n] += sn;
-        
-    //--------------------------------------------------------------------
-    //kernel for predicted data
-    Kp = main_GP(Np, xp, Np, xp,  a1, a2, r1, r2,  r3);
-    for(n in 1:Np) Kp[n,n] += sn;
-        
-    //--------------------------------------------------------------------
-    //kernel for observed and predicted cross 
-    Kop = main_GP(No, xo, Np, xp,  a1, a2, r1, r2, r3);
-    
-    //--------------------------------------------------------------------
-    //Algorithm 2.1 of Rassmussen and Williams... 
-    Ko_inv_t = Kop&#39;/Ko;
-    mu_p = Ko_inv_t*yobs;
-    Tau=Kp-Ko_inv_t*Kop;
-    L2 = cholesky_decompose(Tau);
-    yp = mu_p + L2*rep_vector(normal_rng(0,1), Np);
-    return yp;
-    }
-}
+<p>Predicted values are about as good as we saw with the linear regression model.</p>
+<pre class="r"><code>g_m1 &lt;-
+brms::posterior_samples(m1, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .7) +
+  geom_point(data = air_pass_test, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_test, aes(x = year, y = pass)) +
+  labs(x = &quot;Month in 1960&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = &#39;Posterior forecasts for single squared exponential covariance GP&#39;) +
+    scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
+                     labels = c(&#39;Jan&#39;, &#39;Apr&#39;, &#39;Jul&#39;, &#39;Oct&#39;)) +
+  theme_bw()
 
-data { 
-    int&lt;lower=1&gt; N1;
-    int&lt;lower=1&gt; N2;
-    vector[N1] X; 
-    vector[N1] Y;
-    vector[N2] Xp;
-}
-
-transformed data { 
+g_m1</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Before adding another function, we should consider the fact that the distribution we care most about modeling (number of monthly passengers) is not likely normally distributed. Currently the model makes the assumption that it is, which may have contributed to some of the initial warning messages the <code>Stan</code> model returned. There are a few options, but I think a simple log-transform should work here. A little tweak of the code adding to the transformed data block:</p>
+<pre class="stan"><code>transformed data { 
     vector[N1] mu;
-    for(n in 1:N1) mu[n] = 0;
-}
+    vector[N1] y_log;
+    for(n in 1:N1){
+      mu[n] = 0;
+      y_log[n] = log(Y[n]);
+    } 
+}</code></pre>
+<pre class="r"><code># Easier to note these upfront
+m2_pars.to.monitor &lt;- m1_pars.to.monitor
 
-parameters {
-    real&lt;lower=0&gt; a1;
-    real&lt;lower=0&gt; a2;
-    real&lt;lower=15&gt; r1;      //Set after some preliminary modeling
-    real&lt;lower=0&gt; r2;
-    real&lt;lower=0&gt; r3;
-    real&lt;lower=0&gt; sigma_sq;
-}
-
-model{ 
-    matrix[N1,N1] Sigma;
-    matrix[N1,N1] L_S;
-    
-    //using GP function from above 
-    Sigma = main_GP(N1, X, N1, X, a1, a2, r1, r2, r3);
-    for(n in 1:N1) Sigma[n,n] += sigma_sq;
-    
-    L_S = cholesky_decompose(Sigma);
-    Y ~ multi_normal_cholesky(mu, L_S);
-    
-    //priors for parameters
-    a1 ~ normal(2.06,1.23);     //Taken from the first model
-    a2 ~ student_t(3,0,1);
-    //incorporate minimum and maximum distances - use invgamma
-    r1 ~ normal(22.68,9.005);   //Taken from the first model
-    r2 ~ student_t(3,0,1);
-    r3 ~ student_t(3,0,1);  
-    sigma_sq ~ normal(0,1);
-}
-
-generated quantities {
-    vector[N2] Ypred = post_pred_rng(a1, a2, r1, r2, r3, sigma_sq, N1, X, N2, Xp, Y);
-}
-</code></pre>
-<p>This model took about 6 minutes to run.</p>
-<p>Unfortunately, the sampling algorithm that generates the Bayesian estimates is not parallelizable. Until <code>Stan</code> and <code>rstan</code> can run using graphics chips’ architecture (which has been buzzed about around the <a href="http://discourse.mc-stan.org/t/stan-on-the-gpu/326">Stan ether</a>), model run time is going to be the biggest downside. Still, 6 minutes is not that long to wait if the model performs well.</p>
-<pre class="r"><code>pars.to.monitor&lt;-c(paste0(&#39;a&#39;, 1:2), paste0(&#39;r&#39;, 1:3), &#39;Ypred&#39;)
-summary(fit.stan2, pars=pars.to.monitor[-6])$summary</code></pre>
-<pre><code>##           mean      se_mean          sd        2.5%          25%          50%
-## a1  2.54983942 0.0134372272  0.92993236  1.03551274  1.842231419  2.464693706
-## a2  0.01028192 0.0007652084  0.02499935  0.00195483  0.003809465  0.005887629
-## r1 29.72788580 0.0860626598  5.77288905 19.05829543 25.751944510 29.510979184
-## r2  0.71435573 0.0024883370  0.12979765  0.49982165  0.627554970  0.700328139
-## r3 21.16693790 0.7029880494 10.71983939  2.13531511 14.836950073 19.220095144
-##           75%       97.5%     n_eff     Rhat
-## a1  3.1470023  4.60109271 4789.4253 1.001067
-## a2  0.0100722  0.04229047 1067.3281 1.004514
-## r1 33.4589313 41.57756671 4499.4237 1.000575
-## r2  0.7850996  1.00378065 2720.9169 1.000556
-## r3 25.4484115 45.91201691  232.5309 1.026833</code></pre>
-<pre class="r"><code>traceplot(fit.stan2, pars=pars.to.monitor[-6])</code></pre>
-<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<pre class="r"><code>Ypred&lt;-10^colMeans(extract(fit.stan2, pars=&#39;Ypred&#39;)$Ypred)
-
-Ypred.DF&lt;-extract(fit.stan2, pars=&#39;Ypred&#39;)$Ypred
-UB&lt;-vector()
-LB&lt;-vector()
-
-for(i in 1:N2){
-  UB[i]&lt;-10^quantile(Ypred.DF[,i], .975)
-  LB[i]&lt;-10^quantile(Ypred.DF[,i], .025)
-}
-
-library(ggplot2)
-DF.orig&lt;-data.frame(Year=Year, Passengers=Pass)
-DF.fore2&lt;-data.frame(Year=year.fore2, Passengers=Ypred, UB=UB, LB=LB)
-
-g1&lt;-ggplot()+
-  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
-  geom_line(data=DF.fore2, aes(x=Year, y=Passengers))+
-  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5)
-g1</code></pre>
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+m2 &lt;- stan(
+  file = &#39;../../blog_code/gp_m2.stan&#39;,
+  data = m1_data, 
+  warmup = 1000,
+  iter = 2000,
+  refresh=1000,
+  chains = 6,
+  pars = m2_pars.to.monitor,
+  control = list(adapt_delta = .95, 
+                 max_treedepth = 10), 
+  seed = 20030414
+)</code></pre>
+<pre class="r"><code>traceplot(m2, pars=c(&#39;a1&#39;, &#39;r1&#39;, &#39;sigma_sq&#39;))</code></pre>
 <p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>The forecast looks to be in line with what I might expect based on trends leading up to 1962. The results are similar to those obtained using a different forecasting technique (i.e., an ARIMA model).</p>
-<pre class="r"><code>(fit &lt;- arima(log10(AirPassengers), c(0, 1, 1),
+<pre class="r"><code>g_m2 &lt;- 
+brms::posterior_samples(m2, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass_log&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000), 
+    pass = exp(pass_log)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .7) +
+  geom_point(data = air_pass_test, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_test, aes(x = year, y = pass)) +
+  labs(x = &quot;Month in 1960&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = &#39;Posterior forecasts for single squared exponential covariance GP with log-transformed inputs&#39;) +
+  scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
+                     labels = c(&#39;Jan&#39;, &#39;Apr&#39;, &#39;Jul&#39;, &#39;Oct&#39;)) +
+  theme_bw()
+
+cowplot::plot_grid(
+  g_m1 + 
+    scale_y_continuous(breaks = c(200, 400, 600, 800)) + 
+    coord_cartesian(ylim = c(195, 805)), 
+  g_m2 + 
+    scale_y_continuous(breaks = c(200, 400, 600, 800)) + 
+    coord_cartesian(ylim = c(195, 805)), 
+  labels = paste0(&#39;m&#39;, 1:2), 
+  nrow = 2
+)</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Despite the greater degree of uncertainty, visual inspection of the plots leads me to think that the log-transformed approach is a little better. The lack of warning messages is also a plus. Neither of these models is particularly good. Which is why we are going to add another GP that accounts for seasonality in the time series.</p>
+<p><span class="math display">\[k(t,t&#39;)=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t&#39;)*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t&#39;)^2}{2l_3^2}\Big)\]</span>
+LESS HANDY-WAVY more details….</p>
+<pre class="r"><code># Easier to note these upfront
+m3_pars.to.monitor &lt;- c(
+  paste0(&#39;r&#39;, 1:3), 
+  paste0(&#39;a&#39;, 1:2), 
+  &#39;sigma_sq&#39;, 
+  &#39;Ypred&#39;
+)
+
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+m3 &lt;- stan(
+  file = &#39;../../blog_code/gp_m3.stan&#39;,
+  data = m1_data, 
+  warmup = 1000,
+  iter = 2000,
+  refresh=1000,
+  chains = 6,
+  pars = m3_pars.to.monitor,
+  control = list(adapt_delta = .95, 
+                 max_treedepth = 10), 
+  seed = 20030414
+)</code></pre>
+<pre class="r"><code>g_m3 &lt;- 
+brms::posterior_samples(m3, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass_log&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000), 
+    pass = exp(pass_log)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .7) +
+  geom_point(data = air_pass_test, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_test, aes(x = year, y = pass)) +
+  labs(x = &quot;Month in 1960&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = &#39;Posterior forecasts for single squared exponential covariance GP with log-transformed inputs&#39;) +
+  scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
+                     labels = c(&#39;Jan&#39;, &#39;Apr&#39;, &#39;Jul&#39;, &#39;Oct&#39;)) +
+  theme_bw()
+
+g_m3</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Well that is a huge improvement over the first few models. Adding in a term that addresses the obvious seasonal pattern improved model predictions immensely. My only gripe at this point is the fact that the “mean” posterior estimate tends to undershoot the observed data on average. It could just be the restricted range and the model would over predict the next few months.</p>
+<pre class="r"><code># Easier to note these upfront
+m4_pars.to.monitor &lt;- c(
+  paste0(&#39;r&#39;, 1:5), 
+  paste0(&#39;a&#39;, 1:3), 
+  &#39;sigma_sq&#39;, 
+  &#39;Ypred&#39;
+)
+
+#Note that I have a machine at home with 12 logical cores and 64GB of RAM
+m4 &lt;- stan(
+  file = &#39;../../blog_code/gp_m4.stan&#39;,
+  data = m1_data, 
+  warmup = 1000,
+  iter = 2000,
+  refresh=1000,
+  chains = 6,
+  pars = m4_pars.to.monitor,
+  control = list(adapt_delta = .95, 
+                 max_treedepth = 10), 
+  seed = 20030414
+)</code></pre>
+<pre><code>## recompiling to avoid crashing R session</code></pre>
+<pre><code>## Trying to compile a simple C file</code></pre>
+<pre><code>## Running /usr/lib/R/bin/R CMD SHLIB foo.c
+## gcc -std=gnu99 -I&quot;/usr/share/R/include&quot; -DNDEBUG   -I&quot;/usr/local/lib/R/site-library/Rcpp/include/&quot;  -I&quot;/usr/local/lib/R/site-library/RcppEigen/include/&quot;  -I&quot;/usr/local/lib/R/site-library/RcppEigen/include/unsupported&quot;  -I&quot;/usr/local/lib/R/site-library/BH/include&quot; -I&quot;/home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/StanHeaders/include/src/&quot;  -I&quot;/home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/StanHeaders/include/&quot;  -I&quot;/usr/local/lib/R/site-library/RcppParallel/include/&quot;  -I&quot;/home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/rstan/include&quot; -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DBOOST_NO_AUTO_PTR  -include &#39;/home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp&#39;  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1      -fpic  -g -O2 -fdebug-prefix-map=/build/r-base-8T8CYO/r-base-4.0.3=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -c foo.c -o foo.o
+## In file included from /usr/local/lib/R/site-library/RcppEigen/include/Eigen/Core:88,
+##                  from /usr/local/lib/R/site-library/RcppEigen/include/Eigen/Dense:1,
+##                  from /home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
+##                  from &lt;command-line&gt;:
+## /usr/local/lib/R/site-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:613:1: error: unknown type name ‘namespace’
+##   613 | namespace Eigen {
+##       | ^~~~~~~~~
+## /usr/local/lib/R/site-library/RcppEigen/include/Eigen/src/Core/util/Macros.h:613:17: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+##   613 | namespace Eigen {
+##       |                 ^
+## In file included from /usr/local/lib/R/site-library/RcppEigen/include/Eigen/Dense:1,
+##                  from /home/dr-owner/R/x86_64-pc-linux-gnu-library/4.0/StanHeaders/include/stan/math/prim/mat/fun/Eigen.hpp:13,
+##                  from &lt;command-line&gt;:
+## /usr/local/lib/R/site-library/RcppEigen/include/Eigen/Core:96:10: fatal error: complex: No such file or directory
+##    96 | #include &lt;complex&gt;
+##       |          ^~~~~~~~~
+## compilation terminated.
+## make: *** [/usr/lib/R/etc/Makeconf:172: foo.o] Error 1</code></pre>
+<pre class="r"><code>g_m4.1 &lt;- 
+brms::posterior_samples(m4, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass_log&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000), 
+    pass = exp(pass_log)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .7) +
+  geom_point(data = air_pass_test, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_test, aes(x = year, y = pass)) +
+  labs(x = &quot;Month in 1960&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = str_wrap(&#39;Forecasted using a squared exponential covariance kernel, and two additional kernels, one that addressed the seasonal component in the observed time series and one that I have no idea why it works but it sort of made intuitive sense, and now I need to back track the math to make sure I am not doing something bonkers here. The fit is better though - noticeably so. And, the uncertainty intervals behave in a more satisfying manner: the farther in the future from the most recent data point used to train the parameters, the more uncertainty the model should have about its predictions.&#39;)) +
+  scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
+                     labels = c(&#39;Jan&#39;, &#39;Apr&#39;, &#39;Jul&#39;, &#39;Oct&#39;)) +
+  theme_bw()
+
+g_m4.1</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Model 4 predictions extended from the observed data:</p>
+<pre class="r"><code>g_m4.2 &lt;- 
+brms::posterior_samples(m4, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass_log&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000), 
+    pass = exp(pass_log)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .7) +
+  geom_point(data = air_pass_train, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_train, aes(x = year, y = pass)) +
+  labs(x = &quot;Year&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = str_wrap(&#39;Model 4 - forecast: Three Gaussian process models combined&#39;)) +
+  theme_bw()
+
+g_m4.2</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>(arima_fit&lt;- arima(log(AirPassengers[1:132]), c(0, 1, 1),
               seasonal = list(order = c(0, 1, 1), period = 12)))</code></pre>
 <pre><code>## 
 ## Call:
-## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+## arima(x = log(AirPassengers[1:132]), order = c(0, 1, 1), seasonal = list(order = c(0, 
 ##     1, 1), period = 12))
 ## 
 ## Coefficients:
 ##           ma1     sma1
-##       -0.4018  -0.5569
-## s.e.   0.0896   0.0731
+##       -0.3484  -0.5623
+## s.e.   0.0943   0.0774
 ## 
-## sigma^2 estimated as 0.0002543:  log likelihood = 353.96,  aic = -701.92</code></pre>
-<pre class="r"><code>update(fit, method = &quot;CSS&quot;)</code></pre>
+## sigma^2 estimated as 0.001313:  log likelihood = 223.63,  aic = -441.26</code></pre>
+<pre class="r"><code>update(arima_fit, method = &quot;CSS&quot;)</code></pre>
 <pre><code>## 
 ## Call:
-## arima(x = log10(AirPassengers), order = c(0, 1, 1), seasonal = list(order = c(0, 
+## arima(x = log(AirPassengers[1:132]), order = c(0, 1, 1), seasonal = list(order = c(0, 
 ##     1, 1), period = 12), method = &quot;CSS&quot;)
 ## 
 ## Coefficients:
 ##           ma1     sma1
-##       -0.3772  -0.5724
-## s.e.   0.0883   0.0704
+##       -0.3266  -0.5777
+## s.e.   0.0927   0.0732
 ## 
-## sigma^2 estimated as 0.0002619:  part log likelihood = 354.32</code></pre>
-<pre class="r"><code>pred &lt;- predict(fit, n.ahead = 24)
+## sigma^2 estimated as 0.001355:  part log likelihood = 224.09</code></pre>
+<pre class="r"><code>pred &lt;- predict(arima_fit, n.ahead = 12)
 tl &lt;- pred$pred - 1.96 * pred$se
 tu &lt;- pred$pred + 1.96 * pred$se
 
-ARIMA.for&lt;-data.frame(Year=year.fore2, Passengers=10^pred$pred, UB=10^as.numeric(tu), LB=10^as.numeric(tl))
+arima_forecast &lt;-data.frame(
+  year=air_pass_test[[&#39;year&#39;]], 
+  pass=exp(pred$pred), 
+  UB=exp(as.numeric(tu)), 
+  LB=exp(as.numeric(tl))
+)
 
-g1&lt;-ggplot()+
-  geom_line(data=DF.orig, aes(x=Year, y=Passengers))+
-  geom_ribbon(data=DF.fore2, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&#39;blue&#39;)+
-  geom_ribbon(data=ARIMA.for, aes(x=Year, ymin=LB, ymax=UB), alpha=.5, fill=&#39;red&#39;)+
-  geom_line(data=DF.fore2, aes(x=Year, y=Passengers, color=&#39;blue&#39;), lwd=1.25)+
-  geom_line(data=ARIMA.for, aes(x=Year, y=Passengers, color=&#39;red&#39;), lwd=1.25)+
-  coord_cartesian(xlim=c(1960, 1963.25), ylim= c(275,1000))+
-  scale_color_manual(name=&#39;Forecast Model&#39;,
-                     values = c(&#39;blue&#39;, &#39;red&#39;), 
-                     labels = c(&#39;Gaussian Process&#39;, &#39;ARIMA&#39;))
-g1</code></pre>
-<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-13-1.png" width="672" />
-The two models make fairly similar predictions for 1961 (shaded regions represent respective 95% intervals). In 1962, the ARIMA model is a little more bullish than the Gaussian process model on airline passengers.</p>
-<p>Still, it is impossible to know which of these models is better, a methodological question I may tackle in greater detail when I have some time. The answer is almost certainly “it depends.” For now, the main takeaway is that Gaussian process models may represent a useful approach to the age-old problems of forecasting and imputation, a fact I plan to exploit in some of my signal processing work.</p>
+g_arima_m4 &lt;- 
+brms::posterior_samples(m4, &#39;Ypred&#39;) %&gt;% 
+  as.data.frame() %&gt;% 
+  pivot_longer(cols = starts_with(&#39;Ypred&#39;), values_to = &#39;pass_log&#39;) %&gt;% 
+  mutate(
+    year = rep(air_pass_test[[&#39;year&#39;]], 6000), 
+    pass = exp(pass_log)
+  ) %&gt;%
+  ggplot(aes(x = year, y = pass)) +
+  stat_lineribbon(color = &quot;#08519C&quot;, fill = &#39;#426EBD&#39;, lwd = .5, .width = .95, alpha = .25) +
+  geom_line(
+    data = arima_forecast, 
+    aes(x=year, y=pass), 
+    color = RColorBrewer::brewer.pal(9, &#39;Reds&#39;)[7], 
+    alpha = .25
+    ) +
+  geom_ribbon(
+    data = arima_forecast, 
+    aes(ymax=UB, ymin=LB), 
+    fill = RColorBrewer::brewer.pal(9, &#39;Reds&#39;)[3], 
+    alpha = .25
+    ) +
+  geom_point(data = air_pass_test, aes(x = year, y = pass)) +
+  geom_line(data = air_pass_test, aes(x = year, y = pass)) +
+  labs(x = &quot;Month in 1960&quot;, y = &quot;Passengers (in thousands)&quot;, 
+       caption = str_wrap(&#39;Overlay of observed time series, ARIMA forecast (red) and, GP forecast (blue)&#39;)) +
+  scale_x_continuous(breaks = c(1960, 1960.25, 1960.5, 1960.75), 
+                     labels = c(&#39;Jan&#39;, &#39;Apr&#39;, &#39;Jul&#39;, &#39;Oct&#39;)) +
+  theme_bw()
+
+g_arima_m4</code></pre>
+<p><img src="/blog/2018-05-21-gaussian-process-imputation-models_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+Gaussian process models offer a flexible framework for detecting and stacking latent change processes and can be turned into forecast models on out-of-sample observations. The secret is that the sum of any set of Gaussian processes is itself a Gaussian process:</p>
+<p>-AND MOST SENSIBLE FORMULA HERE.</p>
+<p>A well-established set of problems emerges when attempting to analyze non-stationary univariate time series (i.e., the signal’s mean and/or variance changes over time). A common approach is to impose some stationarity on the data (e.g., ARIMA models). The selection of the appropriate assumptions to make when forcing a time series into stationarity is difficult to automate in many circumstances, requiring that a researcher evaluate competing models.</p>
+<p>The models below will make use of the preloaded <code>AirPassengers</code> data in R. The data represent the total number of monthly international airline passengers (in thousands) from 1949 to 1960. It is easy to see these data have both a non-stationary mean and a non-stationary variance. There is also a clear periodic component to these data.</p>

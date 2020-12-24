@@ -9,12 +9,13 @@ categories:
 tags:
   - R
   - Simulation
+  - R-bloggers
 banner: img/banners/power-analysis-growth-model-banner.png
 ---
 
-```{r setup, echo=F, message=F}
+```{r setup, echo=FALSE, message=FALSE}
 load('~/GitHub/main_site/DFs/Power_data.RData')
-knitr::opts_chunk$set(warning = F, message = F)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(lme4)
 library(merTools)
 library(boot)
