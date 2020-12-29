@@ -135,13 +135,12 @@ model{
 	y_log ~ multi_normal_cholesky(mu, L_S);
 	
 	//priors for parameters
-	a1 ~ normal(2.06,1.23);		//Taken from the first model
-	a2 ~ student_t(3,0,1);
+	a1 ~ normal(8.76, 2.65);	//Taken from the third model
+	a2 ~ normal(0.05, 0.07);  //Taken from the third model
 	a3 ~ student_t(3,0,1);
-	//incorporate minimum and maximum distances - use invgamma
-	r1 ~ normal(22.68,9.005);	//Taken from the first model
-	r2 ~ student_t(3,0,1);
-	r3 ~ student_t(3,0,1);	
+	r1 ~ normal(24.63, 4.74);	//Taken from the third model
+	r2 ~ normal(0.71, 0.13);  //Taken from the third model
+	r3 ~ normal(20.92, 9.81);	//Taken from the third model
 	r4 ~ student_t(3,0,1);
 	r5 ~ student_t(3,0,1);	
 	sigma_sq ~ normal(0,1);

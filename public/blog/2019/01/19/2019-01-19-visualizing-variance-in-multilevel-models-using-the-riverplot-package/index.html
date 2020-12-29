@@ -55,7 +55,7 @@
   <link href="/css/owl.theme.css" rel="stylesheet">
 
   
-  <link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
+  <link rel="alternate" href="https://mgb-research.netlify.com/index.xml" type="application/rss+xml" title="Dead Reckoning Analytics and Consulting">
 
   
   
@@ -68,9 +68,9 @@
   <meta property="og:site_name" content="Dead Reckoning Analytics and Consulting">
   <meta property="og:title" content="Visualizing Variance in Multilevel Models Using the Riverplot Package">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/" />
+  <meta property="og:url" content="https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/" />
   <meta property="og:description" content="Musings on R, Statistics, Data Science, and Programming">
-  <meta property="og:image" content="/img/banners/riverplot.png">
+  <meta property="og:image" content="https://mgb-research.netlify.com/img/banners/riverplot.png">
   <meta property="og:image:type" content="image/png">
   
   
@@ -99,7 +99,7 @@
   <meta name="twitter:site" content="@dead_reck">
   <meta name="twitter:title" content="Visualizing Variance in Multilevel Models Using the Riverplot Package">
   
-  <meta name="twitter:image" content="/img/banners/riverplot.png">
+  <meta name="twitter:image" content="https://mgb-research.netlify.com/img/banners/riverplot.png">
   
   <meta name="twitter:description" content="Musings on R, Statistics, Data Science, and Programming">
   
@@ -227,13 +227,13 @@
 
 <p>Spurred on by <a href="https://psyc.umd.edu/facultyprofile/shackman/alexander">Alex Shackman</a>, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.</p>
 <div class="figure">
-<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/Variance_Graphic_Positive.png" alt="Figure 1. Stacked Barplot of Model Variance Decomposition" />
+<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/Variance_Graphic_Positive.png" alt="" />
 <p class="caption"><em>Figure 1</em>. Stacked Barplot of Model Variance Decomposition</p>
 </div>
 <p>Now, choosing a color scheme that screams “HI I’M A COLOR!!” is one reasonable critique of this image. But, my more pressing issue is that this image, while accurately representing our model results asks a lot of the reader. You have to move back and forth between the legend and the graph to effectively map the different sources of explained variance onto their segments in the bar plot. Additioanlly, the denominator for the variance calculations shifts as you move across the <em>x</em> axis, and it may not be obvious to readers with passing familiarity of these models how the stacked bar plots in the right 2 columns merge together to form the stacked bar plot in the “Total” variance column. Relatedly, there is no place in this image to easily represent the total variance accounted for by between-subjects factors and within-subjects factors separately.</p>
 <p>Unsatisfied with this graph, I played around with a number of different visualization approaches. Here is another attempt in which I tried to use the posterior distribution from our mood models, separate color schemes for between- and within-subjects sources of variation, and pie charts to provide a different visual breakdown of the variance terms. Within the violin plot on the left, I think I was going for something like the fundraising thermometer image churches place on roadsides to indicate how close they are to getting that new roof or expanding their parking lots.</p>
 <div class="figure">
-<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/Test_comb_vardecomp.png" alt="Figure 2. Pie chart version of variance decomposition" />
+<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/Test_comb_vardecomp.png" alt="" />
 <p class="caption"><em>Figure 2</em>. Pie chart version of variance decomposition</p>
 </div>
 <p>I liked the idea of including the posterior distibution from the models in this way so the reader could see that our model results mirrored the obtained data and our general expectation that negative mood is positively skewed in a relatively healthy population like the one we sampled. However, I did not like the execution of this vision, which yielded a busy plot that still requires a lot of work on the part of the reader to decipher the meaning of its components.</p>
@@ -242,7 +242,7 @@
 <h1>Enter the Sankey Plot</h1>
 <p>So I did what all good researchers and data scientists do when they hit a wall, I searched the Internet for solutions. Here are just a couple of links I found helpful in my digital quest: <a href="http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html">Top 50 ggplot2 Visualizations</a> and <a href="https://www.r-graph-gallery.com/">The R Graph Gallery</a>. It was on this latter site that I came across the <a href="https://www.r-graph-gallery.com/sankey-diagram/">Sankey Diagram</a>. I immediately saw the potential to separate out between- and within-subjects variance, but also show how they combine to form the total variability in our dependent measure.</p>
 <div class="figure">
-<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/S1_PosMood_river.png" alt="Figure 3. The riverplot we deserve" />
+<img src="/blog/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package_files/S1_PosMood_river.png" alt="" />
 <p class="caption"><em>Figure 3</em>. The riverplot we deserve</p>
 </div>
 <p>This image ticks all of my data visualization boxes, and, in my opinion, does a better job of representing what it is multilevel models do in terms of partitioning variance from multiple levels of the data. The remainder of this post is dedicated to how I got to this final plot. I will be including code from our models and I need to strongly recommend data scientists and researchers read <span class="citation">(Rights and Sterba 2018)</span>. For related discussions and adapting the approach for non-Gaussian distributed outcomes see <span class="citation">(Jaeger et al. 2017; Nakagawa and Schielzeth 2016)</span>. The <code>r2mlm</code> function Rights and Sterba <a href="https://my.vanderbilt.edu/jasonrights/software/r2mlm/">created</a> as part of their variance decomposition framework was instrumental in terms of my ability to extract the relevant variance components from our different models.</p>
@@ -876,7 +876,7 @@ title(ylab = &#39;Study 1 - Riverplot of Total Variance Decomposition Estimated 
 dev.off()</code></pre>
 <p>And here you have it, the final result, which I rotated outside of <code>R</code> to be oriented vertically. The <code>riverplot</code> package will provide a flow that moves from left to right by default.</p>
 <div class="figure">
-<img src="/img/S1_PosMood_river.png" alt="Figure 4 - Variance Decomposition - As Visually Straightforward as I can make it" />
+<img src="/img/S1_PosMood_river.png" alt="" />
 <p class="caption"><em>Figure 4</em> - Variance Decomposition - As Visually Straightforward as I can make it</p>
 </div>
 <p>Best of luck applying this approach to your own data. And let’s hope the reviewers of our forthcoming manuscript are sufficiently impressed with this attempt to visually present our model results.</p>
@@ -915,7 +915,7 @@ dev.off()</code></pre>
 <p>Shackman, Alexander J., Melissa Stockbridge, Rachael Tillman, Claire Kaplan, Do Tromp, Andrew Fox, and Matthias Gamer. 2016. “The neurobiology of dispositional negativity and attentional biases to threat: Implications for understanding anxiety disorders in adults and youth.” <em>Journal of Experimental Psychopathology</em> 7 (3): 311–42. <a href="https://doi.org/10.5127/jep.054015">https://doi.org/10.5127/jep.054015</a>.</p>
 </div>
 <div id="ref-Shackman2016a">
-<p>Shackman, Alexander J., Do P.M. Tromp, Melissa D. Stockbridge, Claire M. Kaplan, Rachael M. Tillman, and Andrew S. Fox. 2016. “Dispositional negativity: An integrative psychological and neurobiological perspective.” <em>Psychological Bulletin</em> 142 (12): 1275–1314. <a href="https://doi.org/10.1037/bul0000073">https://doi.org/10.1037/bul0000073</a>.</p>
+<p>Shackman, Alexander J., Do P. M. Tromp, Melissa D. Stockbridge, Claire M. Kaplan, Rachael M. Tillman, and Andrew S. Fox. 2016. “Dispositional negativity: An integrative psychological and neurobiological perspective.” <em>Psychological Bulletin</em> 142 (12): 1275–1314. <a href="https://doi.org/10.1037/bul0000073">https://doi.org/10.1037/bul0000073</a>.</p>
 </div>
 <div id="ref-Shackman2018">
 <p>Shackman, Alexander J., Jennifer S. Weinstein, Stanton N. Hudja, Conor D. Bloomer, Matthew G. Barstead, Andrew S. Fox, and Edward P. Lemay. 2018. “Dispositional negativity in the wild: Social environment governs momentary emotional experience.” <em>Emotion</em> 18 (5): 707–24. <a href="https://doi.org/10.1037/emo0000339">https://doi.org/10.1037/emo0000339</a>.</p>
@@ -953,7 +953,7 @@ dev.off()</code></pre>
         <form action="//google.com/search" method="get" accept-charset="UTF-8" role="search">
             <div class="input-group">
                 <input type="search" name="q" class="form-control" placeholder="Search">
-                <input type="hidden" name="sitesearch" value="/">
+                <input type="hidden" name="sitesearch" value="https://mgb-research.netlify.com/">
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-template-main"><i class="fas fa-search"></i></button>
                 </span>
@@ -1097,40 +1097,40 @@ dev.off()</code></pre>
                 
                 <div class="item same-height-row clearfix">
                     <div class="image same-height-always">
-                        <a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">
+                        <a href="https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">
                           
                             <img src="/img/banners/riverplot.png" class="img-responsive" alt="Visualizing Variance in Multilevel Models Using the Riverplot Package">
                           
                         </a>
                     </div>
                     <div class="name same-height-always">
-                        <h5><a href="/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">Visualizing Variance in Multilevel Models Using the Riverplot Package</a></h5>
+                        <h5><a href="https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/">Visualizing Variance in Multilevel Models Using the Riverplot Package</a></h5>
                     </div>
                 </div>
                 
                 <div class="item same-height-row clearfix">
                     <div class="image same-height-always">
-                        <a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">
+                        <a href="https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">
                           
                             <img src="/img/banners/continuous-interaction.png" class="img-responsive" alt="Interaction Plots with Continuous Moderators in R">
                           
                         </a>
                     </div>
                     <div class="name same-height-always">
-                        <h5><a href="/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">Interaction Plots with Continuous Moderators in R</a></h5>
+                        <h5><a href="https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/">Interaction Plots with Continuous Moderators in R</a></h5>
                     </div>
                 </div>
                 
                 <div class="item same-height-row clearfix">
                     <div class="image same-height-always">
-                        <a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">
+                        <a href="https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">
                           
                             <img src="/img/banners/power-analysis-growth-model-banner.png" class="img-responsive" alt="Power Analyses for an Unconditional Growth Model using {lmer}">
                           
                         </a>
                     </div>
                     <div class="name same-height-always">
-                        <h5><a href="/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h5>
+                        <h5><a href="https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/">Power Analyses for an Unconditional Growth Model using {lmer}</a></h5>
                     </div>
                 </div>
                 

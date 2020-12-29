@@ -99,7 +99,7 @@ transformed data {
 parameters {
 	real<lower=0> a1;
 	real<lower=0> a2;
-	real<lower=15> r1;		//Set after some preliminary modeling
+	real<lower=0> r1;
 	real<lower=0> r2;
 	real<lower=0> r3;
 	real<lower=0> sigma_sq;
@@ -117,10 +117,10 @@ model{
 	y_log ~ multi_normal_cholesky(mu, L_S);
 	
 	//priors for parameters
-	a1 ~ normal(2.06,1.23);		//Taken from the first model
+	a1 ~ normal(6.42, 3.66);		//Taken from the second model
 	a2 ~ student_t(3,0,1);
-	//incorporate minimum and maximum distances - use invgamma
-	r1 ~ normal(22.68,9.005);	//Taken from the first model
+
+	r1 ~ normal(19.46, 7.56);	//Taken from the second model
 	r2 ~ student_t(3,0,1);
 	r3 ~ student_t(3,0,1);	
 	sigma_sq ~ normal(0,1);

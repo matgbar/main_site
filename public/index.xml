@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dead Reckoning Analytics and Consulting</title>
-    <link>/</link>
+    <link>https://mgb-research.netlify.com/</link>
     <description>Recent content on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://mgb-research.netlify.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Visualizing Variance in Multilevel Models Using the Riverplot Package</title>
-      <link>/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</link>
+      <link>https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</link>
       <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</guid>
+      <guid>https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</guid>
       <description>Spurred on by Alex Shackman, I have been working to figure out a good way to visualize different sources of variation in momentary mood. The most common way of visually depicting variance decompositions from the sort of multilevel models we used to analyze our data is a stacked bar plot. So that seemed like a good place to start.
 Figure 1. Stacked Barplot of Model Variance Decomposition
  Now, choosing a color scheme that screams “HI I’M A COLOR!</description>
@@ -20,85 +20,85 @@ Figure 1. Stacked Barplot of Model Variance Decomposition
     
     <item>
       <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</link>
+      <link>https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</link>
       <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</guid>
+      <guid>https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</guid>
       <description>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</description>
     </item>
     
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <guid>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
       <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</guid>
-      <description>(Updated: 2020-12-24)
-When would it not be good to have a way to forecast the future? Honestly, I lack the imagination to provide an answer, though I’ll admit there are likely edge cases I am not considering. But on average, all things being equal, it is better to know than to not know what is coming. For companies, the ability to accurately forecast events is the business model.
-The simplest forecast model is one in which we use trends over time to predict future events, the assumption being that the previous trend will continue essentially as is through the forecast window.</description>
+      <guid>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</guid>
+      <description>(Updated: 2020-12-28)
+Problem Statement Create a forecast model using only the information available in a single, univariate time series.
+ The Past is Prologue Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a past is prologue assumption is not a terrible decision.</description>
     </item>
     
     <item>
       <title>Contact</title>
-      <link>/contact/</link>
+      <link>https://mgb-research.netlify.com/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/contact/</guid>
+      <guid>https://mgb-research.netlify.com/contact/</guid>
       <description>Here to help I derive a great deal of satisfaction from helping others achieve their data and analysis goals. Please reach out if you have questions about any of the open-source products I have developed, or if you are interested in retaining my consulting services for a custom project.</description>
     </item>
     
     <item>
       <title>Dashboards and Reports</title>
-      <link>/dashboards/</link>
+      <link>https://mgb-research.netlify.com/dashboards/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/dashboards/</guid>
+      <guid>https://mgb-research.netlify.com/dashboards/</guid>
       <description>A Picture Graph is Worth a Thousand Words Spreadsheets It is hard to understate the value of effective data visualization. It also hard to overstate how easy it is to be tricked (or to trick ourselves) with poorly designed graphics that may not be communicating the true properties of the data. In our work at Dead Reckoning graphical representations of data primarily perform at least one of the following roles: exploratory analysis, data summary, or data-based decision-making.</description>
     </item>
     
     <item>
       <title>Data Pipelines</title>
-      <link>/pipelines/</link>
+      <link>https://mgb-research.netlify.com/pipelines/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/pipelines/</guid>
+      <guid>https://mgb-research.netlify.com/pipelines/</guid>
       <description>Drilling for Data: The New Black Gold In the age of Big Data (an overused but accurate term), few resources contain more inherent value that the information populating servers and hard drives around the world. Six of the top seven companies in the world (as measured by overall market value) are technology companies, and make no mistake that one enormous competitive advantage these companies enjoy is the ability to obtain, store, and ultimately navigate literal oceans of data.</description>
     </item>
     
     <item>
       <title>FAQ</title>
-      <link>/faq/</link>
+      <link>https://mgb-research.netlify.com/faq/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/faq/</guid>
+      <guid>https://mgb-research.netlify.com/faq/</guid>
       <description>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
 1. WHAT TO DO IF I HAVE STILL NOT RECEIVED THE ORDER? Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</description>
     </item>
     
     <item>
       <title>Meaning Behind the Name Dead Reckoning</title>
-      <link>/background/</link>
+      <link>https://mgb-research.netlify.com/background/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/background/</guid>
+      <guid>https://mgb-research.netlify.com/background/</guid>
       <description>Dead Reckoning: A Framework for Data Science Before satellites could accurately estimate the global position of an object within a few meters, sailors needed a way to determine where they were in a vast, remote, and otherwise unremarkable seascape. Their answer to the problem was data science, an early version of the practice to be sure, but data science nonetheless. They did not have R or Python scripts running code in the background, but they did develop specialized computers.</description>
     </item>
     
     <item>
       <title>Predictive Analytics</title>
-      <link>/predictive-analytics/</link>
+      <link>https://mgb-research.netlify.com/predictive-analytics/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/predictive-analytics/</guid>
+      <guid>https://mgb-research.netlify.com/predictive-analytics/</guid>
       <description>Predictive Analytics and Data-Driven Decision-Making For data science nerds like myself, the modeling step is often the most fun, in part because it is represents the most tangible value-add deliverable in the data science life cycle. It is also the point at which some certainty regarding decision opportunities begins to emerge. Lastly, it is the stage at which all of the hard work setting up pipelines, cleaning and transforming data, generating features, and performing exploratory analyses begins to pay off.</description>
     </item>
     

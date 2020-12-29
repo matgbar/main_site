@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R-bloggers on Dead Reckoning Analytics and Consulting</title>
-    <link>/tags/r-bloggers/</link>
+    <link>https://mgb-research.netlify.com/tags/r-bloggers/</link>
     <description>Recent content in R-bloggers on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="/tags/r-bloggers/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://mgb-research.netlify.com/tags/r-bloggers/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Power Analyses for an Unconditional Growth Model using {lmer}</title>
-      <link>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <link>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
       <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <guid>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
       <description>Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change (\(\alpha = .05\)) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).</description>
     </item>
     
     <item>
       <title>Gaussian Process Imputation/Forecast Models</title>
-      <link>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</link>
+      <link>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</link>
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</guid>
-      <description>(Updated: 2020-12-24)
-When would it not be good to have a way to forecast the future? Honestly, I lack the imagination to provide an answer, though I’ll admit there are likely edge cases I am not considering. But on average, all things being equal, it is better to know than to not know what is coming. For companies, the ability to accurately forecast events is the business model.
-The simplest forecast model is one in which we use trends over time to predict future events, the assumption being that the previous trend will continue essentially as is through the forecast window.</description>
+      <guid>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</guid>
+      <description>(Updated: 2020-12-28)
+Problem Statement Create a forecast model using only the information available in a single, univariate time series.
+ The Past is Prologue Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a past is prologue assumption is not a terrible decision.</description>
     </item>
     
   </channel>
