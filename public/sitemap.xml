@@ -3,177 +3,127 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/tags/bayesian/</loc>
+    <loc>https://mgb-research.netlify.com/tags/bayesian/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/</loc>
+    <loc>https://mgb-research.netlify.com/blog/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://mgb-research.netlify.com/categories/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/data-visualization/</loc>
+    <loc>https://mgb-research.netlify.com/tags/data-visualization/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/</loc>
+    <loc>https://mgb-research.netlify.com/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/missing-data/</loc>
+    <loc>https://mgb-research.netlify.com/tags/missing-data/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/modeling/</loc>
+    <loc>https://mgb-research.netlify.com/categories/modeling/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/r/</loc>
+    <loc>https://mgb-research.netlify.com/tags/r/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://mgb-research.netlify.com/tags/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</loc>
+    <loc>https://mgb-research.netlify.com/blog/2019/01/19/2019-01-19-visualizing-variance-in-multilevel-models-using-the-riverplot-package/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/2018/12/03/2018-12-03-a-rose-by-any-other-name-statistics-machine-learning-and-ai-part-2-of-3/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/ai/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/forecasting/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/machine-learning/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/ml/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/predictive-modeling/</loc>
-    <lastmod>2018-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/11/29/2018-11-29-a-rose-by-any-other-name-statistics-machine-learning-and-ai/</loc>
-    <lastmod>2018-11-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/09/03/2018-09-03-bayesian-multilevel-model-with-missing-data-complete-workflow-part-2/</loc>
-    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/stan/</loc>
-    <lastmod>2018-09-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/data-processing/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/ibi-vizedit/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/08/16/2018-08-16-it-s-alive-first-evidence-that-ibi-vizedit-works/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/rshiny/</loc>
-    <lastmod>2018-08-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</loc>
+    <loc>https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/lavaan/</loc>
+    <loc>https://mgb-research.netlify.com/tags/lavaan/</loc>
     <lastmod>2018-07-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/2018/07/05/2018-07-05-bayesian-multilevel-model-with-missing-data-complete-work-flow/</loc>
-    <lastmod>2018-07-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</loc>
+    <loc>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</loc>
     <lastmod>2018-06-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/simulation/</loc>
+    <loc>https://mgb-research.netlify.com/tags/r-bloggers/</loc>
     <lastmod>2018-06-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/gaussian-process/</loc>
+    <loc>https://mgb-research.netlify.com/tags/simulation/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mgb-research.netlify.com/tags/forecasting/</loc>
     <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</loc>
+    <loc>https://mgb-research.netlify.com/tags/gaussian-process/</loc>
     <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/contact/</loc>
+    <loc>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/dashboards/</loc>
+    <loc>https://mgb-research.netlify.com/tags/predictive-modeling/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/pipelines/</loc>
+    <loc>https://mgb-research.netlify.com/tags/stan/</loc>
+    <lastmod>2018-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/faq/</loc>
+    <loc>https://mgb-research.netlify.com/contact/</loc>
   </url>
   
   <url>
-    <loc>/background/</loc>
+    <loc>https://mgb-research.netlify.com/dashboards/</loc>
   </url>
   
   <url>
-    <loc>/predictive-analytics/</loc>
+    <loc>https://mgb-research.netlify.com/pipelines/</loc>
+  </url>
+  
+  <url>
+    <loc>https://mgb-research.netlify.com/faq/</loc>
+  </url>
+  
+  <url>
+    <loc>https://mgb-research.netlify.com/background/</loc>
+  </url>
+  
+  <url>
+    <loc>https://mgb-research.netlify.com/predictive-analytics/</loc>
   </url>
   
 </urlset>

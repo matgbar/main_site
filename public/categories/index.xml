@@ -2,44 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Dead Reckoning Analytics and Consulting</title>
-    <link>/categories/</link>
+    <link>https://mgb-research.netlify.com/categories/</link>
     <description>Recent content in Categories on Dead Reckoning Analytics and Consulting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://mgb-research.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Modeling</title>
-      <link>/categories/modeling/</link>
+      <link>https://mgb-research.netlify.com/categories/modeling/</link>
       <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>/categories/modeling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Learning</title>
-      <link>/categories/machine-learning/</link>
-      <pubDate>Mon, 03 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IBI VizEdit</title>
-      <link>/categories/ibi-vizedit/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/ibi-vizedit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>RShiny</title>
-      <link>/categories/rshiny/</link>
-      <pubDate>Thu, 16 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/rshiny/</guid>
+      <guid>https://mgb-research.netlify.com/categories/modeling/</guid>
       <description></description>
     </item>
     

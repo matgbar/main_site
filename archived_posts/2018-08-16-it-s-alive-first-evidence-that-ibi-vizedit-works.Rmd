@@ -1,0 +1,180 @@
+---
+title: "Introducing IBI VizEdit: An RShiny Application"
+author: 'Matthew Barstead'
+date: '2018-08-16'
+baseurl: "https://mgb-research.netlify.com/"
+slug: it-s-alive-first-evidence-that-ibi-vizedit-works
+categories:
+  - RShiny
+  - IBI VizEdit
+tags:
+  - Data Processing
+  - R
+  - Data Visualization
+banner: img/banners/ibi-vizedit.png
+---
+
+It is official. The program I have spent the better part of a year working on, the very centerpiece of my dissertation, works. Or at least, early indicators are in, and based on 22 cases, some of which required a great deal of manual editing, the program is returning estimates in line with expectations. 
+
+Backing up, as I trip a little over my excitement, IBI VizEdit is an Rshiny application I created to help the [Laboratory for the Study of Child and Family Relationships](https://www.umdrubinlab.com/) process and edit heart rate data. We used a photoplethysmogram to measure changes in light absorption in a local capillary bed, in this case the child's fingertip. As blood flows through the capillary bed in sync with the beating heart, the amount of light absorbed by the underlying tissue varies, particularly within certain wavelengths. With this knowledge and a sufficiently high sampling rate (we used 2000 Hz), you can readily record heart beats using a relatively low-cost sensor. 
+
+Individual heart rate data contains a surprising amount of information that can be used to predict an individual's cognitive and affective states as well as predict global mental and physical health outcomes. Paired with specific tasks, we can get a sense of how effective the autonomic nervous system is at regulating internal states that are designed to potentiate certain response patterns (i.e., fleeing, fighting, freezing, behaviors). 
+
+Currently, there are no open-source tools available to researchers interested in measures of heart-rate variability obtained via photoplethysmography. That is why I created IBI VizEdit. It is still very much in its early in its lifecycle and it will be re-factored considerably in the coming months. The pogram is primarily designed to work with our Laboratory for the Study of Child and Family Relationship's files in ways that optimize output for what we plan to do with the data. I eventually plan to adapt the program to be more general in its input to allow researchers to upload files of just about any basic data format (e.g., .dat, .txt, csv, etc.). 
+
+For now, I am just happy to be getting off on the right foot. And here are (again to be stressed) the *preliminary* results of an analysis of 22 edited cases. Participants in the study experienced three conditions during a baseline laboratory visit. The first is a child-appropriate Sesame Street video, which the child sees three times. In addition to the videos children also experienced two stressors: the appearance of a clown and the recording of an introduction video. The sixth task (fourth in its presentation) was a social attention task in which children learned about fictitious children and their interests. 
+
+Now if the program is working, estimates based on its output should show that respiratory sinus arrhythmia (RSA) is lowest during the Clown and Introduction tasks and highest during the Video and social attention (Kids) tasks. 
+
+So what do we find... First always graph your data. I really like the [sideways raincloud plot (or nose plot)](https://micahallen.org/2018/03/15/introducing-raincloud-plots/) as an option for plotting. It sort of puts all of your data out there for everyone to see. 
+
+First let's look at the RSA values by task: 
+```{r, include=F}
+library(ggplot2)
+library(tidyverse)
+library(lavaan)
+library(lme4)
+source("https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R")
+
+
+raincloud_theme = theme(
+  text = element_text(size = 10),
+  axis.title.x = element_text(size = 12),
+  axis.title.y = element_text(size = 12),
+  axis.text = element_text(size = 10),
+  axis.text.x = element_text(angle = 45, vjust = 0.5),
+  legend.title=element_text(size=12),
+  legend.text=element_text(size=12),
+  legend.position = "right",
+  plot.title = element_text(lineheight=.8, face="bold", size = 12),
+  panel.border = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+  axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'))
+
+#################################################################################################
+
+dat.RSA<-read.csv( '~/GitHub/main_site/DFs/RSA_15.csv')
+
+dat.RSA.long<-reshape(dat.RSA, 
+                  idvar = 'File',
+                  varying = colnames(dat.RSA)[2:7], 
+                  timevar = 'Task', 
+                  times = c('Video1', 
+                            'Clown', 
+                            'Video2', 
+                            'Kids', 
+                            'Intro', 
+                            'Video3'
+                            ),
+                  v.names = 'RSA',
+                  direction = 'long')
+
+#Creating Dummy variables - will use Video1 as reference condition in the model. 
+dat.RSA.long$Video1<-ifelse(dat.RSA.long$Task=='Video1', 1, 0)
+dat.RSA.long$Video2<-ifelse(dat.RSA.long$Task=='Video2', 1, 0)
+dat.RSA.long$Video3<-ifelse(dat.RSA.long$Task=='Video3', 1, 0)
+dat.RSA.long$Clown<-ifelse(dat.RSA.long$Task=='Clown', 1, 0)
+dat.RSA.long$Kids<-ifelse(dat.RSA.long$Task=='Kids', 1, 0)
+dat.RSA.long$Intro<-ifelse(dat.RSA.long$Task=='Intro', 1, 0)
+
+dat.HP<-read.csv('~/GitHub/main_site/DFs/HP.csv')
+
+dat.HP.long<-reshape(dat.HP, 
+                      idvar = 'File',
+                      varying = colnames(dat.HP)[2:7], 
+                      timevar = 'Task', 
+                      times = c('Video1', 
+                                'Clown', 
+                                'Video2', 
+                                'Kids', 
+                                'Intro', 
+                                'Video3'
+                      ),
+                      v.names = 'HP',
+                      direction = 'long')
+
+#Creating Dummy variables - will use Video1 as reference condition in the model. 
+dat.HP.long$Video1<-ifelse(dat.HP.long$Task=='Video1', 1, 0)
+dat.HP.long$Video2<-ifelse(dat.HP.long$Task=='Video2', 1, 0)
+dat.HP.long$Video3<-ifelse(dat.HP.long$Task=='Video3', 1, 0)
+dat.HP.long$Clown<-ifelse(dat.HP.long$Task=='Clown', 1, 0)
+dat.HP.long$Kids<-ifelse(dat.HP.long$Task=='Kids', 1, 0)
+dat.HP.long$Intro<-ifelse(dat.HP.long$Task=='Intro', 1, 0)
+```
+
+```{r, warning=FALSE, message=FALSE}
+df.m<-reshape2::melt(dat.RSA[,2:7])
+
+g1<-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
+  geom_point(aes(y = value, color = variable), 
+             position = position_jitter(width = .15), 
+             size = .5, alpha = 0.8) +
+  geom_boxplot(width = .1, guides = FALSE, outlier.shape = NA, alpha = 0.5) +
+  expand_limits(x = 5.25) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_bw() +
+  raincloud_theme+
+  xlab('')+ylab('RSA')+
+  guides(fill=FALSE, color=FALSE)+
+  ggtitle('Distribution of Respiratory Sinus Arrhythmia as a Function of Task')
+g1
+```
+
+So a good amount of spread, but even with only 22 cases we can start to see the expected pattern. The medians for the videos and the social attention tasks (Kids) are higher than the median RSA values for the two distressing tasks. 
+
+I would expect heart period (the inverse of heart rate - think the time, in seconds, between successive beats) to show a similar pattern.
+
+```{r, warning=FALSE, message=FALSE}
+df.m<-reshape2::melt(dat.HP[,2:7])
+
+g2<-ggplot(data = df.m, aes(y = value, x = variable, fill=variable)) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
+  geom_point(aes(y = value, color = variable), 
+             position = position_jitter(width = .15), 
+             size = .5, alpha = 0.8) +
+  geom_boxplot(width = .1, guides = FALSE, outlier.shape = NA, alpha = 0.5) +
+  expand_limits(x = 5.25) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_bw() +
+  raincloud_theme+
+  xlab('')+ylab('HP')+
+  guides(fill=FALSE, color=FALSE)+
+  ggtitle('Distribution of Heart Period as a Function of Task')
+
+g2
+```
+
+Lo and behold largely the same pattern. This is good for me so far. So let's see if it passes an inferential test. Do the two distressing tasks each reliably depress heart rate variability (in the form of respiratory sinus arrhythmia) and average heart period? 
+
+```{r, warning=FALSE, message=FALSE}
+#--
+fit.RSA<-lmer(RSA~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
+                data=dat.RSA.long)
+summary(fit.RSA)
+
+#Getting bootstrapped CIs for model results
+boot.RSA<-bootMer(fit.RSA, fixef, nsim=5000)
+print(sjstats::boot_ci(boot.RSA))
+```
+
+Looking at the estimated t-scores, and my prefered method - the boot-strapped confidence interval, we see much the same story. RSA estimates were reliably lower during the clown and video introduction task relative to the first video (there were no other significant differences). 
+
+```{r, warning=FALSE, message=FALSE}
+#--
+fit.HP<-lmer(HP~1+Clown+Video2+Kids+Intro+Video3+(1|File), 
+                data=dat.HP.long)
+summary(fit.HP)
+
+#Getting bootstrapped CIs for model results
+boot.HP<-bootMer(fit.HP, fixef, nsim=5000)
+print(sjstats::boot_ci(boot.HP))
+```
+
+And the pattern was replicated with heart period. 
+
+I definitely do not want to oversell these results. They are just a good sign is all as I continue to finalize this program and its features. 
