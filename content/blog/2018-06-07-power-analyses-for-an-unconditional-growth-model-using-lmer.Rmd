@@ -1,5 +1,5 @@
 ---
-title: 'Power Analyses for an Unconditional Growth Model using {lmer}'
+title: 'Power Analysis for an Unconditional Growth Model Using a Selected Sample'
 author: 'Matthew Barstead, Ph.D.'
 date: '2018-06-07'
 baseurl: "https://mgb-research.netlify.com/"
@@ -10,249 +10,599 @@ tags:
   - R
   - Simulation
   - R-bloggers
+  - Power
+  - Sample Size
 banner: img/banners/power-analysis-growth-model-banner.png
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
-load('../../DFs/Power_data.RData')
+load('../../DFs/ucgm_power.RData')
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 library(lme4)
-library(merTools)
-library(boot)
-library(sjstats)
-library(ggplot2)
+library(lmerTest)
+library(tidyverse)
 ```
 
-Recently, I was asked to knock together a quick power analysis for a linear growth model with approximately 120 subjects. Having already collected data (i.e., having a fixed sample size), the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change ($\alpha = .05$) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period). 
+(Updated: `r Sys.Date()`)
 
-We collected measures of these variables at three time points, approximately evenly spaced apart, and, for the purposes of these analyses, I decided to treat the data as if they were collected at precisely the same equally spaced interval for all participants. Though this is not technically true, it is sufficiently true for the purposes of these analyses. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important depending on your measures and design.     
+:::: {.rmdnote}
+### Problem Statement
 
-**The Problem:** In short, I need a reasonable population model for my data. Ideally, this model is grounded in both theory and empirical findings.  
+Determine whether, given what we know about the target phenomenon, a sample of 120 subjects, measured at three time points is sufficient to detect linear change in an unconditional growth model. 
+::::
 
-To create a reasonable population model, even for a relatively simple analysis (the present working example qualifies as such), I need to think through what I know about the treatment effects and the target population. For instance, we know that data in the present case were obatined from a selected sample of children, who were eligible to participate if their scores on a [measure of early childhood anxiety risk](https://onlinelibrary.wiley.com/doi/full/10.1046/j.1467-8624.2003.00645.x) exceeded the 85th percentile.
+A trained phlebotomist once described her experience trying to pierce a patient's vein with her needle as akin to "Trying to use a toothpick to stick a wet noodle covered by a piece of wax paper." I assume the cooking imagery was due to the fact that she was hungry at the time. I personally have very little experience initiating intravenous blood draws, but her description seemed apt for any hard-to-pin-down problem. You try one thing and the system reacts against your efforts in an unexpected way. You come at the problem from a different direction and the solution wiggles away again. 
 
-This knowledge provides useful information when considering population priors. For instance, I should expect the obtained sample to be drawn from a population elevated in anxiety and other, related, symptoms of emotional and/or behavioral maladaptation at time 1. 
+The problem statement above has a lot of potential wiggle to it, even if it sounds straightforward. For a little additional context, this walkthrough is the result of an ask from a senior researcher. He requested a "quick" power analysis for a linear growth model using data obtained from 120 subjects. Having already collected the data, the goal of the power analysis was to explore whether a sample of 120 subjects would be sufficient to detect significant linear change ($\alpha = .05$) for a secondary research question that was not part of the original proposal (we added collection of a set of variables partway through the data collection period).
 
-This is useful until I need to consider what I mean by "elevated," at least insofar as how I will define it numerically in the model. To address this definitional issue, it is helpful to adopt a scale (sometimes a standardized scale is a particularly good option given the easy and obvious interpretation of scores). 
+We collected measures of these variables at three time points (start, middle, and end of an 8-week intervention). For the purposes of these analyses, I decided to treat the data as if they were collected at precisely the same equally spaced interval for all participants. Though this is not technically true, it is sufficiently true, and it simplifies the task somewhat. Modifying the code to take into account the actual difference in time between individual assessments is entirely possible and potentially important, just not in this case.
 
-For the present set of analyses, I am going to attempt to place my outcome measure on a pseudo-*T*-score (i.e., $\mu \approx 50, \sigma \approx 10$), that is approximately normally distributed in the population (note that I am referring to a clinical *T*-score not a *t* distribution). In a Bayesian sense, I am setting a prior regarding the distribution, and it is a convenient one in that it will allow me to define the sample using intercept and slope values that convey meaningful information about initial levels of the outcome variable and overall change. 
+To create a reasonable population model, I needed to think through what I know about the treatment effects and the target population. For instance, we know that the data were obtained from a selected sample of children, who were eligible to participate if their scores on a [measure of early childhood anxiety risk](https://onlinelibrary.wiley.com/doi/full/10.1046/j.1467-8624.2003.00645.x) exceeded the 85th percentile.
 
-So far I have only settled on a starting point (i.e., the intercept), but I have a number of parameters I need to consider specfying, and most importantly a number of parameters about which I am somewhat uncertain. To see what other parameters I need to consider, it is perhaps useful to review the simple linear growth model (specified below using [Raudenbush & Bryk's](https://books.google.com/books/about/Hierarchical_Linear_Models.html?id=uyCV0CNGDLQC&printsec=frontcover&source=kp_read_button#v=onepage&q&f=false) notation). 
+We'll use this and other information to guide decisions about the properties of our power analysis. 
 
-**Level 1 Equation:**  
+### Defining a Data Generation Process
+
+Our target phenomenon is individual variation in anxiety scores. We'll make a simplifying assumption that our anxiety scores are normally distributed in the overall population with a mean of 0 and a standard deviation of 1. 
+
 $$
-Y_{ti} = \pi_{0i} + \pi_{1i}(Time) + e_{ti}
-$$
-
-The level 1 equation includes the coefficient $\pi_{0i}$ which represents the average predicted value for $Y$ when $Time=0$. For this reason researchers typically center their intercepts at a meaningful value. In the present analyses $Time$ is coded such that $T_1 = 0, T_2 = 1,$ and $T_3 = 2$. With this specification, the intercept ($\pi_{0i}$}) represents the predicted value for the outcome score ($Y$) prior to the start of the intervention (note that I am also including a random effect in this model specification - more on that below). 
-
-Average change over time is represented in the model by $\pi_{1i}$. Any one case, however, likely deviates to some degree from the average model of change. These deviations are sometimes referred to as random effects. In the context of a growth model, they represent the degree to an individual case's slope (or intercept) deviates from the estimated average. Using Raudenbush & Bryk's (2002) notation, these random effects are defined below, where the $\beta$'s represent the fixed effects and the $r$'s represent individual deviations from the estimated fixed effects. 
-
-**Level 2 Equations:**  
-$$
-\pi_{0i} = \beta_{00} + r_{0i}
-$$
-$$
-\pi_{1i} = \beta_{10} + r_{1i}
+anxiety \sim N(0, 1) \\
+selected \in [0, 1] \\
 $$
 
-As a quick toy example, let's see what putting priors into practice actually means. Say I have 10 cases measured repeatedly over 5 equally spaced time points. Over the course of the entire data collection window, I expect that I will see an average decrease of -2.5 units in the outcome measure. Additionally, I expect that while most participants will exhibit negative change overall, it is possible that some cases will experience positive change - I want to make sure that my priors allow for this possibility in practice. 
+As part of the initial screening, anyone whose standardized anxiety score is $\leq 1$ gets added to the ineligible pile. Anyone whose score is above 1 can be selected for participation. In practice, we kept up recruitment efforts in the wider community until we hit our eligibility mark for a given cohort.  
 
-```{r samp_growth}
-set.seed(5499)
+$$
+\begin{Bmatrix}
+  anxiety_i \leq 1, & selected_i = 0 \\
+  anxiety_i > 1, & selected_i = 1
+\end{Bmatrix}
+$$
 
-N<-10
-Time.vals<-rep(0:4, times=N)  #5 time points
-ID<-rep(1:N, each=5)
-pred.y<-vector()
-Time<-0:4
+### Enforcing Selection Criteria
 
-#Hyperparamters - fixed effects for slope and intercept
-b_00<-50
-b_10<--0.5
-  for(n in 1:N){
-    #Level 1 error
-    e_ti<-rnorm(5, 0, 3)
+We'll start with the assumption that our sample selection process worked more or less as described above and that we captured the upper tail of a normal distribution. 
+
+>**Modeling Tip**. We can formalize the rules that enforce our selection criteria and distributional assumptions by writing a custom function. Having a function perform this task saves us from having to copy and paste this chunk of code over and over again as we run our analyses. The `while` loop here can probably be simplified; however, the goal was to write this function in a way that maps directly onto the screening process described above. At these sample sizes and with the proposed threshhold we don't pay too much of a computational cost for our `while`, but that may not always be the case. That being said even when not trying to make certain mappings explicit, my general approach is to worry about getting the code to work as expected first. Optimization is a secondary problem.
+
+```{r}
+#' Returns a sample selected from upper tail of a normal distribution, beyond a specified cut point
+generate_upper_tail_sample <- function(mu, sd, n, cut_point) {
+  i <- 0
+  n_rejected <- 0
+  y_vals <- c()
+  
+  while(i < n){
+    y_i <- rnorm(1, mu, sd)
     
-    #Level 2 sources of error
-    r_0i<-rnorm(1, 0, 5)
-    r_1i<-rnorm(1, 0, 1.5)
-    
-    #Level 1 coefficients 
-    pi_0i<-b_00+r_0i
-    pi_1i<-b_10+r_1i
-    
-    #Outcome incoporating level 1 error
-    pred.y<-c(pred.y, pi_0i+pi_1i*Time+e_ti)
+    if(y_i > 1) {
+      y_vals <- c(y_vals, y_i)
+      i <- i + 1
+    }
+    else {
+      n_rejected <- n_rejected + 1
+    }
   }
+  
+  return(list(
+    y = y_vals,
+    n_sample = i,
+    n_rejected = n_rejected
+  ))
+}
 
-
-DF.temp<-data.frame(pred.y, ID, Time.vals)
-DF.temp$ID<-as.factor(DF.temp$ID) #a little easier to work with a grouping factor here. 
-g1<-ggplot(data=DF.temp)+
-  geom_line(aes(x=Time.vals, y=pred.y, group = ID, color=ID), lty='dashed', alpha=.75)+
-  geom_smooth(aes(x=Time.vals, y=pred.y, group=ID, color=ID), method = 'lm', se=F)
-g1
 ```
 
-Looking at the plot above, let's see if I got what I wanted (note the dashed lines are the raw data for each case). While most cases did in fact decline on average, there are two cases for which scores on the outcome measure increased. 
+Let's make sure `generate_upper_tail_sample` works. First, we generate some simulated values. 
 
-Whenever conducting a power analysis, to the degree possible, it is important to ensure that the assumptions 40+you are building into that analysis are meaningfully grounded in some way - typically tethering a rationale to theory, empirical reports, or both. 
+```{r, eval=FALSE}
+MU <- 0         # population mean
+SD <- 1         # population standard deviation
+N <- 120        # target sample size
+CUT <- 1        # cut point - above which the target sub-population exists
 
-Though true, this framework encourages thinking at the level of the overall effect. We often turn to meta-analyses or other reviews that have attempt to describe or define the population-level effect. Less often do these sorts of reviews speak to individual variability from mean estimates. 
+anx_scores <- generate_upper_tail_sample(MU, SD, N, CUT)
+```
 
-The net result is that we sometimes struggle to define our expectations about variability. This is where plotting the data is so valuable in my mind. I can quickly see whether or not individual trajectories are departing wildly from what is reasonable. If so, I can tweak certain aspects of the model and re-inspect until I am satisfied with the results.   
+Then we plot.
 
-We always stress plotting your real data. Same goes for the made-up stuff too.
+```{r}
+ggplot() +
+  geom_histogram(aes(x = anx_scores[['y']]), fill = '#426EBD', bins = 8) + 
+  labs(x = 'Standardized Anxiety Score', y='Frequency', 
+       caption = 'Figure 1. Histogram of anxiety values returned from generate_upper_tail_sample()') + 
+  theme_bw()
+```
 
-Once I have sufficiently tuned up my population model, the next trick is to simulate a sufficiently large number of data sets to estimate power for my proposed model of change. Briefly, I will note that I am not really addressing the possibility that there is a meaningful correlation between individual random effects. I'll save that for a future post. 
+My little helper function seems to be working. One aspect that should stand out at this point is that if we apply a cut point to select a target sample from a normal distribution in this fashion - we should _not_ expect a normal distribution of scores in the sub-population. To make this fact more obvious let's generate more samples using `generate_upper_tail_sample` and inspect their posterior distributions. 
 
-**The Solution:** Now that I have something of a framework created, I can apply it to my problem in a more direct fashion. I should state at the outset that this simulation is going to take some time. That is because I have chosen to evaluate significance using coverage of `0` by a 95% boostrapped confidence interval. I tend to prefer this over say a p-value generated by the `lmer()` function using the {lmerTest} library. This may be overkill, but it is the way I would typically assess whether coefficients in the model meaningfully differ from 0, so it is the approach I will be using to assess power as well. 
+```{r, echo = FALSE}
+N_SIMS <- 100
 
-My goal with the analysis presented below is to assess the power of the model to detect significant negative linear change with the expectation that the overall effect in the population is relatively small (I'll be using *Cohen's* $d$ as a guide for evaluating effect size. 
+df_dens <- data.frame()
 
-```{r pwr_sim, eval=FALSE}
-#The libraries used
-library(lme4)
-library(merTools)
-library(boot)
-library(sjstats)
-library(ggplot2)
+for(i in 1:N_SIMS) {
+  dens <- generate_upper_tail_sample(MU, SD, N, CUT)[['y']] %>% 
+    density() 
+  
+  df_tmp <- data.frame(
+    x = dens[['x']],
+    y = dens[['y']], 
+    sim_iter = rep(i, length(dens[['x']]))
+  )
+  
+  df_dens <- rbind(df_dens, df_tmp)
+}
 
-#Specifying fixed effects for model
-b_00<-65        #Fixed intercept: Average starting point on a pseudo-t-score scale)
-b_10<--1.5      #Fixed slope: Change per unit of time 
-Time<-0:2       #Vector of equally-spaced intervals
+ggplot(data = df_dens, aes(x = x, y = y, group = sim_iter)) +
+  geom_line(color = "#DEEBF7") +
+  labs(caption = "Figure 2. Posterior Densities of Simulated Standardized Anxiety Scores", 
+       y = 'Density', 
+       x = 'Standardized Anxiety Scores') +
+  theme_bw()
+```
 
-#Setting up some empty vectors for the simulation to fill in
-#------------------------------------------------------------------------------------
-#Intercept vectors
-b00_Est<-vector()
-b00_boot_se<-vector()
-b00_boot_LB<-vector()
-b00_boot_UB<-vector()
-b00_var<-vector()
+The kernel used to smooth out and calculate the density function makes it seem like there are values below 1. There aren't, at least not in our sample at this point. In fact, a score of 1 is a known, lower limit given our selection criteria. This effect of extending beyond observed data is a consequence of the default settings used by the `density()` function. The more important takeaway is that anxiety scores in this target population probably follow something closer to a `lognormal` distribution than a `normal` distribution. 
 
-#Slope vectors
-b10_Est<-vector()
-b10_boot_se<-vector()
-b10_boot_LB<-vector()
-b10_boot_UB<-vector()
-b10_var<-vector()
+This is just one theory of the case for the data generation process of our baseline scores. In reality, screening took place weeks in advance of the baseline measure of anxiety used as the anchor point for assessing treatment effectiveness. Should this fact have consequences for our distribution of scores at the start of the intervention? The short answer is yes. The details on how I go about defining the data generation process for the time 1 anxiety scores are covered in the "Deeper Dive: Reliably Measured with Error" box below. 
 
-#Capturing variability in Y at multiple levels and overall
-ICC.vals<-vector()
-sd.y<-vector()
-CohensD<-vector()
-#------------------------------------------------------------------------------------
-#Select number of simulations & Sample size
-n.sims<-2500  #number of total simulations to run - recommend > 5,000
-N<-120          #Sample size 
+As an aside, this is a good example of a wiggly point in this particular power analysis. It is a byproduct of using the same measure to screen participants that we later use to assess change in response to the intervention. Most power analyses have some idiosyncratic design choice or measurement property that requires a bit of additional thought. In this case, it is attempting to include what we know about the selection process in the data simulation. It is extra work to be sure, but the payoff is that we get a reasonably principled means of generating our time 1 scores. 
 
-for(s in 1:n.sims){
-  #browser()
-  Time.vals<-rep(0:2, times=N)
-  IDs<-rep(1:N, each=3)
-  pred.y<-vector()
-  for(n in 1:N){
-    #Level 1 error
-    e_ti<-rnorm(3, 0, 5)
+:::: {.rmdnote}
+### Deeper Dive: Reliably Measured with Error
+
+Just about every metric used in the social sciences is measured with some error. Part of the problem is that there is no physical entity we can use to measure someone's openness, kindness, or anxiety. There are measures and methods that generate values that _we think_ correspond to these and other target phenomena, but, if pushed, we usually have implicitly accepted that our observed values are a mix of variation attributable to the characteristic or trait we hope to measure and any number of (what we hope are) random sources of "noise" or "error". 
+
+More formally: 
+
+$$ 
+y_{obs} = y_{true} + y_{error}
+$$
+
+There are a few ways to evaluate how much error variance our scores might contain. In our case, we'll use a simulated term that can leverage reported reliability coefficients. If we don't have confidence in extending reported reliabilities to our target population for a given measure (e.g., the populations may differ too much), we can instead set a minimum threshold or use an upper and lower bound to represent "best" and "worst" case scenarios. 
+
+To be a little extra obnoxious, assume that we also want to maintain the standardized scale for the observed scores. So how do we build all of these rules into the simulation? Let's start by writing them out: 
+
+1. The observed scores used to determine eligibility are measured with error. 
+2. The observed scores are normally distributed with a mean of 0 and a standard deviation of 1. 
+3. Both the "true" and "error" values are normally distributed. 
+
+So in order for all of these conditions to be true, we assume the following: 
+
+$$
+\sigma_{obs}^2 = \sigma_{true}^2 + \sigma_{error}^2 \\
+$$
+
+and leveraging what we know about the connection between Pearson's correlation and $R^2$ in a linear Gaussian regression model we also expect the following to be true: 
+
+$$
+R^2 = \frac{\sigma_{true}^2}{\sigma_{true}^2 + \sigma_{error}^2}
+$$
+
+where we are conceptualizing $R^2$ as the proportion of variance in $y_{obs}$ accounted for by "true" variation in the target phenomenon. And now to convert that knowledge into something that can map onto to a correlation scale: 
+
+$$
+r = \pm \sqrt{R^2} \\
+r = \pm \sqrt{\frac{\sigma_{true}^2}{\sigma_{true}^2 + \sigma_{error}^2}}
+$$
+
+Now all we need to do is distill this information down to two sets of equations with only two unknowns. Then we can substitute and solve for the error variance. To make this work, we'll need to fix two values: the correlation between observed and true scores and the variance of observed values. For the former, we'll assume a correlation of .775 and for the latter, we'll fix our observed score variance to 1. Dropping in these values we get the following: 
+
+$$
+\sigma_{obs}^2 = 1 \\
+\sigma_{obs}^2 = \sigma_{true}^2 + \sigma_{error}^2 \\
+1 = \sigma_{true}^2 + \sigma_{error}^2 \\
+$$
+
+And then we start on the $r$ side of things.
+
+$$
+r = \sqrt{\frac{\sigma_{true}^2}{1}} \\
+.775 = \sqrt{\frac{\sigma_{true}^2}{1}} \\
+.775^2 = \sigma_{true}^2 \\
+.775 = \sigma_{true}
+$$
+
+So the standard deviation of the "true" source of variation in our data generation process is .775. This happens to be the direct result of fixing variance in our observed scores to be equal to 1. Now for the error distribution's standard deviation, we just need to plug our value for $\sigma_{true}^2$ back into the first equation. 
+
+$$
+1 = \sigma_{true}^2 + \sigma_{error}^2 \\
+1 = .775^2 + \sigma_{error}^2 \\
+\sigma_{error}^2 = 1 - .775^2 \\
+\sqrt{\sigma_{error}^2} = \sqrt{1 - .775^2} \\
+\sigma_{error} = .632
+$$
+
+Now how do we bake this into our simulation? By modifying our `generate_upper_tail_sample` function slightly... : 
+
+```{r}
+#' Returns a sample selected from upper tail of a normal distribution, beyond a specified cut point
+generate_upper_tail_sample <- function(mu, sd, n, cut_point, rel_est = .75) {
+  i <- 0
+  n_rejected <- 0
+  y_vals <- c()
+  
+  sd_error <- sqrt(1 - rel_est^2)
+  
+  while(i < n){
+    y_true <- rnorm(1, sd = rel_est)
+    y_error <- rnorm(1, sd = sd_error)
     
-    #Level 2 sources of error
-    r_0i<-rnorm(1, 0, 5)
-    r_1i<-rnorm(1, 0, 2.5)
-    
-    #Level 1 coefficients 
-    pi_0i<-b_00+r_0i
-    pi_1i<-b_10+r_1i
-    
-    #Outcome incoporating level 1 error
-    pred.y<-c(pred.y, pi_0i+pi_1i*Time+e_ti)
+    if(y_true > rel_est) {
+      y_obs <- y_true + y_error
+      y_vals <- c(y_vals, y_obs)
+      i <- i + 1
+    }
+    else {
+      n_rejected <- n_rejected + 1
+    }
   }
   
-  DF<-data.frame(ID=IDs, 
-                 Time=Time.vals, 
-                 Y=pred.y)
-  
-  fit.null<-lme4::lmer(Y~1+(1|ID), DF)
-  ICC.vals<-c(ICC.vals, as.numeric(sjstats::icc(fit.null)))
-  sd.y<-c(sd.y, sd(pred.y))
-  CohensD<-c(CohensD, effsize::cohen.d(c(DF$Y[DF$Time==2], DF$Y[DF$Time==0]), f=rep(c('T3', 'T1'), each=120))$estimate)
-  fit.ucgm<-lme4::lmer(Y~1+Time + (1+Time|ID), data=DF)
-  
-  boot.ucgm<-bootMer(fit.ucgm, FUN=fixef, type = 'parametric',
-                     nsim=1000, parallel = 'multicore', ncpus=12)
-  
-  #obtaining CIs for intercept
-  b00_Est<-c(b00_Est, mean(boot.ucgm$t[,1]))
-  b00_boot_se<-c(b00_boot_se, sd(boot.ucgm$t[,1]))
-  b00_boot_LB<-c(b00_boot_LB, b00_Est[s]+qt(.975, N-1)*b00_boot_se[s])
-  b00_boot_UB<-c(b00_boot_UB, b00_Est[s]+qt(.025, N-1)*b00_boot_se[s])
-
-  #obtaining CIs for time slope
-  b10_Est<-c(b10_Est, mean(boot.ucgm$t[,2]))
-  b10_boot_se<-c(b10_boot_se, sd(boot.ucgm$t[,2]))
-  b10_boot_LB<-c(b10_boot_LB, b10_Est[s]+qt(.975, N-1)*b10_boot_se[s])
-  b10_boot_UB<-c(b10_boot_UB, b10_Est[s]+qt(.025, N-1)*b10_boot_se[s])
-
-  #Obtaining estimates of variability in slope and intercept
-  b00_var<-c(b00_var, as.numeric(VarCorr(fit.ucgm)$ID[1,1]))
-  b10_var<-c(b10_var, as.numeric(VarCorr(fit.ucgm)$ID[2,2]))
-  print(paste(s, 'out of', n.sims, 'simulations'))
+  return(list(
+    y = y_vals,
+    n_sample = i,
+    n_rejected = n_rejected
+  ))
 }
 ```
 
-Now that the simulation has finished, it is time to combine the output and plot. I cannot stress enough how important it is to plot things. Again, I am looking to see whether or not this model has returned reasonable estimates. 
+Pay special attention to the addition of the `rel_est` parameter, our estimate of reliability. We can see the consequences of this new implementation by generating and plotting the distributions of 100 new samples. 
 
-(*Pro tip*: run your whole simulation code with a much smaller number of simulations to start - say 30 - inspect the results, then run the full simulation code if everything checks out.)
+```{r, echo=FALSE}
+N_SIMS <- 100
 
-```{r pow_sum, eval=TRUE}
-dat_small<-data.frame(b00_Est=b00_Est, 
-                      b00_se=b00_boot_se,
-                      b00_var=b00_var, 
-                      b00_boot_LB = b10_boot_LB,
-                      b00_boot_UB = b10_boot_UB,
-                      b10_Est=b10_Est, 
-                      b10_se=b10_boot_se, 
-                      b10_var=b10_var,
-                      b10_boot_LB = b10_boot_LB, 
-                      b10_boot_UB = b10_boot_UB,
-                      sd.y=sd.y, 
-                      CohensD=CohensD,
-                      ICC=ICC.vals)
+df_dens <- data.frame()
 
-#plotting distributions returned from the simulations
-#Selecting only certain columns related to fixed effects 
-bayesplot::mcmc_dens(dat_small[,c(1:2,6:7)])+
-  ggtitle('Variances of Slope Estimates - Small Effect Model')
+for(i in 1:N_SIMS) {
+  dens <- generate_upper_tail_sample(MU, SD, N, CUT)[['y']] %>% 
+    density() 
+  
+  df_tmp <- data.frame(
+    x = dens[['x']],
+    y = dens[['y']], 
+    sim_iter = rep(i, length(dens[['x']]))
+  )
+  
+  df_dens <- rbind(df_dens, df_tmp)
+}
+
+ggplot(data = df_dens, aes(x = x, y = y, group = sim_iter)) +
+  geom_line(color = "#DEEBF7") +
+  labs(caption = "Figure 3. Posterior densities of simulated standardized anxiety scores accounting for measurement error", 
+       y = 'Density', 
+       x = 'Standardized Anxiety Scores') +
+  theme_bw()
 ```
 
-What about some of the basic properties of the data? Was the average linear effect relatively small (which was the goal of this analysis after all)? What about the intra-class correlations returned by each data set; were they reasonable given the design and expectations based on similar data sets? 
+Well what do you know? Maybe we should not expect our initial scores to have a `lognormal` distribution after all. If our target sample is a sub-population whose true anxiety is $> \mu_{y} + \sigma_y$ the best we may be able to do with a measure that is correlated with true variation in anxiety at $.775$ is a mostly symmetrical distribution with a mean a bit above 1. 
 
-```{r plot_diag, eval=TRUE}
-bayesplot::mcmc_dens(dat_small[,12:13])+
-  ggtitle('Model Diagnostics - Small Effect Model')
+Why go through this extra work? For one it makes us think more intensively about our research design and its implied consequences given what we know about our target sample and available measures. More importantly, it provides a means of embedding what we know about our data and design into the power analysis itself. As this exercise has shown, even relatively simple selection criteria can have meaningful consequences on observed distributions, conditioned on the error variance present in the measure. 
+
+::::
+
+### Simple Unconditional Growth Model 
+
+All of the work up to this point was to figure out a way to generate scores for our simulated participants right before the start of the intervention. Now it is time to dig into the rest of the proposed linear change model. 
+
+Taking a step back, we think that there is some average linear model that will maximally explain individual change in standardized anxiety scores as a function of time. Sounds like any other regression model, and it sort of looks like one too. So why the fancy "unconditional growth model" term? 
+
+Growth models or growth curves are often used in longitudinal designs to assess factors that influence individuals' change over time. These models are a special subset of the more general multilevel modeling family. 
+
+$$
+Anxiety_{ti} = \pi_{0i} + \pi_{1i}(Time_{ti}) + e_{ti}
+$$
+What makes this a "multilevel" model is the fact that we are modeling both population-level change and individual level change at the same time. We achieve this end by specifying a second set of equations that define individual's deviation from the population-level regression line: 
+
+$$
+\pi_{0i} = \beta_{00} + r_{0i} \\ 
+\pi_{1i} = \beta_{10} + r_{1i}
+$$
+
+Each of these "second-level" equations introduces a new pair of terms. In this unconditional model, $\beta$'s represent the best estimate of the population regression line. The $r$'s represent individual deviations from those population parameters. When combined, the $\beta$'s and $r$'s give rise to the $\pi$'s in the first equation - which can now be different for each individual in our data set. 
+
+Now that we know the model, it is time to think through our options for assigning values to its various parameters. Note that we have already created a data generation process for individual intercepts above. So next, let's assign the amount of change we expect per unit of time ($\beta_{10}$). Given the short nature of the intervention, a change of .05 standardized units in anxiety per unit of time would be at the lower end of our expectations, and a change of .15 standardized units per unit of time would be at the high end. Over three time points and extrapolating from the linear model (fancy phrasing for multiplying by 2), our overall change expectations would be .10 standardized units or .30 standardized units, respectively. 
+
+We'll start with some absurd priors for our error terms (the $e$ and the $r$'s) and evaluate just how nonsensical they are by depicting the implied results graphically. 
+
+```{r}
+pi_0i <- generate_upper_tail_sample(MU, SD, N, CUT, rel_est = .775)[['y']]
+time <- 0:2
+beta_10_lb <- -.05
+beta_10_ub <- -.15
+sigma_e <- 1.5
+sigma_r1 <- 2
+
+sim_df <- data.frame()
+for(n in 1:N){
+  e_ti <- rnorm(length(time), sd = sigma_e)
+  r_1i <- rnorm(1, sd = sigma_r1)
+  
+  y_obs_lb <- pi_0i[n] + (beta_10_lb + r_1i) * time + e_ti
+  y_obs_ub <- pi_0i[n] + (beta_10_ub + r_1i) * time + e_ti
+  
+  tmp_df <- data.frame(
+    anx_scores = c(y_obs_lb, y_obs_ub), 
+    time = rep(time, 2),
+    id = n, 
+    scenario = c(rep('LB', length(time)), rep('UB', length(time)))
+  )
+  
+  sim_df <- rbind(sim_df, tmp_df)
+}
 ```
 
-I would say yes to both. The maximum a posteriori estimate (MAPE) for standardized average change is: 
-```{r med_cohen, eval=TRUE}
-median(dat_small$CohensD)
-quantile(dat_small$CohensD, c(.025, .975))
+Before looking at the plots let's break down the effect these error terms have. Changing the error variance for $e$ adjusts the degree to which observed data will vary from each individual regression line. The upshot is that higher values mean larger swings from time point to time point for each individual. When we modify the $r_1$ variance we are changing the between-subjects differences in average change. Larger values mean that individual trajectories can deviate more from the population estimate. In practice, this means a wider range of steeper slopes is possible. Let's compare these two scenarios by randomly selecting 30 observations that were simulated under these conditions. 
+
+```{r, echo=FALSE}
+ids <- unique(sim_df[['id']])
+
+sim_df %>% 
+  filter(id %in% sample(ids, size = 30)) %>% 
+  ggplot(aes(x = time, y = anx_scores, group = id)) + 
+  stat_smooth(method = 'lm', se = FALSE, alpha = .45, color = '#426EBD') +
+  facet_wrap(.~scenario) + 
+  labs(x = 'Time', y = 'Standardized Anxiety Scores', 
+       caption = 'Figure 4. Fit lines for lower (left) and upper (right) estimates of change') +
+  theme_bw() +
+  geom_hline(yintercept = c(-1.75, 4), lty = 'dashed') +
+  theme(axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+  
 ```
 
-which to me seems entirely reasonable to classify as a "small" effect power analysis, with the added bonus that you can clearly see this approach reflects uncertainty about the magnitude of change observed in any one sample. 
+A few things are important to recall here. Our study design expects a sample that is, on average, elevated in anxiety scores. We are not able to perfectly capture individual's anxiety scores but our measure and selection criteria should reliably yield a sample that is elevated in standardized anxiety scores at the start of the intervention period (when $Time_{ti} = 0$), and that fact appears to be suitably reflected in our simulation approach (most lines start above 0). 
 
-So how do I get power? It is simple. I am interested in the power to detect negative change at $\alpha = .05$, given the population model I created, in a sample of 120 subjects. Okay so not that simple. Since I saved the upper boundaries of the 95% CIs for my estimates I could add up all of the times the upper boundary for a given sample was less than 0 (an indication that a significant effect was detected), divide that total by the total number of simulations and voila, I'd have a calculation of power. 
+We also know that the scores are _standardized_ with unit variance, and we have some sense of what an effect would look like at the low (net change of .10) and high end (a net change of .30). 
 
-Using a binary variable it is even easier... 
+The black lines in **Figure 4** represent a rough estimate of a _reasonable_ range of values for these scores given all of the information we have covered to this point. As we can see, numerous individual fit lines lines extend well beyond these thresholds. More to the point, on a standardized scale, this model, with these error terms, allows for some individuals to change by almost 8 standardized units! 
 
-```{r power_calc, eval=TRUE}
-sig<-ifelse(dat_small$b10_boot_UB<0, 1, 0)
-mean(sig)
+When we look at the simulated raw scores instead of the fitted lines, the problem is even more obvious. Some participants fluctuate up to 6 or 7 standardized units between _consecutive_ assessments. These results simply do not make sense given what we know about the data. 
 
-max(dat_small$b10_boot_UB)
+```{r}
+sim_df %>% 
+  filter(id %in% sample(ids, size = 30)) %>% 
+  ggplot(aes(x = time, y = anx_scores, group = id)) + 
+  geom_line(alpha = .45, color = '#426EBD') +
+  facet_wrap(.~scenario) + 
+  labs(x = 'Time', y = 'Standardized Anxiety Scores', 
+       caption = 'Figure 5. "Raw" lines for lower (left) and upper (right) estimates of change') +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
 ```
 
-Note that the maximum upper boundary for model-based 95%-bootstrapped CIs for the fixed slope was negative - which is why I get a probability of 1 using the `mean(sig)` call. If interested I could use this information to start working my way down iteratively to a minimum effect size detectable at a rate of 80%, given the population model and a sample size of 120.
+So if these are "bad" priors for the simulation, what do better ones look like? After some testing I settled on the following values which I think offer fairly reasonable-looking posteriors. 
 
-Or... Instead of doing all of that trial and error work, I could create a program to do it, one that has its code written more efficiently, and one that does a little more parallelizing. All for a future post. 
+```{r}
+pi_0i <- generate_upper_tail_sample(MU, SD, N, CUT, rel_est = .775)[['y']]
+time <- 0:2
+beta_10_lb <- -.05
+beta_10_ub <- -.15
+sigma_e <- 0.33
+sigma_r1 <- 0.67
+```
+
+```{r, echo=FALSE}
+sim_df <- data.frame()
+for(n in 1:N){
+  e_ti <- rnorm(length(time), sd = sigma_e)
+  r_1i <- rnorm(1, sd = sigma_r1)
+  
+  y_obs_lb <- pi_0i[n] + (beta_10_lb + r_1i) * time + e_ti
+  y_obs_ub <- pi_0i[n] + (beta_10_ub + r_1i) * time + e_ti
+  
+  tmp_df <- data.frame(
+    anx_scores = c(y_obs_lb, y_obs_ub), 
+    time = rep(time, 2),
+    id = n, 
+    scenario = c(rep('LB', length(time)), rep('UB', length(time)))
+  )
+  
+  sim_df <- rbind(sim_df, tmp_df)
+}
+
+sim_df %>% 
+  filter(id %in% sample(ids, size = 30)) %>% 
+  ggplot(aes(x = time, y = anx_scores, group = id)) + 
+  stat_smooth(method = 'lm', se = FALSE, alpha = .45, color = '#426EBD') +
+  facet_wrap(.~scenario) + 
+  labs(x = 'Time', y = 'Standardized Anxiety Scores', 
+       caption = 'Figure 6. Fit lines for lower (left) and upper (right) estimates of change for updated simulation') +
+  theme_bw() +
+  geom_hline(yintercept = c(-1.75, 4), lty = 'dashed') +
+  theme(axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank())
+```
+
+### Putting It All Together
+
+To pull this off, we are going to need a set of functions that generates multiple simulated data sets, applies our proposed model to each, and then stores the output in a `list` or `data.frame` for subsequent use. In short, we need more helper functions. 
+
+First, let's build out the linear model portion of the data generation process. 
+```{r}
+generate_linear_model_posteriors <- function(intercept, time_points, delta, sigma_e, sigma_delta) {
+  
+  sim_df <- data.frame() 
+  
+  for(n in 1:length(intercept)) {
+    e_ti <- rnorm(length(time_points), sd = sigma_e)
+    r_1i <- rnorm(1, sd = sigma_r1)
+    
+    y_obs <- intercept[n] + (delta + r_1i) * time_points + e_ti
+
+    tmp_df <- data.frame(
+      anx_scores = y_obs, 
+      time = time_points,
+      id = n
+    )
+    
+    sim_df <- rbind(sim_df, tmp_df)
+  }
+  
+  return(sim_df)
+}
+```
+
+Again, following my rule of make it work first, optimize second, I see a couple of opportunities here to make this function a bit more flexible and potentially drop the need for the `for` loop altogether. We are going to live with this for now, as it solves the present problem.  
+
+Next, we need to wrap everything in a function that can do all the heavy lifting of creating the simulated data. Basically, this thing needs to be able to take in some settings and a parameter that defines the number of desired simulations and spit out a bunch of randomly created samples according to our rules. 
+
+```{r}
+generate_sim_data_list <- function(simulation_settings, n_sims) {
+  sim_results <- list()
+  upper_tail_args <- simulation_settings[c('mu', 'sd', 'n', 'cut_point', 'rel_est')]
+  linear_args <- simulation_settings[c('time_points', 'delta', 'sigma_e', 'sigma_delta')]
+  
+  for(s in 1:n_sims) {
+    pi_0i <- do.call(generate_upper_tail_sample, upper_tail_args)[['y']] %>% 
+      unlist()
+    
+    sim_results[[s]] <- do.call(generate_linear_model_posteriors, c(list(intercept = pi_0i), linear_args)) 
+  }
+  
+  return(sim_results)
+}
+```
+
+Pheww... okay one last component we need to build out. We need a function that can model each data set. I am going to use the `lme4` package for the modeling step. If you are interested in multilevel models and, probably, their most popular implementation in `R` you can learn more by reading the `lme4` [documentation](https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf). 
+
+To make this work we'll need to specify the formula using the package's syntax rules. The terms we expect to have "random" or individual effects are included in the `( 1 + time | id)` portion of the formula. 
+
+```{r}
+base_formula <- 'anx_scores ~ 1 + time + (1 + time | id)'
+
+generate_lmer_estimates <- function(df, form) {
+  res <- lmerTest::lmer(form, df)
+  
+  res_table <- coef(summary(res))
+  colnames(res_table) <- c('beta', 'se', 'df', 't', 'p')
+  
+  return(res_table)
+}
+```
+
+This may seem like a lot of leg work, and it is. Honestly, there should be even more done for a final, polished product. For instance, I would recommend adding [unit tests](https://r-pkgs.org/tests.html) for each helper function. I would also suggest adding docstrings that explain each of the parameters so future me is not totally confused when I look at this code again in three months.
+
+What this legwork buys us though is a great deal of flexibility at the critical point of this analysis. I am now able to parameterize all of the relevant model settings we walked through above. I have also broken down the simulation into the simplest stages possible: 
+
+1. Define the settings
+2. Generate the simulation data
+3. Model the data and store the results
+
+```{r, eval=FALSE}
+# For my overall settings
+simulation_settings <- list(
+  mu = 0,
+  sd = 1, 
+  n = 120, 
+  cut_point = 1, 
+  rel_est = .775, 
+  time_points = 0:2, 
+  delta = -.05, 
+  sigma_e = .33, 
+  sigma_delta = .67
+)
+
+N_SIMS <- 1000 
+sim_df_list <- generate_sim_data_list(simulation_settings, N_SIMS)
+sim_model_res <- lapply(sim_df_list, generate_lmer_estimates, form = base_formula)
+```
+
+We'll operationalize power in this case as the probability of detecting a statistically significant effect, using the standard, but totally arbitrary $\alpha = .05$ as our significance threshold. We used the `lmerTest` wrapper to generate an approximation of the degrees of freedom for each set of model estimates. It is not unreasonable given the fact that this is a power analysis for a intervention study, that we take a "one-tailed" approach to evaluating statistical power. Essentially, we are saying that we do not really care about our ability to reliably detect positive change in anxiety symptoms. 
+
+Before we move to the actual "power" part of the power analysis though, we should check to ensure that our simulated data returns model estimates that reflect our expectations. For instance, regardless of whether the models identify statistically significant change, we should expect that our $\beta_{10}$, when averaged across all models is very close to what we set it to initially. Ensuring the model can correctly recover the simulated values is an important testing step in this process. We can't have much faith in our ultimate analysis if there is a bug in our code somewhere or we have mis-specified the data generation process. 
+
+```{r}
+beta_10_vals <- lapply(
+  sim_model_res, 
+  function(x) x['time', 'beta']
+) %>% unlist()
+
+ggplot() +
+  geom_histogram(aes(x = beta_10_vals), fill = '#426EBD', bins = 20) +
+  geom_vline(xintercept = mean(beta_10_vals), lty = 'dashed') +
+  annotate('text', x = 0, y = 25, label = paste('Mean = ', round(mean(beta_10_vals), 3))) +
+  labs(x = expression(~beta[1][0]), 
+       y = 'Frequency', 
+       caption = 'Figure 7. Verification of successful parameter recovery from simulation') + 
+  theme_bw() 
+```
+
+You can repeat the same exercise for additional parameters and see that the simulation setup is generating data in line with expectations. Woohoo! Now we can take the model results and extract the one-tail $p$ values using the $t$ statistic and estimated degrees of freedom. 
+
+```{r}
+# Use the estimated t value and degrees of freedom from each model's output
+one_tail_p_vals <- lapply(
+  sim_model_res, 
+  function(x) pt(x['time', 't'], x['time', 'df'], lower.tail = TRUE) 
+) %>% unlist()
+
+# The proportion of models that would return significant estimates of change 
+mean(one_tail_p_vals <.05)
+```
+
+This is our first estimate of statistical power to this point. It is telling us quite plainly that we'll have a pretty low chance of detecting significant change in our model when the "true" net change is only about .10 standardized units. What about our upper bound of .30 for the change estimate? 
+
+In fact, let's go ahead and run the analysis using a range of plausible values for average change. In doing so, we are going to find our first efficiency bottleneck. It is not an unreasonable place to get clogged up computationally as we are essentially running 10,000 separate models on 10,000 separate data sets. I am going to push through the bottleneck using `doParallel`, but the better option would be to go back through the implementation and find opportunities to pull out `for` loops wherever possible and replace with vectorized operations. 
+
+```{r, eval=FALSE}
+delta_values <- seq(-.25, -.01, length.out = 10)
+
+library(doParallel)
+cl <- makeCluster(10)
+registerDoParallel(cl)
+
+p_sig <- foreach(i = delta_values, .export = c('generate_sim_data_list', 'generate_lmer_estimates'), 
+                 .packages = c('tidyverse', 'lme4', 'lmerTest'), .combine = c) %dopar% {
+                   simulation_settings <- list(
+                     mu = 0,
+                     sd = 1, 
+                     n = 120, 
+                     cut_point = 1, 
+                     rel_est = .775, 
+                     time_points = 0:2, 
+                     delta = i, 
+                     sigma_e = .33, 
+                     sigma_delta = .67
+                   )
+                   
+                   N_SIMS <- 1000 
+                   sim_df_list <- generate_sim_data_list(simulation_settings, N_SIMS)
+                   sim_model_res <- lapply(sim_df_list, generate_lmer_estimates, form = base_formula)
+                   
+                   # obtain the proportion of 
+                   obs_sig <- lapply(
+                     sim_model_res, 
+                     function(x) pt(x['time', 't'], x['time', 'df'], lower.tail = TRUE) 
+                   ) %>% 
+                     unlist()
+                   
+                   mean(obs_sig < .05)
+                   
+                 }
+
+stopCluster(cl)
+```
+
+```{r, echo = FALSE}
+ggplot() +
+  geom_point(aes(x = delta_values, y = p_sig), color = '#426EBD') +
+  geom_line(aes(x = delta_values, y = p_sig), color = '#426EBD') +
+  geom_hline(yintercept = .80, lty = 'dashed') +
+  labs(x = expression(~beta[1][0]), 
+       y = 'Estimated Power', 
+       caption = 'Figure 8. Power analysis for varying degrees of hypothesized change') + 
+  theme_bw()
+```
+
+To return to our problem statement at the top: 
+
+>Determine whether, given what we know about the target phenomenon, a sample of 120 subjects, measured at three time points is sufficient to detect linear change in an unconditional growth model.
+
+We have a reasonable answer, after all of this work. Provided that we believe a likely estimate of the total change from baseline to the final post-intervention assessment is about .30 ($\beta_{10} = .15$) to .35 ($\beta_{10} = .175$) standardized units, then a sample size of 120 may be sufficient. If the expected change is less than that, the analysis will likely be under-powered. That is it... dozens of lines of code and many tweaks to distributions later we arrive at a two sentence conclusion that will receive cursory review by a grant panel. Ah, the quiet glory that is statistics. 
+
+### Summary
+
+Hopefully, you are at least convinced by this relatively simple example that statistical power analyses can be wiggly problems to pin down. There were a lot of moving parts to answer what seems like a simple opening question. You may be asking where is the `R` package that does all of this for me? Believe me I get it, and there are some good ones to be sure. For complex models, I like [`simr`](https://cran.r-project.org/web/packages/simr/index.html) and [`simsem`](https://cran.r-project.org/web/packages/simsem/index.html). Expect to spend some time learning how to specify the data generation process you want using these approaches. Read the documentation carefully so you can understand some of the decisions that have been made under the hood and whether they have implications for your particular analysis.
+
+There is so much more ground to cover than what is reviewed here. With this model alone, we might actually want to include some additional properties. For instance, a common phenomenon is that individual intercepts are often negatively correlated with individual slopes in these sorts of growth models. The idea is that individuals with higher scores at baseline have less room to move up and more room to move down in terms of the post-intervention scores. We can add a component to our simulation that would account for the correlation between these two sets of individual-level effects. We may also want to incorporate missing data. For instance, we could drop certain values in the simulated data sets using a set of rules or criteria we expect might be at play (e.g., maybe individuals with higher baseline scores are less likely to complete the intervention). Building our own simulation engine here allows us to step in, modify, and tweak things like these as we go. We get more freedom and transparency, but the price is that we can't just run `library(cool_power_package)` followed by `nifty_power_analysis_function()`. 
