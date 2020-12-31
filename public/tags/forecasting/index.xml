@@ -13,9 +13,9 @@
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mgb-research.netlify.com/blog/2018/05/21/2018-05-21-gaussian-process-imputation-models/</guid>
-      <description>(Updated: 2020-12-28)
+      <description>(Updated: 2020-12-31)
 Problem Statement Create a forecast model using only the information available in a single, univariate time series.
- The Past is Prologue Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a past is prologue assumption is not a terrible decision.</description>
+ The Past is Prologue Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a past is prologue assumption is not a terrible decision in many cases.</description>
     </item>
     
   </channel>

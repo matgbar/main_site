@@ -3569,3 +3569,4 @@ a.list-group-item.active > .badge,
   margin-bottom: 10px;
   background: #DEEBF7 5px center/3em no-repeat;
 }
+pre, code {white-space:pre !important; overflow-x:auto !important}

@@ -28,7 +28,6 @@ load('../../DFs/gp_forecast_blog.RData')
 
 (Updated: `r Sys.Date()`)
 
-
 :::: {.rmdnote}
 ### Problem Statement
 
@@ -37,9 +36,9 @@ Create a forecast model using only the information available in a single, univar
 
 ## The Past is Prologue
 
-Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a _past is prologue_ assumption is not a terrible decision. 
+Sometimes the only data we have to predict a particular phenomenon are previous measurements of the target variable we hope to forecast. Using the past to predict the future means that we assume prior trends will continue into the forecast window. Absent other information and all else being equal, making a _past is prologue_ assumption is not a terrible decision in many cases. 
 
-If can reasonably talk ourselves into making this assumption, then a number of modeling approaches become viable. Among the simplest approaches would be something like a linear regression. Despite its simplicity, there are many processes for which the only reliable pattern over time is a consistent, linear change. 
+If we can reasonably talk ourselves into making this assumption, then a number of modeling approaches become viable. Among the simplest techniques would be something like a linear regression. Despite its simplicity, there are many processes for which the only reliable pattern over time is a consistent, linear change. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 set.seed(19571004)
@@ -80,7 +79,7 @@ ggplot(data = air_pass_tbl,
   theme_bw()
 ```
 
-The following properties of this second time-series (monthly airline passengers from 1949-1960) stand out:
+For example, following properties of this second time-series (monthly airline passengers from 1949-1960) stand out, only one of which can be accounted for by a linear change process.
 
 1. There is an average trend over time.  
 2. There is a seasonal trend.  
@@ -92,31 +91,31 @@ For the remainder of the post we are going to focus on creating a Gaussian proce
 :::: {.rmdnote}
 ### Deeper Dive: GP Models are the Sum of Their Parts
 
-Gaussian process models are an incredibly flexible modeling framework. One reason for this flexibility is that the sum of any number of Gaussian processes is a Gaussian process. What this means in practice is that we can layer multiple processes on top of one another in our model. So if we think there _is_ an average change component - we can include a process that accounts for linear change. If we think there are additional patterns - we can add those processes as well. 
+Gaussian process models encompass an incredibly flexible modeling framework. One reason for this flexibility is that the sum of any number of Gaussian processes is a Gaussian process. What this means in practice is that we can layer multiple processes on top of one another in our model. So if we think there _is_ an average change component - we can include a process that accounts for linear change. If we think there are additional patterns - we can add those processes as well. 
 
-So how does it all work? Well, a Gaussian process model is a series of mean and co-variance functions that we think give rise to the data. Most of the action is in the co-variance functions (called kernels) that are implied by each process. This fact is both a bit of a blessing and a curse at the same time. On the one had, it is convenient that we can string together multiple processes and aggregate their contributions to forecasting future events in a principled way. After all, most complex outputs are multiply caused. On the other hand, the computational resources required to implement these models is prohibitive, which can make problems involving very large data sets practically intractable. 
+So how does it all work? Well, a Gaussian process model is a series of mean and co-variance functions that we think give rise to the data. Most of the action is in the co-variance functions (called kernels) that are implied by each process. This fact is both a bit of a blessing and a curse at the same time. On the one had, it is convenient that we can string together multiple processes and aggregate their contributions to forecasting future events in a principled way. After all, most outputs we want to model are multiply caused. On the other hand, the computational resources required to implement these models is prohibitive, which can make problems involving very large data sets practically intractable. 
 
-The computational burden is the result of needing to take the determinant and the inverse of the co-variance matrix, and in a Bayesian context this expensive calculation has to take place each iteration. The upshot is that these models are $O(N^3)$ efficient. So we are definitely paying a cost for our flexibility in this case. I personally believe these models have value even in with large data sets, provided the implementer works to make the computational and modeling steps as efficient as possible (e.g., downsample, save and use parameters not entire distributions, etc.). 
+The computational burden is the result of needing to take the determinant and the inverse of the co-variance matrix, and in a Bayesian context this expensive calculation has to take place with each draw from the posterior. The upshot is that these models are $O(N^3)$ efficient. So we are definitely paying a cost for our flexibility. I personally believe these models have value even when used in "Bid Data" contexts, provided the implementer works to make the computational and modeling steps as efficient as possible (e.g., downsample, save and use parameters not entire distributions, etc.). 
 
-For additional reading, the definitive text on this modeling family as far as I know is [Rasmussen and Williams (2006)](http://www.gaussianprocess.org/gpml/chapters/). David Duvenaud put together a nice little [webpage](https://www.cs.toronto.edu/~duvenaud/cookbook/) that has a good overview of different co-variance or kernel functions and how to combine them. A good thread on kernels and how they work their magic is available on [Cross Validated](https://stats.stackexchange.com/questions/152897/how-to-intuitively-explain-what-a-kernel-is).
+For additional reading, the definitive text on this modeling family as far as I know is [Rasmussen and Williams (2006)](http://www.gaussianprocess.org/gpml/chapters/). David Duvenaud put together a nice little [webpage](https://www.cs.toronto.edu/~duvenaud/cookbook/) that has a good overview of different co-variance functions and how to combine them. A good thread on covariance functions and how they work their magic is available on [Cross Validated](https://stats.stackexchange.com/questions/152897/how-to-intuitively-explain-what-a-kernel-is).
 ::::
 
 ## Modeling Walkthrough {#modelwalkthrough}
 
-Gaussian process models are a form of _supervised learning_ in that the analyst has to define one or more co-variance functions to account for the data. We start by using a model to identify some set of maximally likely parameters for each function. Some modelers refer to this phase as tuning the hyperparameters. When the hyperparameters are sufficiently tuned, we take the co-variance functions and the hyperparameters and feed in a time window outside the data used for training the model (typically after, but sometimes we are interested in "backcasting"). 
+Gaussian process models are a form of _supervised learning_ in that the analyst has to define one or more co-variance functions to account for the data. We start by using a model to identify some set of maximally likely parameters for each function (or in a Bayesian context a distribution of parameters). Some modelers refer to this phase as "tuning" the hyperparameters. When the hyperparameters are sufficiently tuned, we take the co-variance functions and the hyperparameters and feed in a time window outside the data used for training the model (typically after the training data in time, but sometimes we are interested in "backcasting"). 
 
-The modeling process may sound straightforward. But it isn't always. Building a good Gaussian process model typically requires a bit of iteration. Along the way, the analyst selects which kernels to add or multiply together to try to reliably re-create the patterns observed in the historical data. Making these choices is a mix of trial and error and statistical reasoning. 
+The modeling process may sound straightforward. But it isn't always. Building a good Gaussian process model (well, really any model) requires a bit of iteration. Along the way, the analyst selects which kernels to add or multiply together to try to reliably re-create the patterns observed in the historical data. Making these choices is a mix of trial and error, statistical reasoning, and muttered curse words. 
 
->**Example**: Say we worked for "Big Ice Cream" and we wanted to know, using our own sales records, our expected sales for the upcoming year? Being in the business of selling ice cream and ice cream accessories for so many years, we know there is a reliable pattern that unfolds each year. Our lowest sales are the winter months. We ramp up through the spring, peak in the summer, and start to return back down to the lower winter levels in the fall. We also know that ice cream sales in general are up over the past few years. The first process suggests there is a detectable annual cycle that peaks each summer. A periodic kernel of some sort should be able to capture a pattern that repeats reliably over time. The second process suggests that over time values are going up. We could either use a linear kernel (though there may be more efficient ways to achieve the same end), or a simple "decay" kernel like the squared exponential co-variance kernel. Modeling the `AirPassengers` data will involve both a periodic kernel and a squared exponential kernel (in several capacities). 
+>**Example**: Say we worked for "Big Ice Cream" and we wanted to know, using our own sales records, our expected sales for the upcoming year? Being in the business of selling ice cream and ice cream accessories for so many years, we know there is a reliable pattern that unfolds annually. Our lowest sales are the winter months. We ramp up through the spring, peak in the summer, and start to return back down to the lower winter levels in the fall. We also know that ice cream sales in general are up over the past few years. The first process suggests there is a detectable annual cycle that peaks each summer. A periodic kernel of some sort should be able to capture a pattern that repeats reliably over time. The second process suggests that over time values are going up. We could either use a linear kernel (though there may be more efficient ways to achieve the same end), or a simple "decay" kernel like the squared exponential co-variance kernel. Modeling the `AirPassengers` data will involve both a periodic kernel and a squared exponential kernel (in several capacities). 
 
 
 ### Modeling Overview
 
 In terms of modeling strategy, we'll start with a simple, common co-variance function - the squared exponential kernel. From there we'll explore possible transformations and additional kernels. We'll be using the `AirPassengers` data that ships with `R`. For more information about the data type `?AirPassengers` in your `R` terminal. 
 
-The goal here is to build a forecast model that yields our best guess of future monthly airline passengers, given the trends we've seen over the preceding 10-year period. So how do we know if our model is any good? Since we can't test the model's performance against the future outcomes when building it, we'll do the next best thing - split the data into a training epoch and a testing epoch. The training epoch is for tuning the model's hyperparameters on historical data. The testing epoch is a "mock" forecast of sorts. We're basically saying, *what if had used this model in 1959 - using all the data available up to that point - to predict monthly passengers in 1960? How well would the model have done?* Absent a crystal ball, playing out this counterfactual forecasting scenario will be one of our best test of the effectiveness of the model.
+The goal here is to build a forecast model that yields our best guess of future monthly airline passengers, given the trends we've seen over the preceding 10-year period. So how do we know if our model is any good? Since we can't test the model's performance against the future outcomes when building it, we'll do the next best thing - split the data into a training epoch and a testing epoch. The training epoch is for tuning the model's hyperparameters on historical data. The testing epoch is a "mock" forecast of sorts. We're basically saying, *what if we had used this model in 1959 - using all the data available up to that point - to predict monthly passengers in 1960? How well would the model have done?* Absent a crystal ball, playing out this counterfactual forecasting scenario will be one of our best tests of the effectiveness of the model.
 
-Before modeling then we split out the training (1949-1959) and testing (1960) data. 
+Before modeling we split out the training (1949-1959) and testing (1960) data. 
 ```{r, eval=FALSE}
 air_pass_train <- air_pass_tbl %>% 
   filter(year < 1960)
@@ -129,7 +128,7 @@ air_pass_test <- air_pass_tbl %>%
 
 As mentioned above, the first model will use the squared exponential co-variance function (below) as the sole Gaussian process.  
 
-$$k(t,t') = \sigma^2 exp\Big(-\frac{(t-t')^2}{2l_1^2}\Big)$$
+$$k(t,t') = \sigma^2 exp\Big(-\frac{(t-t')^2}{2l^2}\Big)$$
 
 We're interested in tuning the "length" parameter $l^2$ and the variance parameter $\sigma^2$ of this co-variance function. The length parameter governs how strongly correlated two points are as a function of time. The $\sigma^2$ parameter "weights" or "scales" this function's contribution to the overall co-variance matrix. 
 
@@ -144,14 +143,15 @@ m1_data <- list(
 )
 ```
 
-The model variables are: 
+The model variables are:
+
  - `N1`: the number of observations in the training set
  - `N2`: the number of observations in the test set
  - `X`: evenly spaced interval of time in the training set
  - `Y`: passengers in a given month in the training set
- - `Xp`: evenly psaced interval of time in the test set
+ - `Xp`: evenly spaced interval of time in the test set
 
-Now for the `Stan` code that implements this model. I was inspired by and borrowed from Nate Lemoine's post on [Gaussian processes](https://natelemoine.com/even-faster-gaussian-processes-in-stan/) when setting this model up. I highly recommend his posts if you are interested in gaining additional exposure to this modeling technique. 
+I was inspired by and borrowed from Nate Lemoine's post on [Gaussian processes](https://natelemoine.com/even-faster-gaussian-processes-in-stan/) when setting this model up. I highly recommend his posts if you are interested in gaining additional exposure to this modeling technique. 
 
 ```{stan, eval=FALSE, output.var='none'}
 functions{
@@ -289,7 +289,7 @@ Exception: Exception: cholesky_decompose: m is not symmetric. m[1,3] = 61.9907, 
   (in 'model6e5051823be5_gp_m1' at line 103)
 ```
 
-Despite the seeming instability, the trace plots below suggest the distributions of the model parameters converged reasonably well (a few spikes I don't love). I often use more chains when model building to help with diagnosis problems if they arise. Three chains should be sufficient for diagnosing most model problems. 
+Despite the seeming instability, the trace plots below suggest the distributions of the model parameters converged reasonably well (a few spikes I don't love). I often use more chains when model building to help with diagnosis problems if they arise. Three chains should be sufficient for diagnosing most model problems. I use 6 because I am working on a 12-core machine and I can. 
 
 ```{r}
 traceplot(m1, pars=c('a1', 'r1', 'sigma_sq'))
@@ -318,11 +318,13 @@ brms::posterior_samples(m1, 'Ypred') %>%
 g_m1
 ```
 
+We can do better. 
+
 ### Model 2
 
-My main concern with the first Gaussian process model is the potential floating point precision problems indicated by the `Stan` `Exceptions` thrown. One possible cause is a mismatch of scales - that is, over time, mean values and variation are becoming _much_ larger. A common solution is to log-transform time-series in these instances. The model is still going to predict total airline passengers. We are just going to be modeling the change in terms of log-units or "magnitude" units, and then exponentiating back across our `log` link function. 
+One initial concern with the first Gaussian process model I have is the potential floating point precision problems indicated by the `Stan Exceptions` thrown. One possible cause is a mismatch of scales - that is, over time, mean values and variation are becoming _much_ larger. A common solution is to log-transform time-series in these instances. The model is still going to predict total airline passengers. We are just going to be modeling the change in terms of log-units or "magnitude" units, and then exponentiate back across our `log` link function to get predictions back in the original scale. 
 
-All we have to do is change our `transformed data` block as so: 
+All we have to do is change our `transformed data` block as so in our `Stan` model: 
 
 ```{stan, eval=FALSE, output.var='none'}
 transformed data { 
@@ -390,7 +392,7 @@ As you can see, the scales for the parameters tuned with the first model are wil
 summary(m2)$summary[m2_pars.to.monitor[-4], summary_stats]
 ```
 
-The scales for our kernel hyperparameters are much more similar in the second model, and this approach seems to have prevented the errors observed in our first model. While it is better to have addressed the `Exception` than to not have done so, the second model still does not perform that much better than the first. 
+The scales for our kernel hyperparameters are much more similar in the second model, and this approach seems to have prevented the numerical errors observed in our first model. While it is better to have addressed the `Exception` than to not have done so, the second model still does not perform that much better than the first. 
 
 ```{r, echo=FALSE}
 g_m2 <- 
@@ -424,11 +426,11 @@ cowplot::plot_grid(
 
 ### Model 3
 
-Visual inspection of the plots leads me to think that the log-transformed approach is maybe a little better in making predictions. But, the slight improvement is is irrelevant as neither of these models is particularly good. So we are going to need a little more cowbell. And, by cowbell I mean more co-variance functions that can encode additional patterns in the observed data. We'll start with adding a modified periodic kernel.
+Visual inspection of the plots leads me to think that the log-transformed approach is maybe a little better in making predictions. But, the slight improvement is irrelevant as neither of these models is particularly good. So it looks as though we are going to need a little more cowbell. And, by cowbell I mean more co-variance functions that can encode additional patterns in the observed data. We'll start with adding a modified periodic kernel.
 
 $$k(t,t')=\sigma_2^2 exp\Big(-\frac{2sin^2(\pi(t-t')*1)}{l_2^2}\Big) exp\Big(-\frac{(t-t')^2}{2l_3^2}\Big)$$
 
-Here is what it looks like when added to the `main_GP` function in our evolving Stan code. Note that you'll also need to add the `rho*` and `alpha*` parameters in the appropriate locations. 
+Here is what it looks like when added to the `main_GP` function in our evolving Stan code. Note that you'll also need to add the `rho*/r*` and `alpha*/a*` parameters in the appropriate locations throughout. 
 
 ```{stan, eval=FALSE, output.var='none'}
 for(i in 1:Nx){
@@ -486,7 +488,7 @@ g_m3
 
 Well, that is a huge improvement over the first two models. Adding in a term that addresses the obvious seasonal pattern improved model predictions immensely. My only gripe at this point is the fact that the "mean" posterior estimate tends to undershoot the observed data on average. We'll see if we can fix that in the next model.  
 
-> **Modeling Tip**. We used the model posterior distributions from the second model (with the log-transformation) to define priors for our squared exponential kernel in the third model. Is that a good idea? The short answer is maybe. In the end, we want the priors to help constrain the hyperparameter space the model has to explore, but we don't want to constrain the space to such a degree that we start to omit plausible values. Using the posteriors from one model to define the next model's priors can be risky, as it provides a pathway for error propagation up through your model building chain. However, the payoff is that the MCMC chains may be able to be sampled more efficiently. If you want to figure out if the juice is worth the squeeze, try modifying the priors in different ways to see what sort of an impact certain changes have on run time, model accuracy and model uncertainty.   
+> **Modeling Tip**. We used the model posterior distributions from the second model (with the log-transformation) to define priors for our squared exponential kernel in the third model. Is that a good idea? The short answer is maybe. In the end, we want the priors to help constrain the hyperparameter space the model has to explore, but we don't want to constrain the space to such a degree that we start to omit plausible values. Using the posteriors from one model to define the next model's priors can be risky, as it provides a pathway for error propagation up through our model building chain. However, the payoff is that the MCMC chains may be able to be sampled more efficiently. If you want to figure out if the juice is worth the squeeze, try modifying the priors in different ways to see what sort of an impact certain changes have on run time, model accuracy and model uncertainty.   
 
 ```{r}
 summary(m3)$summary[m3_pars.to.monitor[-7], summary_stats]
@@ -498,30 +500,39 @@ Returning to the initial list of aspects we noticed when plotting the airline pa
 
 1. Over time there is an average increase in the number of passengers.
 
->The mostly linear trend seems to be effectively captured by the first Gaussian process in the model - the squared exponential co-variance kernel. 
+:::: {.rmdnote}
+The mostly linear trend seems to be effectively captured by the first Gaussian process in the model - the squared exponential co-variance kernel. 
+::::
+
 
 2. There is a seasonal trend on top of the average increase that appears to be annual in nature, which would make sense for the airline industry in the 1950s, with air travel peaking in July.
 
->The properties of this seasonal trend are not necessarily constant over time, which we account for by _multiplying_ a squared exponential kernel with a periodic kernel. This particular combination is sometimes known as a _locally periodic_ kernel. 
+:::: {.rmdnote}
+The properties of this seasonal trend are not necessarily constant over time, which we account for by _multiplying_ a squared exponential kernel with a periodic kernel. This particular combination is sometimes known as a _locally periodic_ kernel. 
+::::
 
 3. The effect of the seasonal trends is more pronounced over time. 
 
->Addressed in two ways. The first is through the log-transform. The second is through the use of a _locally periodic_ kernel (see above). 
+:::: {.rmdnote}
+Addressed in two ways. The first is through the log-transform. The second is through the use of a _locally periodic_ kernel (see above). 
+:::: 
 
 4. There _may_, and I stress _may_ be a slight acceleration in the long-term increase in monthly passengers. 
 
->We haven't directly addressed this property just yet. One way to think about this component is that the decay in the association between two scores as a function of time is going to decay over time _itself_. As a result we will end up being less certain in our predictions the farther out in time they are from the observed data. 
+:::: {.rmdnote}
+We haven't directly addressed this property just yet. One way to think about this component is that the decay rate in the association between two scores as a function of time is going to decay over time _itself_. As a result we will end up being less certain in our predictions the farther out in time they are from the observed data. 
+::::
 
-In the fourth and final model (at least for this example), I have added a third Gaussian process that enforces this concept. It is a squared exponential co-variance kernel - our good old "decay" function - multiplied by a second squared exponential kernel. Again the idea here is that the decay function is not constant. The further out we get in our forecasts, the increasingly less certain we should be about our predictions,. 
+In the fourth and final model (at least for this example), I have added a third Gaussian process that enforces the concept described in #4. It is a squared exponential co-variance kernel - our good old "decay" function - multiplied by a second squared exponential kernel. Again the idea here is that the decay function is not constant. The further out we get in our forecasts, the increasingly less certain we should be about our predictions. 
 
 :::: {.rmdnote}
 ### Deeper Dive: Kernel Functions as Weights
 
-One way to think about kernel functions is as a series of formalized weighting systems. Each kernel function provides instructions for determining exactly how much information from data point $x_j$ should be incorporated in data point $x_i$ as a function of however distant $i$ and $j$ are. The kernel "trick" is to provide a means of modeling those weights in a functional space - dictated by the kernel selected. Different kernels imply different spaces and different weights. However, the fact that they can be added and multiplied offers nearly endless combinations of kernels to use in specifying a Gaussian process. 
+One way to think about kernel functions is as a series of formalized weighting systems. Each kernel function provides instructions for determining exactly how much information from data point $x_j$ should be incorporated in data point $x_i$ as a function of however distant $i$ and $j$ are. The kernel "trick" is to provide a means of modeling those weights in a functional space - dictated by the kernel selected. Different kernels imply different spaces and different weights. However, the fact that they can be added and multiplied offers nearly endless combinations of kernels to use in specifying a Gaussian process model. 
 
 Before deciding on a particular kernel, I recommend playing around a bit with different values for various kernels' hyperparameters. Generate some of your own simulated data. Doing so will help build intuition for how changes to those values would affect expectations about observed scores. 
 
-The `Stan` code for generating a discontinuous time-series in which the discontinuity is caused by a change in available resources is available [here](../../blog_code/util_sim.stan). The relevant `R` code for generating the output is below:
+The `Stan` code for generating a discontinuous time-series in which the discontinuity is caused by a change in available resources is available [here](https://github.com/matgbar/main_site/blob/master/blog_code/util_sim.stan). The relevant `R` code for generating the output is below:
 
 ```
 pre_clip_stmts <- 1:24
@@ -626,11 +637,11 @@ brms::posterior_samples(m4, 'Ypred') %>%
 g_m4.2
 ```
 
-It is probably a good thing that the farther out from the observed data we attempt to forecast, the more uncertain we are about the predictions. When thinking about models as engines that drive key decisions, being honest about how uncertain we are in our forecasts is important, and too often overlooked. Now, should we be _this_ uncertain? Maybe; maybe not. This could be a component of the model that we want to tighten up going forward, or perhaps a large degree of uncertainty is better in this case as it would potentially force greater consideration of boom and bust scenarios. 
+It is probably a good thing that the farther out from the observed data we attempt to forecast, the more uncertain we are about the predictions. When thinking about models as engines that drive key decisions, being honest about how uncertain we are in our forecasts is important, and too often overlooked. Now, should we be _this_ uncertain? Maybe. Maybe not. This could be a component of the model that we want to tighten up going forward, or perhaps a large degree of uncertainty is better in this case as it would potentially force greater consideration of boom and bust scenarios. 
 
 As far as this exercise is concerned, I am pretty satisfied with the Gaussian process model I have assembled here. It is not perfect, but then again no model ever is. Hopefully, it was at least instructive in terms of walking through a simple use case for a Gaussian forecast model. 
 
-Before we completely wrap up, it is usually good practice to compare your model with an alternative approach. I'll end using a simple ARIMA model to address the same forecasting problem. [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average) models have a number of beneficial properties that make them well-suited for use with time-series data. Just like our Gaussian process model, ARIMA models can take into account average change over time as well as shorter-term seasonal cycles. Hopefully, my approach will compare well against this arguably more common technique. 
+Before wrapping up though, it is usually good practice to compare your model with an alternative approach. I'll end using a simple ARIMA model to address the same forecasting problem. [ARIMA](https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average) models have a number of beneficial properties that make them well-suited for use with time-series data. Just like our Gaussian process model, ARIMA models can take into account average change over time as well as shorter-term seasonal cycles. Hopefully, my approach will compare favorably against this arguably more common technique. 
 
 Here is the model setup: 
 
@@ -691,11 +702,13 @@ Some key differences
 1. The ARIMA model's mean forecast is similar, but slightly worse than the Gaussian process model.
 1. The ARIMA model is more certain about its predictions and while uncertainty does increase over time, the increase is not as pronounced. 
 
+If we are going to mainly use the mean predictions for forecasting, then the Gaussian process model appears to outperform our ARIMA results. If we care about uncertainty around the mean predictions, the two models have slightly different ideas about the range of plausible values in the future. If I were continuing on this modeling journey, that is where I would pivot to next. 
+
 ```{r, echo = FALSE}
 g_arima_m4
 ```
 
 ## Summary
-This post has reviewed how to build a Gaussian process model to forecast an outcome of interest (monthly passengers) using only historical data measured at equal intervals over time. Hopefully, you are convinced that, with some oversight and judicious modeling, these models can be effective in making univariate time-series forecasts. The modeling technique is incredibly flexible, and, if there is a pattern that is discernible in the time-series, there is a Gaussian process and kernel function that can be used to represent it. 
+This post has reviewed how to build a Gaussian process model to forecast an outcome of interest (monthly passengers) using only historical data measured at equal intervals over time. Hopefully, you are convinced that, with some oversight and judicious modeling, Gaussian processes can be combined to make effective time-series forecasts. The modeling technique is incredibly flexible, and, if there is a pattern that is discernible in the time-series, there is a Gaussian process and kernel function that can be used to represent it. 
 
-There are two cautionary notes that come with this flexibility. The first is that, in operating mainly on co-variance matrices, there are some computationally expensive steps that can be prohibitive in large data sets. The second is that, with an infinite number of Gaussian processes that _could_ be used to model the data, it takes some work to ensure that only those that are relevant for the forecasting problem are used. In using these models we need to guard against the risk of fitting a Gaussian process to random noise. Taking a simple-to-complex model building approach can help. And we should always be skeptical of our results.  
+There are two cautionary notes that come with this flexibility. The first is that, in operating mainly on co-variance matrices, there are some computationally expensive steps that can be prohibitive in large data sets. The second is that, with an infinite number of Gaussian processes that _could_ be used to model the data, it takes some work to ensure that only those that are relevant for the forecasting problem are used. In using these models, we need to guard against the risk of fitting a Gaussian process to random noise. 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sample Size on Dead Reckoning Analytics and Consulting</title>
+    <link>https://mgb-research.netlify.com/tags/sample-size/</link>
+    <description>Recent content in Sample Size on Dead Reckoning Analytics and Consulting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://mgb-research.netlify.com/tags/sample-size/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Power Analysis for an Unconditional Growth Model Using a Selected Sample</title>
+      <link>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mgb-research.netlify.com/blog/2018/06/07/2018-06-07-power-analyses-for-an-unconditional-growth-model-using-lmer/</guid>
+      <description>(Updated: 2020-12-31)
+Problem Statement Determine whether, given what we know about the target phenomenon, a sample of 120 subjects, measured at three time points is sufficient to detect linear change in an unconditional growth model.
+ A trained phlebotomist once described her experience trying to pierce a patient’s vein with her needle as akin to “Trying to use a toothpick to stick a wet noodle covered by a piece of wax paper.</description>
+    </item>
+    
+  </channel>
+</rss>

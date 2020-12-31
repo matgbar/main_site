@@ -18,14 +18,5 @@ Figure 1. Stacked Barplot of Model Variance Decomposition
  Now, choosing a color scheme that screams “HI I’M A COLOR!</description>
     </item>
     
-    <item>
-      <title>Interaction Plots with Continuous Moderators in R</title>
-      <link>https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</link>
-      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mgb-research.netlify.com/blog/2018/07/11/2018-07-12-interaction-plots-with-continuous-moderators-in-r/</guid>
-      <description>Long ago (the first half of my grad school life), I created a model for a manuscript I submitted. The paper was focused on adolescents’ appraisals of their relationships with their mothers, fathers, and best friends. Specifically, I wanted to test whether the association between different motivations for social withdrawal (i.e., removing oneself from social activities and interactions) and internalizing symptoms varied as a function of perceived support in any one (or all three) of these relationships.</description>
-    </item>
-    
   </channel>
 </rss>
